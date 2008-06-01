@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   middleware.py — Pylons middleware initialization
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #

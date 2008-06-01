@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   base.py — The base Controller API
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #

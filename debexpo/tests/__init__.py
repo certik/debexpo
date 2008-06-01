@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   __init__.py — Pylons application test package
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   app_globals.py — The application's Globals object
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
