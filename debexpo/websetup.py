@@ -39,6 +39,7 @@ from pylons import config
 
 from debexpo.config.environment import load_environment
 from debexpo.model import import_all_models
+from debexpo.model import meta
 
 log = logging.getLogger(__name__)
 
