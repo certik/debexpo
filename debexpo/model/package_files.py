@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   __init__.py — Model initialisation code
+#   package_files.py — package_files table model
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -35,17 +35,20 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta
+from debexpo.model.binary_packages import BinaryPackage
+from debexpo.model.source_packages import SourcePackage
 
-def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+t_package_files = sa.Table('package_files', meta.metadata,
+    sa.Column('id', sa.types.Integer, primary_key=True),
+    sa.Column('binary_package_id', sa.types.Integer, sa.ForeignKey('binary_packages.id'), nullable=True),
+    sa.Column('source_package_id', sa.types.Integer, sa.ForeignKey('source_packages.id'), nullable=True),
+    sa.Column('filename', sa.types.String(200), nullable=False),
+    )
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+class PackageFile(object):
+    pass
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
-
-def import_all_models():
-    """Import all models from debexpo.models. This is useful when creating tables"""
-    from debexpo.model import binary_packages, package_files, packages, source_packages, \
-        user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users
+orm.mapper(PackageFile, t_package_files, properties={
+    'binary_package' : orm.relation(BinaryPackage),
+    'source_package' : orm.relation(SourcePackage),
+})

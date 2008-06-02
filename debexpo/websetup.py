@@ -38,6 +38,7 @@ from paste.deploy import appconfig
 from pylons import config
 
 from debexpo.config.environment import load_environment
+from debexpo.model import import_all_models
 
 log = logging.getLogger(__name__)
 
@@ -47,5 +48,6 @@ def setup_config(command, filename, section, vars):
     load_environment(conf.global_conf, conf.local_conf)
 
     log.info("Creating tables")
+    import_all_models()
     meta.metadata.create_all(bind=meta.engine)
     log.info("Successfully setup")

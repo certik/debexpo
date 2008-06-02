@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   __init__.py — Model initialisation code
+#   user_metrics.py — user_metrics table model
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -35,17 +35,18 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta
+from debexpo.model.users import User
 
-def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+t_user_metrics = sa.Table('user_metrics', meta.metadata,
+    sa.Column('id', sa.types.Integer, primary_key=True),
+    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
+    sa.Column('name', sa.types.Integer, nullable=False),
+    sa.Column('value', sa.types.Integer, nullable=False),
+    )
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+class UserMetric(object):
+    pass
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
-
-def import_all_models():
-    """Import all models from debexpo.models. This is useful when creating tables"""
-    from debexpo.model import binary_packages, package_files, packages, source_packages, \
-        user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users
+orm.mapper(UserMetric, t_user_metrics, properties={
+    'user' : orm.relation(User)
+})

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   __init__.py — Model initialisation code
+#   users.py — users table model
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -35,17 +35,26 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta
+from debexpo.model.user_countries import UserCountry
 
-def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+t_users = sa.Table('users', meta.metadata,
+    sa.Column('id', sa.types.Integer, primary_key=True),
+    sa.Column('name', sa.types.String(200), nullable=False),
+    sa.Column('email', sa.types.String(200), nullable=False),
+    sa.Column('gpg', sa.types.Text, nullable=True),
+    sa.Column('password', sa.types.String(200), nullable=False),
+    sa.Column('lastlogin', sa.types.DateTime, nullable=False),
+    sa.Column('type', sa.types.Integer, nullable=False),
+    sa.Column('status', sa.types.Integer, nullable=False),
+    sa.Column('country_id', sa.types.Integer, sa.ForeignKey('user_countries.id')),
+    sa.Column('ircnick', sa.types.String(200), nullable=True),
+    sa.Column('jabber', sa.types.String(200), nullable=True),
+    sa.Column('verification', sa.types.String(200), nullable=True),
+    )
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+class User(object):
+    pass
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
-
-def import_all_models():
-    """Import all models from debexpo.models. This is useful when creating tables"""
-    from debexpo.model import binary_packages, package_files, packages, source_packages, \
-        user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users
+orm.mapper(User, t_users, properties={
+    'country' : orm.relation(UserCountry)
+})

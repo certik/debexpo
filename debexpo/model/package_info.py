@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   __init__.py — Model initialisation code
+#   package_info.py — package_info table model
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -35,17 +35,20 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 
 from debexpo.model import meta
+from debexpo.model.package_versions import PackageVersion
 
-def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+t_package_info = sa.Table('package_info', meta.metadata,
+    sa.Column('id', sa.types.Integer, primary_key=True),
+    sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
+    sa.Column('from_plugin', sa.types.Integer, nullable=False),
+    sa.Column('outcome', sa.types.Integer, nullable=False),
+    sa.Column('data', sa.types.Text, nullable=False),
+    sa.Column('severity', sa.types.Integer, nullable=False),
+    )
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+class PackageInfo(object):
+    pass
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
-
-def import_all_models():
-    """Import all models from debexpo.models. This is useful when creating tables"""
-    from debexpo.model import binary_packages, package_files, packages, source_packages, \
-        user_metrics, package_comments, package_info, package_versions, user_countries, \
-        users
+orm.mapper(PackageInfo, t_package_info, properties={
+    'package_version' : orm.relation(PackageVersion),
+})
