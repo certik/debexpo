@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   __init__.py — Model initialisation code
+#   meta.py — SQLAlchemy Metadata and Session object
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -31,15 +31,17 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import sqlalchemy as sa
-from sqlalchemy import orm
+"""SQLAlchemy Metadata and Session object"""
+from sqlalchemy import MetaData
 
-from debexpo.model import meta
+__all__ = ['engine', 'metadata', 'Session']
 
-def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+# SQLAlchemy database engine.  Updated by model.init_model().
+engine = None
 
-    sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
+# SQLAlchemy session manager.  Updated by model.init_model().
+Session = None
 
-    meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
+# Global metadata. If you have multiple databases with overlapping table 
+# names, you'll need a metadata for each database.
+metadata = MetaData()

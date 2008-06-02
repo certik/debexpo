@@ -40,6 +40,9 @@ import debexpo.lib.app_globals as app_globals
 import debexpo.lib.helpers
 from debexpo.config.routing import make_map
 
+from sqlalchemy import engine_from_config
+from debexpo.model import init_model
+
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``
     object
@@ -64,3 +67,6 @@ def load_environment(global_conf, app_conf):
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
+
+    engine = engine_from_config(config, 'sqlalchemy.')
+    init_model(engine)
