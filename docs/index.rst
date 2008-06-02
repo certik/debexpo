@@ -11,6 +11,7 @@ Contents:
    :maxdepth: 2
    
    coding_standards
+   config_file
 
 Indices and tables
 ==================
