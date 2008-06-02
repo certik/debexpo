@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   routing.py — Routes configuration
+#   upload.py — Upload controller
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -31,29 +31,44 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""Routes configuration
+import os
+import logging
 
-The more specific and detailed routes should be defined first so they
-may take precedent over the more generic routes. For more information
-refer to the routes manual at http://routes.groovie.org/docs/
-"""
-from pylons import config
-from routes import Mapper
+from debexpo.lib.base import *
+from debexpo.lib.utils import allowed_upload
 
-def make_map():
-    """Create, configure and return the routes Mapper"""
-    map = Mapper(directory=config['pylons.paths']['controllers'],
-                 always_scan=config['debug'])
+log = logging.getLogger(__name__)
 
-    # The ErrorController route (handles 404/500 error pages); it should
-    # likely stay at the top, ensuring it can always be resolved
-    map.connect('error/:action/:id', controller='error')
+class UploadController(BaseController):
 
-    # CUSTOM ROUTES HERE
+    def index(self, filename):
+        # Check the uploader's username and password
+        self._check_credentials()
 
-    map.connect('upload/:filename', controller='upload', action='index')
+        # Check whether the file extension is supported by debexpo
+        if not allowed_upload(filename):
+            abort(403, 'The uploaded file type is not supported')
 
-    map.connect(':controller/:action/:id')
-    map.connect('*url', controller='template', action='view')
+        if not config.has_key('debexpo.upload.incoming'):
+            abort(500, 'The incoming directory has not been set')
 
-    return map
+        f = open(os.path.join(config['debexpo.upload.incoming'], filename), 'wb')
+
+        while True:
+            # Write to file in chunks of 10 KiB
+            chunk = request.body.read(10240)
+            if not chunk:
+                # The upload is complete
+                f.close()
+                break
+            else:
+                f.write(chunk)
+
+        # The .changes file is always sent last, so after it is sent,
+        # call the importer process.
+        if filename.endswith('changes'):
+            # TODO: Call the importer
+            pass
+
+    def _check_credentials(self):
+        pass
