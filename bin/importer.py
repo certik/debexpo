@@ -181,13 +181,16 @@ if __name__ == '__main__':
     parser.add_option('-i', '--ini', dest='ini',
                       help='Path to application ini file',
                       metavar='FILE', default=None)
+    parser.add_option('-u', '--userid', dest='user_id',
+                      help='''Uploader's user_id''',
+                      metavar='ID')
 
     (options, args) = parser.parse_args()
 
-    if not options.changes or not options.ini:
+    if not options.changes or not options.ini or not options.user_id:
         parser.print_help()
         sys.exit(0)
 
-    i = Importer(options.changes, options.ini)
+    i = Importer(options.changes, options.ini, options.user_id)
 
     i.main()
