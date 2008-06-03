@@ -44,12 +44,19 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
     sa.Column('section', sa.types.String(200), nullable=False),
     sa.Column('suite', sa.types.Integer, nullable=False),
     sa.Column('qa_status', sa.types.Integer, nullable=False),
-    sa.Column('closes', sa.types.String(200), nullable=True),
     sa.Column('component', sa.types.String(200), nullable=False),
+    sa.Column('closes', sa.types.String(200), nullable=True),
     )
 
 class PackageVersion(object):
-    pass
+    def __init__(self, package, version, section, suite, qa_status, component, closes=''):
+        self.package = package
+        self.version = version
+        self.section = section
+        self.suite = suite
+        self.qa_status = qa_status
+        self.component = component
+        self.closes = closes
 
 orm.mapper(PackageVersion, t_package_versions, properties={
     'package' : orm.relation(Package)

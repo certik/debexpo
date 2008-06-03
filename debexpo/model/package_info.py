@@ -47,7 +47,12 @@ t_package_info = sa.Table('package_info', meta.metadata,
     )
 
 class PackageInfo(object):
-    pass
+    def __init__(self, package_version, from_plugin, outcome, data, severity):
+        self.package_version = package_version
+        self.from_plugin = from_plugin
+        self.outcome = outcome
+        self.data = data
+        self.severity = severity
 
 orm.mapper(PackageInfo, t_package_info, properties={
     'package_version' : orm.relation(PackageVersion),

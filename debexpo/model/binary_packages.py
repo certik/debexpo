@@ -44,7 +44,9 @@ t_binary_packages = sa.Table('binary_packages', meta.metadata,
     )
 
 class BinaryPackage(object):
-    pass
+    def __init__(self, package_version, arch):
+        self.package_version = package_version
+        self.arch = arch
 
 orm.mapper(BinaryPackage, t_binary_packages, properties={
     'package_version' : orm.relation(PackageVersion),

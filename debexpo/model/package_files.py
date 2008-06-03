@@ -46,7 +46,16 @@ t_package_files = sa.Table('package_files', meta.metadata,
     )
 
 class PackageFile(object):
-    pass
+    def __init__(self, filename, binary_package=None, source_package=None):
+        if binary_package is None and source_package is None:
+            raise ArgumentError('binary_package AND source_package cannot both be None')
+
+        if binary_package is not None and source_package is not None:
+            raise ArgumentError('binary_package AND source_package cannot both be set')
+
+        self.filename = filename
+        self.binary_package = binary_package
+        self.source_pakage = source_package
 
 orm.mapper(PackageFile, t_package_files, properties={
     'binary_package' : orm.relation(BinaryPackage),

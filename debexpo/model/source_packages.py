@@ -43,7 +43,8 @@ t_source_packages = sa.Table('source_packages', meta.metadata,
     )
 
 class SourcePackage(object):
-    pass
+    def __init__(self, package_version):
+        self.package_version = package_version
 
 orm.mapper(SourcePackage, t_source_packages, properties={
     'package_version' : orm.relation(PackageVersion),

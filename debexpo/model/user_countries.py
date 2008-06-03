@@ -42,6 +42,7 @@ t_user_countries = sa.Table('user_countries', meta.metadata,
     )
 
 class UserCountry(object):
-    pass
+    def __init__(self, name):
+        self.name = name
 
 orm.mapper(UserCountry, t_user_countries)

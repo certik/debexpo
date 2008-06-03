@@ -45,7 +45,10 @@ t_user_metrics = sa.Table('user_metrics', meta.metadata,
     )
 
 class UserMetric(object):
-    pass
+    def __init__(self, user, name, value):
+        self.user = user
+        self.name = name
+        self.value = value
 
 orm.mapper(UserMetric, t_user_metrics, properties={
     'user' : orm.relation(User)

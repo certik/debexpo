@@ -49,7 +49,13 @@ t_package_comments = sa.Table('package_comments', meta.metadata,
     )
 
 class PackageComment(object):
-    pass
+    def __init__(self, user, package_version, text, time, outcome, status):
+        self.user = user
+        self.package_version = package_version
+        self.text = text
+        self.time = time
+        self.outcome = outcome
+        self.status = status
 
 orm.mapper(PackageComment, t_package_comments, properties={
     'package_version' : orm.relation(PackageVersion),
