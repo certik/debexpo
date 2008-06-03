@@ -46,7 +46,7 @@ class UploadController(BaseController):
         log.info('File upload: %s' % filename)
 
         # Check the uploader's username and password
-        self._check_credentials()
+        user_id = self._check_credentials()
 
         # Check whether the file extension is supported by debexpo
         if not allowed_upload(filename):
@@ -80,10 +80,11 @@ class UploadController(BaseController):
         # The .changes file is always sent last, so after it is sent,
         # call the importer process.
         if filename.endswith('.changes'):
-            command = '%s -i %s -c %s' % (config['debexpo.importer'],
-                config['global_conf']['__file__'], filename)
+            command = '%s -i %s -c %s -u %s' % (config['debexpo.importer'],
+                config['global_conf']['__file__'], filename, user_id)
 
             subprocess.Popen(command, shell=True, close_fds=True)
 
     def _check_credentials(self):
-        pass
+        # TODO: This is just a temporary value to satisfy the current development environment
+        return 1

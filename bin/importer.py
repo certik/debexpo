@@ -43,9 +43,10 @@ import shutil
 log = None
 
 class Importer(object):
-    def __init__(self, changes, ini):
+    def __init__(self, changes, ini, user_id):
         self.changes = changes
         self.ini = ini
+        self.user_id = user_id
         self.ch = None
 
     def _remove_changes(self):
