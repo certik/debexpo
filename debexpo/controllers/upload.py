@@ -33,6 +33,7 @@ __license__ = 'MIT'
 
 import os
 import logging
+import subprocess
 
 from debexpo.lib.base import *
 from debexpo.lib.utils import allowed_upload
@@ -78,9 +79,11 @@ class UploadController(BaseController):
 
         # The .changes file is always sent last, so after it is sent,
         # call the importer process.
-        if filename.endswith('changes'):
-            # TODO: Call the importer
-            pass
+        if filename.endswith('.changes'):
+            command = '%s -i %s -c %s' % (config['debexpo.importer'],
+                config['global_conf']['__file__'], filename)
+
+            subprocess.Popen(command, shell=True, close_fds=True)
 
     def _check_credentials(self):
         pass
