@@ -146,6 +146,11 @@ class Importer(object):
         if not os.path.isdir(dest):
             os.mkdir(dest)
 
+        # Check whether the files are already present
+        for file in self.ch.get_files():
+            if os.path.isfile(os.path.join(dest, file)):
+                self._fail('File "%s" already exists' % os.path.join(dest, file))
+
         # Install files in repository
         for file in self.ch.get_files():
             shutil.move(file, os.path.join(dest, file))
