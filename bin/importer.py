@@ -57,13 +57,23 @@ class Importer(object):
 
         self._remove_changes()
 
-    def _fail(self, reason, use_log=True, level=logging.CRITICAL):
+    def _fail(self, reason, use_log=True):
         if use_log:
-            log.log(level, reason)
+            log.critical(reason)
         else:
             print >> sys.stderr, reason
 
         self._remove_files()
+
+        # TODO email maintainer and site admin
+        sys.exit(1)
+
+    def _reject(self, reason):
+        log.debug('Rejected: %s' % reason)
+
+        self._remove_files()
+
+        # TODO email maintainer
         sys.exit(1)
 
     def _setup_logging(self):
@@ -149,7 +159,7 @@ class Importer(object):
         # Check whether the files are already present
         for file in self.ch.get_files():
             if os.path.isfile(os.path.join(dest, file)):
-                self._fail('File "%s" already exists' % os.path.join(dest, file), level=logging.ERROR)
+                self._reject('File "%s" already exists' % file)
 
         # Install files in repository
         for file in self.ch.get_files():
