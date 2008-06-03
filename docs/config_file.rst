@@ -18,3 +18,10 @@ For example, If this is set to ``/home/myexpo/files`` then the package 'cream' w
 The directory does not have a Sources.gz file (no "apt-get source") but source packages can be downloaded via "dget ...dsc".
 
 No default value -- this variable **must** be specified.
+
+``debexpo.importer``
+====================
+
+This variable specifies the path to the importer script, distributed in ``bin/importer.py``. Therefore, this option is typically ``%(here)s/bin/importer.py``.
+
+No default value -- this variable **must** be specified.
