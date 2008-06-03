@@ -103,9 +103,9 @@ class Importer(object):
 
         self._remove_changes()
 
-    def _fail(self, reason, use_log=True):
+    def _fail(self, reason, use_log=True, level=logging.CRITICAL):
         if use_log:
-            log.critical(reason)
+            log.log(level, reason)
         else:
             print >> sys.stderr, reason
 
@@ -149,7 +149,7 @@ class Importer(object):
         # Check whether the files are already present
         for file in self.ch.get_files():
             if os.path.isfile(os.path.join(dest, file)):
-                self._fail('File "%s" already exists' % os.path.join(dest, file))
+                self._fail('File "%s" already exists' % os.path.join(dest, file), level=logging.ERROR)
 
         # Install files in repository
         for file in self.ch.get_files():
