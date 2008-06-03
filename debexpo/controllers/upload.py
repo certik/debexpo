@@ -42,14 +42,18 @@ log = logging.getLogger(__name__)
 class UploadController(BaseController):
 
     def index(self, filename):
+        log.info('File upload: %s' % filename)
+
         # Check the uploader's username and password
         self._check_credentials()
 
         # Check whether the file extension is supported by debexpo
         if not allowed_upload(filename):
+            log.debug('File type not supported: %s' % filename)
             abort(403, 'The uploaded file type is not supported')
 
         if not config.has_key('debexpo.upload.incoming'):
+            log.critical('debexpo.upload.incoming variable not set')
             abort(500, 'The incoming directory has not been set')
 
         f = open(os.path.join(config['debexpo.upload.incoming'], filename), 'wb')
