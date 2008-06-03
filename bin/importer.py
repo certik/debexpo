@@ -48,6 +48,24 @@ class Importer(object):
         self.ini = ini
         self.ch = None
 
+    def _remove_changes(self):
+        os.remove(self.changes)
+
+    def _remove_files(self):
+        for file in self.ch.get_files():
+            os.remove(file)
+
+        self._remove_changes()
+
+    def _fail(self, reason, use_log=True, level=logging.CRITICAL):
+        if use_log:
+            log.log(level, reason)
+        else:
+            print >> sys.stderr, reason
+
+        self._remove_files()
+        sys.exit(1)
+
     def _setup_logging(self):
         global log
 
@@ -93,24 +111,6 @@ class Importer(object):
         # Look for the changes file
         if not os.path.isfile(self.changes):
             self._fail('Cannot find changes file')
-
-    def _remove_changes(self):
-        os.remove(self.changes)
-
-    def _remove_files(self):
-        for file in self.ch.get_files():
-            os.remove(file)
-
-        self._remove_changes()
-
-    def _fail(self, reason, use_log=True, level=logging.CRITICAL):
-        if use_log:
-            log.log(level, reason)
-        else:
-            print >> sys.stderr, reason
-
-        self._remove_files()
-        sys.exit(1)
 
     def _create_db_entries(self, dest):
         pass
