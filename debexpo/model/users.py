@@ -36,6 +36,7 @@ from sqlalchemy import orm
 
 from debexpo.model import meta
 from debexpo.model.user_countries import UserCountry
+from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL
 
 t_users = sa.Table('users', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
@@ -53,7 +54,12 @@ t_users = sa.Table('users', meta.metadata,
     )
 
 class User(object):
-    pass
+    def __init__(self, name, email, password, type=USER_TYPE_NORMAL, status=USER_STATUS_NORMAL):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.type = type
+        self.status = status
 
 orm.mapper(User, t_users, properties={
     'country' : orm.relation(UserCountry)
