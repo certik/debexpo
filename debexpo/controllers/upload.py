@@ -34,9 +34,15 @@ __license__ = 'MIT'
 import os
 import logging
 import subprocess
+import md5
+import base64
+
+from sqlalchemy.exceptions import InvalidRequestError
 
 from debexpo.lib.base import *
 from debexpo.lib.utils import allowed_upload
+from debexpo.model import meta
+from debexpo.model.users import User
 
 log = logging.getLogger(__name__)
 
@@ -85,6 +91,36 @@ class UploadController(BaseController):
 
             subprocess.Popen(command, shell=True, close_fds=True)
 
+    def _please_authenticate(self):
+        log.debug('Authorization not found in request headers')
+
+        response.headers['WWW-Authenticate'] = 'Basic realm="debexpo"'
+        abort(401, 'Please use your email and password when uploading')
+
+
     def _check_credentials(self):
-        # TODO: This is just a temporary value to satisfy the current development environment
-        return 1
+        if 'Authorization' not in request.headers:
+            self._please_authenticate()
+
+        # Get Authorization header
+        auth = request.headers['Authorization']
+
+        # We only support basic HTTP authentication
+        if not auth.startswith('Basic '):
+            self._please_authenticate()
+
+        # Email and password are in a base64 encoded string like: email:password
+        # Decode this string
+        email, password = base64.b64decode(auth.split()[1]).split(':')
+
+        try:
+            # Get user from database
+            user = meta.Session.query(User).filter(User.email == email).filter(User.password == md5.new(password).hexdigest()).one()
+
+            log.info('Authenticated as %s <%s>' % (user.name, user.email))
+
+            return user.id
+
+        except InvalidRequestError:
+            # Couldn't get one() row, therefore unsuccessful authentication
+            abort(401, 'Authentication failed')
