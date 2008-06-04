@@ -62,7 +62,7 @@ class UploadController(BaseController):
             abort(500, 'The incoming directory has not been set up')
 
         if not os.access(config['debexpo.upload.incoming'], os.W_OK):
-            log.critical('%s is not writable')
+            log.critical('debexpo.upload.incoming is not writable')
             abort(500, 'The incoming directory has not been set up')
 
         f = open(os.path.join(config['debexpo.upload.incoming'], filename), 'wb')
