@@ -39,14 +39,12 @@ class Changes(object):
             raise TypeError
 
         if filename:
-            self.data = deb822.Changes(file(filename))
+            self._data = deb822.Changes(file(filename))
         else:
-            self.data = deb822.Changes(string)
-
-        self.source = self.data['Source']
+            self._data = deb822.Changes(string)
 
     def get_files(self):
-        return [z['name'] for z in self.data['Files']]
+        return [z['name'] for z in self._data['Files']]
 
     def get(self, key):
-        return self.data.get(key)
+        return self._data.get(key)

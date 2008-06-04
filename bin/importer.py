@@ -213,7 +213,7 @@ class Importer(object):
         #if not self.post_upload(self.ch):
         #   self._remove_files()
 
-        dest = os.path.join(self.config['debexpo.repository'], self.ch.source)
+        dest = os.path.join(self.config['debexpo.repository'], self.ch.get('Source'))
 
         # Create source package directory if it doesn't already exist
         if not os.path.isdir(dest):
