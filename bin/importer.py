@@ -123,8 +123,70 @@ class Importer(object):
         if not os.path.isfile(self.changes):
             self._fail('Cannot find changes file')
 
-    def _create_db_entries(self, dest):
-        pass
+    def _create_db_entries(self):
+        log.info('Creating database entries')
+
+        # Horrible imports
+        from debexpo.model import meta
+        from debexpo.lib.utils import parse_section
+
+        # Import model objects
+        from debexpo.model.users import User
+        from debexpo.model.packages import Package
+        from debexpo.model.package_versions import PackageVersion
+        from debexpo.model.source_packages import SourcePackage
+        from debexpo.model.binary_packages import BinaryPackage
+        from debexpo.model.package_files import PackageFile
+
+        # TODO
+        qa_status = 1
+
+        # Parse component and section from field in changes
+        section, component = parse_section(self.ch.get('files')[0]['section'])
+
+        # Get uploader's User object
+        u = meta.Session.query(User).filter(User.id == self.user_id).one()
+
+        # Check whether package is already in the database
+        package_query = meta.Session.query(Package).filter(Package.name == self.ch.get('Source'))
+        if package_query.count() is 1:
+            log.info('Package %s already exists in the database' % self.ch.get('Source'))
+            p = package_query.one()
+        else:
+            log.info('Package %s is new to the system' % self.ch.get('Source'))
+            p = Package(self.ch.get('Source'), u)
+            p.description = self.ch.get('Description')[2:].replace('      - ', ' - ')
+            meta.Session.save(p)
+
+        # No need to check whether there is the same source name and same version as an existing
+        # entry in the database as the upload controller tested whether similar filenames existed
+        # in the repository. The only way this would be wrong is if the filename had a different
+        # version in than the Version field in changes..
+        pv = PackageVersion(p, self.ch.get('Version'), section, self.ch.get('Distribution'),
+            qa_status, component, self.ch.get('Version'))
+        meta.Session.save(pv)
+
+        sp = SourcePackage(pv)
+        meta.Session.save(sp)
+
+        bp = None
+
+        # Add PackageFile objects to the database for each uploaded file
+        for file in self.ch.get_files():
+            # Check for binary or source package file
+            if file.endswith('.deb'):
+                # Only create a BinaryPackage if there actually binary package files
+                if bp is None:
+                    bp = BinaryPackage(pv, arch=file[:-4].split('_')[-1])
+                    meta.Session.save(bp)
+
+                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), binary_package=bp))
+            else:
+                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), source_package=pv))
+
+        # Commit all changes to the database
+        meta.Session.commit()
+        log.info('Committed package data to the database')
 
     def main(self):
         # Set up importer
@@ -167,7 +229,7 @@ class Importer(object):
             shutil.move(file, os.path.join(dest, file))
 
         # Create the database rows
-        self._create_db_entries(dest)
+        self._create_db_entries()
 
         # Finally, remove the changes file
         self._remove_changes()
