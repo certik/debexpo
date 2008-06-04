@@ -38,3 +38,8 @@ def allowed_upload(filename):
 
     return False
 
+def parse_section(section):
+    if '/' in section:
+        return section.explode('/')
+    else:
+        return ('main', section)
