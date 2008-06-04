@@ -47,3 +47,6 @@ class Changes(object):
 
     def get_files(self):
         return [z['name'] for z in self.data['Files']]
+
+    def get(self, key):
+        return self.data.get(key)
