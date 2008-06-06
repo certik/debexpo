@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds user_metrics table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -45,7 +49,15 @@ t_user_metrics = sa.Table('user_metrics', meta.metadata,
     )
 
 class UserMetric(object):
+    """
+    Model for a user metric.
+    """
+
     def __init__(self, user, name, value):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.user = user
         self.name = name
         self.value = value

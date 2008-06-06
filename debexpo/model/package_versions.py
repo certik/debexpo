@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds package_versions table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -49,7 +53,15 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
     )
 
 class PackageVersion(object):
+    """
+    Model for a version of a source package.
+    """
+
     def __init__(self, package, version, section, suite, qa_status, component, closes=''):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.package = package
         self.version = version
         self.section = section

@@ -27,11 +27,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Pylons environment configuration.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""Pylons environment configuration"""
 import os
 
 from pylons import config
@@ -44,8 +47,14 @@ from sqlalchemy import engine_from_config
 from debexpo.model import init_model
 
 def load_environment(global_conf, app_conf):
-    """Configure the Pylons environment via the ``pylons.config``
-    object
+    """
+    Configures the Pylons environment via the ``pylons.config`` object.
+
+    ``global_conf``
+        Global configuration.
+
+    ``app_conf``
+        Application configuration.
     """
     # Pylons paths
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

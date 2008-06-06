@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Model initialization functions.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -37,7 +41,13 @@ from sqlalchemy import orm
 from debexpo.model import meta
 
 def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+    """
+    Initializes the model.
+    This should be called before using any of the tables or classes in the model.
+
+    ``engine``
+        SQLAlchemy engine to bind to.
+    """
 
     sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
 
@@ -45,7 +55,10 @@ def init_model(engine):
     meta.Session = orm.scoped_session(sm)
 
 def import_all_models():
-    """Import all models from debexpo.models. This is useful when creating tables"""
+    """
+    Import all models from debexpo.models. This is useful when creating tables.
+    """
+
     from debexpo.model import binary_packages, package_files, packages, source_packages, \
         user_metrics, package_comments, package_info, package_versions, user_countries, \
         users

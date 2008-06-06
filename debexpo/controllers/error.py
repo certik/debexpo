@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds the ErrorController class.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -39,7 +43,8 @@ from pylons.middleware import error_document_template, media_path
 from debexpo.lib.base import *
 
 class ErrorController(BaseController):
-    """Generates error documents as and when they are required.
+    """
+    Generates error documents as and when they are required.
 
     The ErrorDocuments middleware forwards to ErrorController when error
     related status codes are returned from the application.
@@ -49,7 +54,9 @@ class ErrorController(BaseController):
     """
 
     def document(self):
-        """Render the error document"""
+        """
+        Renders the error document.
+        """
         page = error_document_template % \
             dict(prefix=request.environ.get('SCRIPT_NAME', ''),
                  code=request.params.get('code', ''),
@@ -57,16 +64,29 @@ class ErrorController(BaseController):
         return page
 
     def img(self, id):
-        """Serve Pylons' stock images"""
+        """
+        Serves Pylons' stock images.
+
+        ``id``
+            ID of the image requested.
+        """
         return self._serve_file(os.path.join(media_path, 'img', id))
 
     def style(self, id):
-        """Serve Pylons' stock stylesheets"""
+        """
+        Serves Pylons' stock stylesheets.
+
+        ``id``
+            ID of the style requested.
+        """
         return self._serve_file(os.path.join(media_path, 'style', id))
 
     def _serve_file(self, path):
-        """Call Paste's FileApp (a WSGI application) to serve the file
-        at the specified path
+        """
+        Calls Paste's FileApp (a WSGI application) to serve the file at the specified path.
+
+        ``path``
+            Path of the file to serve.
         """
         fapp = paste.fileapp.FileApp(path)
         return fapp(request.environ, self.start_response)

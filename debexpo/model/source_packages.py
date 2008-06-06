@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds source_packages table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -43,7 +47,15 @@ t_source_packages = sa.Table('source_packages', meta.metadata,
     )
 
 class SourcePackage(object):
+    """
+    Model for a source package.
+    """
+
     def __init__(self, package_version):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.package_version = package_version
 
 orm.mapper(SourcePackage, t_source_packages, properties={

@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds users table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -54,7 +58,15 @@ t_users = sa.Table('users', meta.metadata,
     )
 
 class User(object):
+    """
+    Model for a user.
+    """
+
     def __init__(self, name, email, password, type=USER_TYPE_NORMAL, status=USER_STATUS_NORMAL):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.name = name
         self.email = email
         self.password = password

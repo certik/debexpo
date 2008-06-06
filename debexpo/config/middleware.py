@@ -27,11 +27,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Pylons middleware initialization.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""Pylons middleware initialization"""
 from paste.cascade import Cascade
 from paste.registry import RegistryManager
 from paste.urlparser import StaticURLParser
@@ -46,7 +49,7 @@ from pylons.wsgiapp import PylonsApp
 from debexpo.config.environment import load_environment
 
 def make_app(global_conf, full_stack=True, **app_conf):
-    """Create a Pylons WSGI application and return it
+    """Creates a Pylons WSGI application and returns it.
 
     ``global_conf``
         The inherited configuration for this application. Normally from

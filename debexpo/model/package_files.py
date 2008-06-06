@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds package_files table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -46,7 +50,14 @@ t_package_files = sa.Table('package_files', meta.metadata,
     )
 
 class PackageFile(object):
+    """
+    Model for a package file.
+    """
+
     def __init__(self, filename, binary_package=None, source_package=None):
+        """
+        Object constructor. Sets common class fields values.
+        """
         if binary_package is None and source_package is None:
             raise ArgumentError('binary_package AND source_package cannot both be None')
 

@@ -27,21 +27,27 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds the Globals class.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""The application's Globals object"""
 from pylons import config
 
 class Globals(object):
-    """Globals acts as a container for objects available throughout the
-    life of the application
+    """
+    Acts as a container for objects available throughout the life of a request.
     """
 
     def __init__(self):
-        """One instance of Globals is created during application
+        """
+        Object constructor; does nothing.
+
+        One instance of Globals is created during application
         initialization and is available during requests via the 'g'
-        variable
+        variable.
         """
         pass

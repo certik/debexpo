@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds package_comments table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -49,7 +53,15 @@ t_package_comments = sa.Table('package_comments', meta.metadata,
     )
 
 class PackageComment(object):
+    """
+    Model for a package comment.
+    """
+
     def __init__(self, user, package_version, text, time, outcome, status):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.user = user
         self.package_version = package_version
         self.text = text

@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds binary_packages table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -44,7 +48,14 @@ t_binary_packages = sa.Table('binary_packages', meta.metadata,
     )
 
 class BinaryPackage(object):
+    """
+    Model for a binary package.
+    """
+
     def __init__(self, package_version, arch):
+        """
+        Object constructor. Sets common class fields values.
+        """
         self.package_version = package_version
         self.arch = arch
 

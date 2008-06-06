@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds the UploadController class.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -47,8 +51,24 @@ from debexpo.model.users import User
 log = logging.getLogger(__name__)
 
 class UploadController(BaseController):
+    """
+    Controller to handle uploading packages via HTTP PUT.
+    """
 
     def index(self, filename):
+        """
+        Controller entry point. When dput uploads a package via `PUT`, the connection below is made::
+
+          PUT /upload/packagename_version.dsc
+
+        assuming the file being uploaded is the `dsc`.
+
+        This method takes writes the uploaded file to disk and calls the import script in another
+        process.
+
+        ``filename``
+            Name of file being uploaded.
+        """
         log.info('File upload: %s' % filename)
 
         # Check the uploader's username and password
@@ -92,6 +112,9 @@ class UploadController(BaseController):
             subprocess.Popen(command, shell=True, close_fds=True)
 
     def _please_authenticate(self):
+        """
+        Responds to a request with a HTTP response code 401 requesting authentication.
+        """
         log.debug('Authorization not found in request headers')
 
         response.headers['WWW-Authenticate'] = 'Basic realm="debexpo"'
@@ -99,6 +122,11 @@ class UploadController(BaseController):
 
 
     def _check_credentials(self):
+        """
+        Deals with authentication and checks the HTTP headers to ensure the email/password are correct
+        and returns the integer of the user's ID, assuming the authentication was successful. Reject
+        the upload if authentication is unsuccessful
+        """
         if 'Authorization' not in request.headers:
             self._please_authenticate()
 

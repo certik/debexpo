@@ -27,15 +27,17 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
-
-"""The base Controller API
+"""
+Holds the base Controller API.
 
 Provides the BaseController class for subclassing, and other objects
 utilized by Controllers.
 """
+
+__author__ = 'Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__license__ = 'MIT'
+
 from pylons import c, cache, config, g, request, response, session
 from pylons.controllers import WSGIController
 from pylons.controllers.util import abort, etag_cache, redirect_to
@@ -48,9 +50,14 @@ import debexpo.model as model
 from debexpo.model import meta
 
 class BaseController(WSGIController):
+    """
+    Base controller class for all other controllers to extend.
+    """
 
     def __call__(self, environ, start_response):
-        """Invoke the Controller"""
+        """
+        Invokes the Controller.
+        """
         # WSGIController.__call__ dispatches to the Controller method
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']

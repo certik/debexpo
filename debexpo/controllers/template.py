@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds TemplateController class.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -34,9 +38,13 @@ __license__ = 'MIT'
 from debexpo.lib.base import *
 
 class TemplateController(BaseController):
+    """
+    Controller to serve out templates on request.
+    """
 
     def view(self, url):
-        """By default, the final controller tried to fulfill the request
+        """
+        By default, the final controller tried to fulfill the request
         when no other routes match. It may be used to display a template
         when all else fails, e.g.::
 
@@ -56,5 +64,8 @@ class TemplateController(BaseController):
 
         By default this controller aborts the request with a 404 (Not
         Found)
+
+        ``url``
+            URL to render.
         """
         abort(404)

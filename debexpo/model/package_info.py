@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds package_info table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -47,7 +51,14 @@ t_package_info = sa.Table('package_info', meta.metadata,
     )
 
 class PackageInfo(object):
+    """
+    Model for a single bit of package info.
+    """
+
     def __init__(self, package_version, from_plugin, outcome, data, severity):
+        """
+        Object constructor. Sets common class fields values.
+        """
         self.package_version = package_version
         self.from_plugin = from_plugin
         self.outcome = outcome

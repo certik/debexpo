@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds packages table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -48,7 +52,15 @@ t_packages = sa.Table('packages', meta.metadata,
     )
 
 class Package(object):
+    """
+    Model for a package.
+    """
+
     def __init__(self, name, user):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.name = name
         self.user = user
 

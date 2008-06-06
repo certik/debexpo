@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds user_countries table model.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -42,7 +46,15 @@ t_user_countries = sa.Table('user_countries', meta.metadata,
     )
 
 class UserCountry(object):
+    """
+    Model for a country.
+    """
+
     def __init__(self, name):
+        """
+        Object constructor. Sets common class fields values.
+        """
+
         self.name = name
 
 orm.mapper(UserCountry, t_user_countries)

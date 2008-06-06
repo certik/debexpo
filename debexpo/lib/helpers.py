@@ -27,13 +27,15 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
-
-"""Helper functions
+"""
+Helper functions.
 
 Consists of functions to typically be used within templates, but also
 available to Controllers. This module is available to both as 'h'.
 """
+
+__author__ = 'Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__license__ = 'MIT'
+
 from webhelpers import *

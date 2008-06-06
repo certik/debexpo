@@ -27,11 +27,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Setup the debexpo application.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""Setup the debexpo application"""
 import logging
 
 from paste.deploy import appconfig
@@ -44,7 +47,23 @@ from debexpo.model import meta
 log = logging.getLogger(__name__)
 
 def setup_config(command, filename, section, vars):
-    """Place any commands to setup debexpo here"""
+    """
+    Run when debexpo is being set up, when ``paster setup-app`` is executed and shouldn't
+    be called directly.
+
+    ``command``
+        Pointer to the setup function.
+
+    ``filename``
+        File used for configuration. E.g. `development.ini`.
+
+    ``section``
+        Section in the config file; usually `app:main`.
+
+    ``vars``
+        Extra variables passed to the setup.
+    """
+
     conf = appconfig('config:' + filename)
     load_environment(conf.global_conf, conf.local_conf)
 

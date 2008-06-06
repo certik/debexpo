@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   py.template — template for new .py files
+#   importer.py — executable script to import new packages
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -28,6 +28,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Executable script to import new packages.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -43,22 +47,62 @@ import shutil
 log = None
 
 class Importer(object):
+    """
+    Class to handle the package that is uploaded and wants to be imported into the database.
+    """
+
     def __init__(self, changes, ini, user_id):
+        """
+        Object constructor. Sets class fields to sane values.
+
+        ``self``
+            Object pointer.
+
+        ``changes``
+            Name `changes` file to import. This is given from the upload controller.
+
+        ``ini``
+            Path to debexpo configuration file. This is given from the upload controller.
+
+        ``user_id``
+            ID of the user doing the upload. This is given from the upload controller.
+
+        """
         self.changes = changes
         self.ini = ini
         self.user_id = user_id
         self.ch = None
 
     def _remove_changes(self):
+        """
+        Removes the `changes` file.
+        """
         os.remove(self.changes)
 
     def _remove_files(self):
+        """
+        Removes all the files uploaded.
+        """
         for file in self.ch.get_files():
             os.remove(file)
 
         self._remove_changes()
 
     def _fail(self, reason, use_log=True):
+        """
+        Fail the upload by sending a reason for failure to the log and then remove all
+        uploaded files.
+
+        A package is `fail`ed if there is a problem with debexpo, **not** if there's
+        something wrong with the package.
+
+        ``reason``
+            String of why it failed.
+
+        ``use_log``
+            Whether to use the log. This should only be False when actually loading the log fails.
+            In this case, the reason is printed to stderr.
+        """
         if use_log:
             log.critical(reason)
         else:
@@ -70,6 +114,15 @@ class Importer(object):
         sys.exit(1)
 
     def _reject(self, reason):
+        """
+        Reject the package by sending a reason for failure to the log and then remove all
+        uploaded files.
+
+        A package is `reject`ed if there is a problem with the package.
+
+        ``reason``
+            String of why it failed.
+        """
         log.debug('Rejected: %s' % reason)
 
         self._remove_files()
@@ -78,6 +131,10 @@ class Importer(object):
         sys.exit(1)
 
     def _setup_logging(self):
+        """
+        Parse the config file and create the ``log`` object for other methods to log their
+        actions.
+        """
         global log
 
         # Parse the ini file to validate it
@@ -95,6 +152,10 @@ class Importer(object):
         log = logging.getLogger(logger_name)
 
     def _setup(self):
+        """
+        Set up logging, import pylons/paste/debexpo modules, parse config file, create config
+        class and chdir to the incoming directory.
+        """
         self._setup_logging()
 
         # Look for ini file
@@ -124,6 +185,9 @@ class Importer(object):
             self._fail('Cannot find changes file')
 
     def _create_db_entries(self):
+        """
+        Create entries in the Database for the package upload.
+        """
         log.info('Creating database entries')
 
         # Horrible imports
@@ -189,6 +253,12 @@ class Importer(object):
         log.info('Committed package data to the database')
 
     def main(self):
+        """
+        Actually start the import of the package.
+
+        Do several environment sanity checks, move files into the right place, and then
+        create the database entries for the imported package.
+        """
         # Set up importer
         self._setup()
 

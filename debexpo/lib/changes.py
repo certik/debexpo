@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Holds *changes* file handling class.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -34,7 +38,28 @@ __license__ = 'MIT'
 from debian_bundle import deb822
 
 class Changes(object):
+    """
+    Helper class to parse *changes* files nicely.
+    """
+
     def __init__(self, filename=None, string=None):
+        """
+        Object constructor. The object allows the user to specify **either**:
+
+        #. a path to a *changes* file to parse
+        #. a string with the *changes* file contents.
+
+        ::
+
+          a = Changes(filename='/tmp/packagename_version.changes')
+          b = Changes(string='Source: packagename\\nMaintainer: ...')
+
+        ``filename``
+            Path to *changes* file to parse.
+
+        ``string``
+            *changes* file in a string to parse.
+        """
         if (filename and string) or (not filename and not string):
             raise TypeError
 
@@ -44,7 +69,16 @@ class Changes(object):
             self._data = deb822.Changes(string)
 
     def get_files(self):
+        """
+        Returns a list of files in the *changes* file.
+        """
         return [z['name'] for z in self._data['Files']]
 
     def get(self, key):
+        """
+        Returns the value of the rfc822 key specified.
+
+        ``key``
+            Key of data to request.
+        """
         return self._data.get(key)

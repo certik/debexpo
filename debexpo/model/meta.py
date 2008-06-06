@@ -27,11 +27,14 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+SQLAlchemy MetaData and Session object.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-"""SQLAlchemy Metadata and Session object"""
 from sqlalchemy import MetaData
 
 __all__ = ['engine', 'metadata', 'Session']
