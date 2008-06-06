@@ -7,11 +7,8 @@ Welcome to debexpo's documentation!
 
 Contents:
 
-.. toctree::
-   :maxdepth: 2
-   
-   coding_standards
-   config_file
+* :ref:`coding-standards`
+* :ref:`config-file`
 
 Indices and tables
 ==================
@@ -19,4 +16,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
