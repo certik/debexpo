@@ -52,7 +52,7 @@ def init_model(engine):
     sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
 
     meta.engine = engine
-    meta.Session = orm.scoped_session(sm)
+    meta.session = orm.scoped_session(sm)
 
 def import_all_models():
     """

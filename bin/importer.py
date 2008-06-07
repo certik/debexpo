@@ -209,10 +209,10 @@ class Importer(object):
         section, component = parse_section(self.changes.get('files')[0]['section'])
 
         # Get uploader's User object
-        user = meta.Session.query(User).filter(User.id == self.user_id).one()
+        user = meta.session.query(User).filter(User.id == self.user_id).one()
 
         # Check whether package is already in the database
-        package_query = meta.Session.query(Package).filter(Package.name == self.changes.get('Source'))
+        package_query = meta.session.query(Package).filter(Package.name == self.changes.get('Source'))
         if package_query.count() is 1:
             log.info('Package %s already exists in the database' % self.changes.get('Source'))
             package = package_query.one()
@@ -220,7 +220,7 @@ class Importer(object):
             log.info('Package %s is new to the system' % self.changes.get('Source'))
             package = Package(self.changes.get('Source'), user)
             package.description = self.changes.get('Description')[2:].replace('      - ', ' - ')
-            meta.Session.save(package)
+            meta.session.save(package)
 
         # No need to check whether there is the same source name and same version as an existing
         # entry in the database as the upload controller tested whether similar filenames existed
@@ -228,10 +228,10 @@ class Importer(object):
         # version in than the Version field in changes..
         package_version = PackageVersion(package, self.changes.get('Version'), section, self.changes.get('Distribution'),
             qa_status, component, self.changes.get('Version'))
-        meta.Session.save(package_version)
+        meta.session.save(package_version)
 
         source_package = SourcePackage(package_version)
-        meta.Session.save(source_package)
+        meta.session.save(source_package)
 
         binary_package = None
 
@@ -242,14 +242,14 @@ class Importer(object):
                 # Only create a BinaryPackage if there actually binary package files
                 if binary_package is None:
                     binary_package = BinaryPackage(package_version, arch=file[:-4].split('_')[-1])
-                    meta.Session.save(binary_package)
+                    meta.session.save(binary_package)
 
-                meta.Session.save(PackageFile(os.path.join(self.changes.get('Source'), file), binary_package=binary_package))
+                meta.session.save(PackageFile(os.path.join(self.changes.get('Source'), file), binary_package=binary_package))
             else:
-                meta.Session.save(PackageFile(os.path.join(self.changes.get('Source'), file), source_package=source_package))
+                meta.session.save(PackageFile(os.path.join(self.changes.get('Source'), file), source_package=source_package))
 
         # Commit all changes to the database
-        meta.Session.commit()
+        meta.session.commit()
         log.info('Committed package data to the database')
 
     def main(self):

@@ -64,7 +64,7 @@ class BaseController(WSGIController):
         try:
                 return WSGIController.__call__(self, environ, start_response)
         finally:
-                meta.Session.remove()
+                meta.session.remove()
 
 # Include the '_' function in the public names
 __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \

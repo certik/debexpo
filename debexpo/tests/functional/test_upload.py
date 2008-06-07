@@ -61,8 +61,8 @@ class TestUploadController(TestController):
         user = User(name='Test user', email='email@email.com', password=md5.new('password').hexdigest())
         user.lastlogin = datetime.now()
 
-        meta.Session.save(user)
-        meta.Session.commit()
+        meta.session.save(user)
+        meta.session.commit()
 
     def testGetRequest(self):
         """
