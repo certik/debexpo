@@ -55,7 +55,7 @@ def parse_section(section):
     Works out the component and section from the "Section" field.
     Sections like `python` or `libdevel` are in main.
     Sections with a prefix, separated with a forward-slash also show the component.
-    It returns a tuple of strings in the form (component, section).
+    It returns a list of strings in the form [component, section].
 
     For example, `non-free/python` has component `non-free` and section `python`.
 
@@ -65,4 +65,4 @@ def parse_section(section):
     if '/' in section:
         return section.split('/')
     else:
-        return ('main', section)
+        return ['main', section]
