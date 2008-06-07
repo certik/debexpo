@@ -77,7 +77,7 @@ class TestUploadController(TestController):
         emailpassword = base64.encodestring('email@email.com:wrongpassword')[:-1]
 
         response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
-            headers={'Authentication' : 'Basic %s' % emailpassword}, expect_errors=True)
+            headers={'Authorization' : 'Basic %s' % emailpassword}, expect_errors=True)
 
         self.assertEqual(response.status, 401)
 
@@ -88,6 +88,6 @@ class TestUploadController(TestController):
         emailpassword = base64.encodestring('email@email.com:password')[:-1]
 
         response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
-            headers={'Authentication' : 'Basic %s' % emailpassword}, expect_errors=True)
+            headers={'Authorization' : 'Basic %s' % emailpassword}, expect_errors=True)
 
         self.assertNotEqual(response.status, 401)
