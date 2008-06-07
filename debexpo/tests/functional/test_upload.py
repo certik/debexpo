@@ -64,6 +64,9 @@ class TestUploadController(TestController):
         meta.session.save(user)
         meta.session.commit()
 
+        # Keep this so tests don't have to constantly create it.
+        self.emailpassword = base64.encodestring('email@email.com:password')[:-1]
+
     def testGetRequest(self):
         """
         Tests whether requests where method != PUT are rejected with error code 405.
@@ -92,10 +95,10 @@ class TestUploadController(TestController):
         """
         Tests whether false authentication details returns a 401 error code.
         """
-        emailpassword = base64.encodestring('email@email.com:wrongpassword')[:-1]
+        wrongemailpassword = base64.encodestring('email@email.com:wrongpassword')[:-1]
 
         response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
-            headers={'Authorization' : 'Basic %s' % emailpassword}, expect_errors=True)
+            headers={'Authorization' : 'Basic %s' % wrongemailpassword}, expect_errors=True)
 
         self.assertEqual(response.status, 401)
 
@@ -103,9 +106,7 @@ class TestUploadController(TestController):
         """
         Tests whether true authentication details returns a nicer error code.
         """
-        emailpassword = base64.encodestring('email@email.com:password')[:-1]
-
         response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
-            headers={'Authorization' : 'Basic %s' % emailpassword}, expect_errors=True)
+            headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
 
         self.assertNotEqual(response.status, 401)
