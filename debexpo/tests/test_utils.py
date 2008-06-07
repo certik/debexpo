@@ -27,6 +27,10 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
+"""
+Test suite for debexpo.lib.utils.
+"""
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
@@ -37,7 +41,10 @@ from debexpo.lib.utils import *
 
 class TestUtilsController(TestCase):
 
-    def test_allowed_upload(self):
+    def testAllowedUpload(self):
+        """
+        Tests debexpo.lib.utils.allowed_upload.
+        """
         t = allowed_upload
 
         self.assertTrue(t('foo_version.orig.tar.gz'))
