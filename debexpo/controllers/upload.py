@@ -71,7 +71,7 @@ class UploadController(BaseController):
         """
         if request.method != 'PUT':
             log.debug('Request with method %s attempted on Upload controller.' % request.method)
-            abort(405, 'The upload controller only deals with PUT requests.')
+            abort(405, 'The upload controller only deals with PUT requests.', headers=[('Allow', 'PUT')])
 
         log.info('File upload: %s' % filename)
 
