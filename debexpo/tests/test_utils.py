@@ -55,3 +55,12 @@ class TestUtilsController(TestCase):
         self.assertTrue(t('foo_version.diff.gz'))
 
         self.assertFalse(t('foo_version.etc'))
+
+    def testParseSection(self):
+        """
+        Tests debexpo.lib.utils.parse_section.
+        """
+        t = parse_section
+
+        self.assertEqual(t('section'), ('main', 'section'))
+        self.assertEqual(t('component/section'), ('component', 'section'))
