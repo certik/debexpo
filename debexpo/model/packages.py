@@ -65,5 +65,5 @@ class Package(object):
         self.user = user
 
 orm.mapper(Package, t_packages, properties={
-    'user' : orm.relation(User)
+    'user' : orm.relation(User, backref='packages')
 })

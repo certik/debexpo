@@ -71,5 +71,5 @@ class PackageVersion(object):
         self.closes = closes
 
 orm.mapper(PackageVersion, t_package_versions, properties={
-    'package' : orm.relation(Package)
+    'package' : orm.relation(Package, backref='package_versions')
 })

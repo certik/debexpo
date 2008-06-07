@@ -59,5 +59,5 @@ class SourcePackage(object):
         self.package_version = package_version
 
 orm.mapper(SourcePackage, t_source_packages, properties={
-    'package_version' : orm.relation(PackageVersion),
+    'package_version' : orm.relation(PackageVersion, backref='package_versions'),
 })

@@ -70,6 +70,6 @@ class PackageComment(object):
         self.status = status
 
 orm.mapper(PackageComment, t_package_comments, properties={
-    'package_version' : orm.relation(PackageVersion),
-    'user' : orm.relation(User),
+    'package_version' : orm.relation(PackageVersion, backref='package_comments'),
+    'user' : orm.relation(User, backref='package_comments'),
 })

@@ -69,6 +69,6 @@ class PackageFile(object):
         self.source_package = source_package
 
 orm.mapper(PackageFile, t_package_files, properties={
-    'binary_package' : orm.relation(BinaryPackage),
-    'source_package' : orm.relation(SourcePackage),
+    'binary_package' : orm.relation(BinaryPackage, backref='package_files'),
+    'source_package' : orm.relation(SourcePackage, backref='package_files'),
 })

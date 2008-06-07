@@ -60,5 +60,5 @@ class BinaryPackage(object):
         self.arch = arch
 
 orm.mapper(BinaryPackage, t_binary_packages, properties={
-    'package_version' : orm.relation(PackageVersion),
+    'package_version' : orm.relation(PackageVersion, backref='binary_packages'),
 })

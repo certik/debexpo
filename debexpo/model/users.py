@@ -74,5 +74,5 @@ class User(object):
         self.status = status
 
 orm.mapper(User, t_users, properties={
-    'country' : orm.relation(UserCountry)
+    'country' : orm.relation(UserCountry, backref='users')
 })

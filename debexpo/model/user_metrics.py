@@ -63,5 +63,5 @@ class UserMetric(object):
         self.value = value
 
 orm.mapper(UserMetric, t_user_metrics, properties={
-    'user' : orm.relation(User)
+    'user' : orm.relation(User, backref='user_metrics')
 })

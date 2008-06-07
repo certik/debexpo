@@ -66,5 +66,5 @@ class PackageInfo(object):
         self.severity = severity
 
 orm.mapper(PackageInfo, t_package_info, properties={
-    'package_version' : orm.relation(PackageVersion),
+    'package_version' : orm.relation(PackageVersion, backref='package_info'),
 })
