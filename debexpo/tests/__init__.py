@@ -27,11 +27,8 @@
 #   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 #   OTHER DEALINGS IN THE SOFTWARE.
 
-__author__ = 'Jonny Lamb'
-__copyright__ = 'Copyright © 2008 Jonny Lamb'
-__license__ = 'MIT'
-
-"""Pylons application test package
+"""
+Pylons application test package.
 
 When the test runner finds and executes tests within this directory,
 this file will be loaded to setup the test environment.
@@ -41,6 +38,11 @@ pkg_resources, in case the project hasn't been installed with
 setuptools. It also initializes the application via websetup (paster
 setup-app) with the project's test.ini configuration file.
 """
+
+__author__ = 'Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__license__ = 'MIT'
+
 import os
 import sys
 from unittest import TestCase
@@ -66,6 +68,9 @@ cmd = paste.script.appinstall.SetupCommand('setup-app')
 cmd.run([test_file])
 
 class TestController(TestCase):
+    """
+    Base class for testing controllers.
+    """
 
     def __init__(self, *args, **kwargs):
         wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
