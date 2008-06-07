@@ -306,7 +306,7 @@ class Importer(object):
 
 if __name__ == '__main__':
 
-    parser = OptionParser(usage="%prog -c FILE -i FILE")
+    parser = OptionParser(usage="%prog -c FILE -i FILE -u ID")
     parser.add_option('-c', '--changes', dest='changes',
                       help='Path to changes file to import',
                       metavar='FILE', default=None)
