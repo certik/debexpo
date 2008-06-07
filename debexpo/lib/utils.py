@@ -63,6 +63,6 @@ def parse_section(section):
         Section name to parse.
     """
     if '/' in section:
-        return section.explode('/')
+        return section.split('/')
     else:
         return ('main', section)
