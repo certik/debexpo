@@ -68,22 +68,22 @@ class Importer(object):
             ID of the user doing the upload. This is given from the upload controller.
 
         """
-        self.changes = changes
-        self.ini = ini
+        self.changes_file = changes
+        self.ini_file = ini
         self.user_id = user_id
-        self.ch = None
+        self.changes = None
 
     def _remove_changes(self):
         """
         Removes the `changes` file.
         """
-        os.remove(self.changes)
+        os.remove(self.changes_file)
 
     def _remove_files(self):
         """
         Removes all the files uploaded.
         """
-        for file in self.ch.get_files():
+        for file in self.changes.get_files():
             os.remove(file)
 
         self._remove_changes()
@@ -139,13 +139,13 @@ class Importer(object):
 
         # Parse the ini file to validate it
         parser = ConfigParser.ConfigParser()
-        parser.read(self.ini)
+        parser.read(self.ini_file)
 
-        # Check for the presence of [loggers] in self.ini
+        # Check for the presence of [loggers] in self.ini_file
         if not parser.has_section('loggers'):
             self._fail('Config file does not have [loggers] section', use_log=False)
 
-        logging.config.fileConfig(self.ini)
+        logging.config.fileConfig(self.ini_file)
 
         # Use "name.pid" to avoid importer confusions in the logs
         logger_name = 'debexpo.importer.%s' % os.getpid()
@@ -159,7 +159,7 @@ class Importer(object):
         self._setup_logging()
 
         # Look for ini file
-        if not os.path.isfile(self.ini):
+        if not os.path.isfile(self.ini_file):
             self._fail('Cannot find ini file')
 
         # Import debexpo root directory
@@ -181,7 +181,7 @@ class Importer(object):
         os.chdir(self.config['debexpo.upload.incoming'])
 
         # Look for the changes file
-        if not os.path.isfile(self.changes):
+        if not os.path.isfile(self.changes_file):
             self._fail('Cannot find changes file')
 
     def _create_db_entries(self):
@@ -206,47 +206,47 @@ class Importer(object):
         qa_status = 1
 
         # Parse component and section from field in changes
-        section, component = parse_section(self.ch.get('files')[0]['section'])
+        section, component = parse_section(self.changes.get('files')[0]['section'])
 
         # Get uploader's User object
-        u = meta.Session.query(User).filter(User.id == self.user_id).one()
+        user = meta.Session.query(User).filter(User.id == self.user_id).one()
 
         # Check whether package is already in the database
-        package_query = meta.Session.query(Package).filter(Package.name == self.ch.get('Source'))
+        package_query = meta.Session.query(Package).filter(Package.name == self.changes.get('Source'))
         if package_query.count() is 1:
-            log.info('Package %s already exists in the database' % self.ch.get('Source'))
-            p = package_query.one()
+            log.info('Package %s already exists in the database' % self.changes.get('Source'))
+            package = package_query.one()
         else:
-            log.info('Package %s is new to the system' % self.ch.get('Source'))
-            p = Package(self.ch.get('Source'), u)
-            p.description = self.ch.get('Description')[2:].replace('      - ', ' - ')
-            meta.Session.save(p)
+            log.info('Package %s is new to the system' % self.changes.get('Source'))
+            package = Package(self.changes.get('Source'), user)
+            package.description = self.changes.get('Description')[2:].replace('      - ', ' - ')
+            meta.Session.save(package)
 
         # No need to check whether there is the same source name and same version as an existing
         # entry in the database as the upload controller tested whether similar filenames existed
         # in the repository. The only way this would be wrong is if the filename had a different
         # version in than the Version field in changes..
-        pv = PackageVersion(p, self.ch.get('Version'), section, self.ch.get('Distribution'),
-            qa_status, component, self.ch.get('Version'))
-        meta.Session.save(pv)
+        package_version = PackageVersion(package, self.changes.get('Version'), section, self.changes.get('Distribution'),
+            qa_status, component, self.changes.get('Version'))
+        meta.Session.save(package_version)
 
-        sp = SourcePackage(pv)
-        meta.Session.save(sp)
+        source_package = SourcePackage(package_version)
+        meta.Session.save(source_package)
 
-        bp = None
+        binary_package = None
 
         # Add PackageFile objects to the database for each uploaded file
-        for file in self.ch.get_files():
+        for file in self.changes.get_files():
             # Check for binary or source package file
             if file.endswith('.deb'):
                 # Only create a BinaryPackage if there actually binary package files
-                if bp is None:
-                    bp = BinaryPackage(pv, arch=file[:-4].split('_')[-1])
-                    meta.Session.save(bp)
+                if binary_package is None:
+                    binary_package = BinaryPackage(package_version, arch=file[:-4].split('_')[-1])
+                    meta.Session.save(binary_package)
 
-                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), binary_package=bp))
+                meta.Session.save(PackageFile(os.path.join(self.changes.get('Source'), file), binary_package=binary_package))
             else:
-                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), source_package=sp))
+                meta.Session.save(PackageFile(os.path.join(self.changes.get('Source'), file), source_package=source_package))
 
         # Commit all changes to the database
         meta.Session.commit()
@@ -265,7 +265,7 @@ class Importer(object):
         log.info('Importer started with arguments: %s' % sys.argv[1:])
 
         from debexpo.lib.changes import Changes
-        self.ch = Changes(filename=self.changes)
+        self.changes = Changes(filename=self.changes_file)
 
         # Check whether the debexpo.repository variable is set
         if not self.config.has_key('debexpo.repository'):
@@ -280,22 +280,22 @@ class Importer(object):
             self._fail('debexpo.repository is not writeable')
 
         # TODO: post-upload plugins here
-        #if not self.post_upload(self.ch):
+        #if not self.post_upload(self.changes):
         #   self._remove_files()
 
-        dest = os.path.join(self.config['debexpo.repository'], self.ch.get('Source'))
+        dest = os.path.join(self.config['debexpo.repository'], self.changes.get('Source'))
 
         # Create source package directory if it doesn't already exist
         if not os.path.isdir(dest):
             os.mkdir(dest)
 
         # Check whether the files are already present
-        for file in self.ch.get_files():
+        for file in self.changes.get_files():
             if os.path.isfile(os.path.join(dest, file)):
                 self._reject('File "%s" already exists' % file)
 
         # Install files in repository
-        for file in self.ch.get_files():
+        for file in self.changes.get_files():
             shutil.move(file, os.path.join(dest, file))
 
         # Create the database rows
