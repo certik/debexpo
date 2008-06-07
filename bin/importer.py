@@ -246,7 +246,7 @@ class Importer(object):
 
                 meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), binary_package=bp))
             else:
-                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), source_package=pv))
+                meta.Session.save(PackageFile(os.path.join(self.ch.get('Source'), file), source_package=sp))
 
         # Commit all changes to the database
         meta.Session.commit()
