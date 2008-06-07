@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.source_packages import SourcePackage
 
@@ -49,24 +49,8 @@ t_package_files = sa.Table('package_files', meta.metadata,
     sa.Column('filename', sa.types.String(200), nullable=False),
     )
 
-class PackageFile(object):
-    """
-    Model for a package file.
-    """
-
-    def __init__(self, filename, binary_package=None, source_package=None):
-        """
-        Object constructor. Sets common class fields values.
-        """
-        if binary_package is None and source_package is None:
-            raise ArgumentError('binary_package AND source_package cannot both be None')
-
-        if binary_package is not None and source_package is not None:
-            raise ArgumentError('binary_package AND source_package cannot both be set')
-
-        self.filename = filename
-        self.binary_package = binary_package
-        self.source_package = source_package
+class PackageFile(OrmObject):
+    foreign = ['binary_package', 'source_package']
 
 orm.mapper(PackageFile, t_package_files, properties={
     'binary_package' : orm.relation(BinaryPackage, backref='package_files'),

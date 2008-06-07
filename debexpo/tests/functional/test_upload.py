@@ -60,8 +60,7 @@ class TestUploadController(TestController):
         meta.metadata.create_all(bind=meta.engine)
 
         # Create a test user and save it.
-        user = User(name='Test user', email='email@email.com', password=md5.new('password').hexdigest())
-        user.lastlogin = datetime.now()
+        user = User(name='Test user', email='email@email.com', password=md5.new('password').hexdigest(), lastlogin=datetime.now())
 
         meta.session.save(user)
         meta.session.commit()

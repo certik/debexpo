@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 from debexpo.model.package_versions import PackageVersion
 
@@ -52,22 +52,8 @@ t_package_comments = sa.Table('package_comments', meta.metadata,
     sa.Column('status', sa.types.Integer, nullable=False),
     )
 
-class PackageComment(object):
-    """
-    Model for a package comment.
-    """
-
-    def __init__(self, user, package_version, text, time, outcome, status):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.user = user
-        self.package_version = package_version
-        self.text = text
-        self.time = time
-        self.outcome = outcome
-        self.status = status
+class PackageComment(OrmObject):
+    foreign = ['package_version', 'user']
 
 orm.mapper(PackageComment, t_package_comments, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_comments'),

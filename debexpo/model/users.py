@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.user_countries import UserCountry
 from debexpo.lib.constants import USER_TYPE_NORMAL, USER_STATUS_NORMAL
 
@@ -49,29 +49,16 @@ t_users = sa.Table('users', meta.metadata,
     sa.Column('gpg', sa.types.Text, nullable=True),
     sa.Column('password', sa.types.String(200), nullable=False),
     sa.Column('lastlogin', sa.types.DateTime, nullable=False),
-    sa.Column('type', sa.types.Integer, nullable=False),
-    sa.Column('status', sa.types.Integer, nullable=False),
+    sa.Column('type', sa.types.Integer, nullable=False, default=USER_TYPE_NORMAL),
+    sa.Column('status', sa.types.Integer, nullable=False, default=USER_STATUS_NORMAL),
     sa.Column('country_id', sa.types.Integer, sa.ForeignKey('user_countries.id')),
     sa.Column('ircnick', sa.types.String(200), nullable=True),
     sa.Column('jabber', sa.types.String(200), nullable=True),
     sa.Column('verification', sa.types.String(200), nullable=True),
     )
 
-class User(object):
-    """
-    Model for a user.
-    """
-
-    def __init__(self, name, email, password, type=USER_TYPE_NORMAL, status=USER_STATUS_NORMAL):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.name = name
-        self.email = email
-        self.password = password
-        self.type = type
-        self.status = status
+class User(OrmObject):
+    foreign = ['country']
 
 orm.mapper(User, t_users, properties={
     'country' : orm.relation(UserCountry, backref='users')

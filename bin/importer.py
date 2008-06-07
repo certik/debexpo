@@ -218,7 +218,7 @@ class Importer(object):
             package = package_query.one()
         else:
             log.info('Package %s is new to the system' % self.changes.get('Source'))
-            package = Package(self.changes.get('Source'), user)
+            package = Package(name=self.changes.get('Source'), user=user)
             package.description = self.changes.get('Description')[2:].replace('      - ', ' - ')
             meta.session.save(package)
 
@@ -226,11 +226,12 @@ class Importer(object):
         # entry in the database as the upload controller tested whether similar filenames existed
         # in the repository. The only way this would be wrong is if the filename had a different
         # version in than the Version field in changes..
-        package_version = PackageVersion(package, self.changes.get('Version'), section, self.changes.get('Distribution'),
-            qa_status, component, self.changes.get('Version'))
+        package_version = PackageVersion(package=package, version=self.changes.get('Version'),
+            section=section, distribution=self.changes.get('Distribution'), qa_status=qa_status,
+            component=component, closes=self.changes.get('Closes'))
         meta.session.save(package_version)
 
-        source_package = SourcePackage(package_version)
+        source_package = SourcePackage(package_version=package_version)
         meta.session.save(source_package)
 
         binary_package = None
@@ -243,12 +244,12 @@ class Importer(object):
             if file.endswith('.deb'):
                 # Only create a BinaryPackage if there actually binary package files
                 if binary_package is None:
-                    binary_package = BinaryPackage(package_version, arch=file[:-4].split('_')[-1])
+                    binary_package = BinaryPackage(package_version=package_version, arch=file[:-4].split('_')[-1])
                     meta.session.save(binary_package)
 
-                meta.session.save(PackageFile(os.path.join(self.changes.get('Source'), file), binary_package=binary_package))
+                meta.session.save(PackageFile(filename=filename, binary_package=binary_package))
             else:
-                meta.session.save(PackageFile(os.path.join(self.changes.get('Source'), file), source_package=source_package))
+                meta.session.save(PackageFile(filename=filename, source_package=source_package))
 
         # Commit all changes to the database
         meta.session.commit()

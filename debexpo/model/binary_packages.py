@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
 
 t_binary_packages = sa.Table('binary_packages', meta.metadata,
@@ -47,17 +47,8 @@ t_binary_packages = sa.Table('binary_packages', meta.metadata,
     sa.Column('arch', sa.types.String(200), nullable=False),
     )
 
-class BinaryPackage(object):
-    """
-    Model for a binary package.
-    """
-
-    def __init__(self, package_version, arch):
-        """
-        Object constructor. Sets common class fields values.
-        """
-        self.package_version = package_version
-        self.arch = arch
+class BinaryPackage(OrmObject):
+    foreign = ['package_version']
 
 orm.mapper(BinaryPackage, t_binary_packages, properties={
     'package_version' : orm.relation(PackageVersion, backref='binary_packages'),

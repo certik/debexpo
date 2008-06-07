@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 
 t_packages = sa.Table('packages', meta.metadata,
@@ -51,18 +51,8 @@ t_packages = sa.Table('packages', meta.metadata,
     sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=False),
     )
 
-class Package(object):
-    """
-    Model for a package.
-    """
-
-    def __init__(self, name, user):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.name = name
-        self.user = user
+class Package(OrmObject):
+    foreign = ['user']
 
 orm.mapper(Package, t_packages, properties={
     'user' : orm.relation(User, backref='packages')

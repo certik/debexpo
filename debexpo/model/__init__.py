@@ -62,3 +62,31 @@ def import_all_models():
     from debexpo.model import binary_packages, package_files, packages, source_packages, \
         user_metrics, package_comments, package_info, package_versions, user_countries, \
         users
+
+class OrmObject(object):
+    """
+    A base class for ORM mapped objects.
+
+    This class was found and then altered for debexpo from
+    http://www.sqlalchemy.org/trac/wiki/UsageRecipes/GenericOrmBaseClass
+
+    Contributed by ltbarcly (Justin Van Winkle).
+    """
+    def __init__(self, **kw):
+        for key in kw:
+            if key in self.c or key in self.foreign:
+                setattr(self, key, kw[key])
+            else:
+                raise AttributeError('Cannot set attribute which is' +
+                                     'not column in mapped table: %s' % (key,))
+
+    def __repr__(self):
+        atts = []
+        for key in self.c.keys():
+            if key in self.__dict__:
+                if not (hasattr(self.c.get(key).default, 'arg') and
+                        getattr(self.c.get(key).default, 'arg') == getattr(self, key)):
+                    atts.append( (key, getattr(self, key)) )
+
+        return self.__class__.__name__ + '(' + ', '.join(x[0] + '=' + repr(x[1]) for x in atts) + ')'
+

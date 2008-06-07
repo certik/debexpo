@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
 
 t_package_info = sa.Table('package_info', meta.metadata,
@@ -50,20 +50,8 @@ t_package_info = sa.Table('package_info', meta.metadata,
     sa.Column('severity', sa.types.Integer, nullable=False),
     )
 
-class PackageInfo(object):
-    """
-    Model for a single bit of package info.
-    """
-
-    def __init__(self, package_version, from_plugin, outcome, data, severity):
-        """
-        Object constructor. Sets common class fields values.
-        """
-        self.package_version = package_version
-        self.from_plugin = from_plugin
-        self.outcome = outcome
-        self.data = data
-        self.severity = severity
+class PackageInfo(OrmObject):
+    foreign = ['package_version']
 
 orm.mapper(PackageInfo, t_package_info, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_info'),

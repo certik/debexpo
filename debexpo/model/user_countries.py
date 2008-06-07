@@ -38,23 +38,14 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 
 t_user_countries = sa.Table('user_countries', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
     sa.Column('name', sa.types.String(100), nullable=False),
     )
 
-class UserCountry(object):
-    """
-    Model for a country.
-    """
-
-    def __init__(self, name):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.name = name
+class UserCountry(OrmObject):
+    pass
 
 orm.mapper(UserCountry, t_user_countries)

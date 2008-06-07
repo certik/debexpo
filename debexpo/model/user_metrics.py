@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
 
 t_user_metrics = sa.Table('user_metrics', meta.metadata,
@@ -48,19 +48,8 @@ t_user_metrics = sa.Table('user_metrics', meta.metadata,
     sa.Column('value', sa.types.Integer, nullable=False),
     )
 
-class UserMetric(object):
-    """
-    Model for a user metric.
-    """
-
-    def __init__(self, user, name, value):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.user = user
-        self.name = name
-        self.value = value
+class UserMetric(OrmObject):
+    foreign = ['user']
 
 orm.mapper(UserMetric, t_user_metrics, properties={
     'user' : orm.relation(User, backref='user_metrics')

@@ -38,7 +38,7 @@ __license__ = 'MIT'
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from debexpo.model import meta
+from debexpo.model import meta, OrmObject
 from debexpo.model.package_versions import PackageVersion
 
 t_source_packages = sa.Table('source_packages', meta.metadata,
@@ -46,17 +46,8 @@ t_source_packages = sa.Table('source_packages', meta.metadata,
     sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
     )
 
-class SourcePackage(object):
-    """
-    Model for a source package.
-    """
-
-    def __init__(self, package_version):
-        """
-        Object constructor. Sets common class fields values.
-        """
-
-        self.package_version = package_version
+class SourcePackage(OrmObject):
+    foreign = ['package_version']
 
 orm.mapper(SourcePackage, t_source_packages, properties={
     'package_version' : orm.relation(PackageVersion, backref='package_versions'),
