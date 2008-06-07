@@ -36,15 +36,33 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import base64
+import md5
+from datetime import datetime
+
 from debexpo.tests import *
+from debexpo.model import meta, import_all_models
+from debexpo.model.users import User
 
 class TestUploadController(TestController):
 
-    def setUp(self):
+    def __init__(self, *args, **kwargs):
         """
-        TODO: Set up database with user(s).
+        Sets up database with data to provide a database to test.
         """
-        pass
+        TestController.__init__(self, *args, **kwargs)
+
+        # Since we are using a sqlite database in memory (at least that's what the default in
+        # test.ini is), we need to create all the tables necessary. So let's import all the models
+        # and create all the tables.
+        import_all_models()
+        meta.metadata.create_all(bind=meta.engine)
+
+        # Create a test user and save it.
+        user = User(name='Test user', email='email@email.com', password=md5.new('password').hexdigest())
+        user.lastlogin = datetime.now()
+
+        meta.Session.save(user)
+        meta.Session.commit()
 
     def testGetRequest(self):
         """
