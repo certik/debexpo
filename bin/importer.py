@@ -192,7 +192,7 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
-        from debexpo.lib.utils import parse_section
+        from debexpo.lib.utils import parse_section, get_package_dir
 
         # Import model objects
         from debexpo.model.users import User
@@ -237,6 +237,8 @@ class Importer(object):
 
         # Add PackageFile objects to the database for each uploaded file
         for file in self.changes.get_files():
+            filename = os.path.join(get_package_dir(self.changes.get('Source')), file)
+
             # Check for binary or source package file
             if file.endswith('.deb'):
                 # Only create a BinaryPackage if there actually binary package files
@@ -290,9 +292,14 @@ class Importer(object):
         #if not self.post_upload(self.changes):
         #   self._remove_files()
 
-        dest = os.path.join(self.config['debexpo.repository'], self.changes.get('Source'))
+        from debexpo.lib.utils import get_package_dir
 
-        # Create source package directory if it doesn't already exist
+        dest = os.path.join(self.config['debexpo.repository'], get_package_dir(self.changes.get('Source')))
+
+        # Create source package directories if they doesn't already exist
+        if not os.path.isdir('/'.join(dest.split('/')[:-1])):
+            os.mkdir('/'.join(dest.split('/')[:-1]))
+
         if not os.path.isdir(dest):
             os.mkdir(dest)
 
