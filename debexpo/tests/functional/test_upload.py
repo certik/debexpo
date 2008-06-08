@@ -35,10 +35,12 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import os
 import base64
 import md5
 from datetime import datetime
 
+from debexpo.lib.base import config
 from debexpo.tests import *
 from debexpo.model import meta, import_all_models
 from debexpo.model.users import User
@@ -106,7 +108,30 @@ class TestUploadController(TestController):
         """
         Tests whether true authentication details returns a nicer error code.
         """
-        response = self.app.put(url_for(controller='upload', filename='testname.dsc'),
+        response = self.app.put(url_for(controller='upload', filename='testfile1.dsc'),
             headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
 
         self.assertNotEqual(response.status, 401)
+
+    def testExtensionNotAllowed(self):
+        """
+        Tests whether uploads of an unknown file extensions are rejected with error code 403.
+        """
+        response = self.app.put(url_for(controller='upload', filename='testname.unknown'),
+            headers={'Authorization' : 'Basic %s' % self.emailpassword}, expect_errors=True)
+
+        self.assertEqual(response.status, 403)
+
+    def testSuccessfulUpload(self):
+        """
+        Tests whether uploads with sane file extensions and authorization are successful.
+        """
+        response = self.app.put(url_for(controller='upload', filename='testfile2.dsc'),
+            headers={'Authorization' : 'Basic %s' % self.emailpassword},
+            params='contents', expect_errors=True)
+
+        self.assertEqual(response.status, 200)
+
+        self.assertTrue(os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')))
+
+        self.assertEqual(file(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')).read(), 'contents')
