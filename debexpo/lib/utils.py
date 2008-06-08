@@ -35,6 +35,8 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+import os
+
 def allowed_upload(filename):
     """
     Looks at a filename's extension and decides whether to accept it.
@@ -66,3 +68,16 @@ def parse_section(section):
         return section.split('/')
     else:
         return ['main', section]
+
+def get_package_dir(source):
+    """
+    Returns the directory name where the package with name supplied as the first argument
+    should be installed.
+
+    ``source``
+        Source package name to use to work out directory name.
+    """
+    if source.startswith('lib'):
+        return os.path.join(source[:4], source)
+    else:
+        return os.path.join(source[0], source)

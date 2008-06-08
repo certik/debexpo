@@ -64,3 +64,12 @@ class TestUtilsController(TestCase):
 
         self.assertEqual(t('section'), ['main', 'section'])
         self.assertEqual(t('component/section'), ['component', 'section'])
+
+    def testGetPackageDir(self):
+        """
+        Tests debexpo.lib.utils.get_package_dir.
+        """
+        t = get_package_dir
+
+        self.assertEqual(t('foo'), 'f/foo')
+        self.assertEqual(t('libfoo'), 'libf/libfoo')
