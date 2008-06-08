@@ -68,6 +68,9 @@ class Changes(object):
         else:
             self._data = deb822.Changes(string)
 
+        if len(self._data) == 0:
+            raise Exception('Changes file could not be parsed.')
+
     def get_files(self):
         """
         Returns a list of files in the *changes* file.

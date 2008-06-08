@@ -265,7 +265,14 @@ class Importer(object):
         log.info('Importer started with arguments: %s' % sys.argv[1:])
 
         from debexpo.lib.changes import Changes
-        self.changes = Changes(filename=self.changes_file)
+
+        # Try parsing the changes file, but fail if there's an error.
+        try:
+            self.changes = Changes(filename=self.changes_file)
+        except Exception, e:
+            log.debug(e.message)
+            self._remove_changes()
+            sys.exit(1)
 
         # Check whether the debexpo.repository variable is set
         if not self.config.has_key('debexpo.repository'):
