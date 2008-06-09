@@ -46,7 +46,7 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
     sa.Column('package_id', sa.types.Integer, sa.ForeignKey('packages.id')),
     sa.Column('version', sa.types.String(200), nullable=False),
     sa.Column('section', sa.types.String(200), nullable=False),
-    sa.Column('suite', sa.types.Integer, nullable=False),
+    sa.Column('distribution', sa.types.String(200), nullable=False),
     sa.Column('qa_status', sa.types.Integer, nullable=False),
     sa.Column('component', sa.types.String(200), nullable=False),
     sa.Column('closes', sa.types.String(200), nullable=True),
@@ -57,7 +57,7 @@ class PackageVersion(object):
     Model for a version of a source package.
     """
 
-    def __init__(self, package, version, section, suite, qa_status, component, closes=''):
+    def __init__(self, package, version, section, distribution, qa_status, component, closes=''):
         """
         Object constructor. Sets common class fields values.
         """
@@ -65,7 +65,7 @@ class PackageVersion(object):
         self.package = package
         self.version = version
         self.section = section
-        self.suite = suite
+        self.distribution = distribution
         self.qa_status = qa_status
         self.component = component
         self.closes = closes
