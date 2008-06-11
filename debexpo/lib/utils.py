@@ -93,7 +93,7 @@ def md5sum(filename):
     try:
         f = file(filename, 'rb')
     except:
-        raise ArgumentError('Failed to open file %s.' % filename)
+        raise AttributeError('Failed to open file %s.' % filename)
 
     sum = md5.new()
     while True:
