@@ -36,6 +36,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import os
+import md5
 
 def allowed_upload(filename):
     """
@@ -81,3 +82,26 @@ def get_package_dir(source):
         return os.path.join(source[:4], source)
     else:
         return os.path.join(source[0], source)
+
+def md5sum(filename):
+    """
+    Returns the md5sum of a file specified.
+
+    ``filename``
+        File name of the file to md5sum.
+    """
+    try:
+        f = file(filename, 'rb')
+    except:
+        raise ArgumentError('Failed to open file %s.' % filename)
+
+    sum = md5.new()
+    while True:
+        chunk = f.read(10240)
+        if not chunk:
+            break
+        sum.update(chunk)
+
+    f.close()
+
+    return sum.hexdigest()
