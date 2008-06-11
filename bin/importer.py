@@ -43,6 +43,7 @@ import logging.config
 import os
 import sys
 import shutil
+from stat import *
 
 log = None
 
@@ -192,7 +193,8 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
-        from debexpo.lib.utils import parse_section, get_package_dir
+        from debexpo.lib.utils import parse_section, get_package_dir, md5sum
+        from pylons import config
 
         # Import model objects
         from debexpo.model.users import User
@@ -239,6 +241,8 @@ class Importer(object):
         # Add PackageFile objects to the database for each uploaded file
         for file in self.changes.get_files():
             filename = os.path.join(get_package_dir(self.changes.get('Source')), file)
+            sum = md5sum(os.path.join(config['debexpo.repository'], filename))
+            size = os.stat(os.path.join(config['debexpo.repository'], filename))[ST_SIZE]
 
             # Check for binary or source package file
             if file.endswith('.deb'):
@@ -247,9 +251,9 @@ class Importer(object):
                     binary_package = BinaryPackage(package_version=package_version, arch=file[:-4].split('_')[-1])
                     meta.session.save(binary_package)
 
-                meta.session.save(PackageFile(filename=filename, binary_package=binary_package))
+                meta.session.save(PackageFile(filename=filename, binary_package=binary_package, size=size, md5sum=sum))
             else:
-                meta.session.save(PackageFile(filename=filename, source_package=source_package))
+                meta.session.save(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
 
         # Commit all changes to the database
         meta.session.commit()
