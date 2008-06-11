@@ -193,7 +193,7 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
-        from debexpo.lib.utils import parse_section, get_package_dir, md5sum
+        from debexpo.lib.utils import parse_section, get_repository_dir, md5sum
         from pylons import config
 
         # Import model objects
@@ -240,7 +240,7 @@ class Importer(object):
 
         # Add PackageFile objects to the database for each uploaded file
         for file in self.changes.get_files():
-            filename = os.path.join(get_package_dir(self.changes.get('Source')), file)
+            filename = os.path.join(get_repository_dir(self.changes), file)
             sum = md5sum(os.path.join(config['debexpo.repository'], filename))
             size = os.stat(os.path.join(config['debexpo.repository'], filename))[ST_SIZE]
 
@@ -272,6 +272,7 @@ class Importer(object):
         log.info('Importer started with arguments: %s' % sys.argv[1:])
 
         from debexpo.lib.changes import Changes
+        from debexpo.lib.utils import get_repository_dir
 
         # Try parsing the changes file, but fail if there's an error.
         try:
@@ -297,25 +298,25 @@ class Importer(object):
         #if not self.post_upload(self.changes):
         #   self._remove_files()
 
-        from debexpo.lib.utils import get_package_dir
+        destdir = self.config['debexpo.repository']
 
-        dest = os.path.join(self.config['debexpo.repository'], get_package_dir(self.changes.get('Source')))
+        # Loop through parent directories in the target installation directory to make sure they
+        # all exist. If not, create them.
+        for dir in get_repository_dir(self.changes).split('/'):
+            destdir = os.path.join(destdir, dir)
 
-        # Create source package directories if they doesn't already exist
-        if not os.path.isdir('/'.join(dest.split('/')[:-1])):
-            os.mkdir('/'.join(dest.split('/')[:-1]))
-
-        if not os.path.isdir(dest):
-            os.mkdir(dest)
+            if not os.path.isdir(destdir):
+                log.info('Creating directory: %s' % destdir)
+                os.mkdir(destdir)
 
         # Check whether the files are already present
         for file in self.changes.get_files():
-            if os.path.isfile(os.path.join(dest, file)):
+            if os.path.isfile(os.path.join(destdir, file)):
                 self._reject('File "%s" already exists' % file)
 
         # Install files in repository
         for file in self.changes.get_files():
-            shutil.move(file, os.path.join(dest, file))
+            shutil.move(file, os.path.join(destdir, file))
 
         # Create the database rows
         self._create_db_entries()
