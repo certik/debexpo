@@ -208,7 +208,7 @@ class Importer(object):
         qa_status = 1
 
         # Parse component and section from field in changes
-        section, component = parse_section(self.changes.get('files')[0]['section'])
+        component, section = parse_section(self.changes.get('files')[0]['section'])
 
         # Get uploader's User object
         user = meta.session.query(User).filter(User.id == self.user_id).one()
