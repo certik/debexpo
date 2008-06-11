@@ -47,6 +47,8 @@ t_package_files = sa.Table('package_files', meta.metadata,
     sa.Column('binary_package_id', sa.types.Integer, sa.ForeignKey('binary_packages.id'), nullable=True),
     sa.Column('source_package_id', sa.types.Integer, sa.ForeignKey('source_packages.id'), nullable=True),
     sa.Column('filename', sa.types.String(200), nullable=False),
+    sa.Column('size', sa.types.Integer, nullable=False),
+    sa.Column('md5sum', sa.types.String(200), nullable=False),
     )
 
 class PackageFile(OrmObject):
