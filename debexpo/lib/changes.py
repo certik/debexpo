@@ -37,6 +37,8 @@ __license__ = 'MIT'
 
 from debian_bundle import deb822
 
+from debexpo.lib.utils import parse_section
+
 class Changes(object):
     """
     Helper class to parse *changes* files nicely.
@@ -85,3 +87,9 @@ class Changes(object):
             Key of data to request.
         """
         return self._data.get(key)
+
+    def get_component(self):
+        """
+        Returns the component of the package.
+        """
+        return parse_section(self._data['Files'][0]['section'])[0]
