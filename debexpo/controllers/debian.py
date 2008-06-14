@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   routing.py — Routes configuration
+#   debian.py — Debian controller for accessing the repository
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -28,37 +28,39 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Routes configuration
-
-The more specific and detailed routes should be defined first so they
-may take precedent over the more generic routes. For more information
-refer to the routes manual at http://routes.groovie.org/docs/
+This module holds the Debian controller which manages the /debian/ directory.
 """
+
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from pylons import config
-from routes import Mapper
+import os
+import logging
+import paste.fileapp
 
-def make_map():
+from debexpo.lib.base import *
+
+log = logging.getLogger(__name__)
+
+class DebianController(BaseController):
     """
-    Creates, configures and returns the routes Mapper.
+    Class for handling the /debian/ directory.
     """
-    map = Mapper(directory=config['pylons.paths']['controllers'],
-                 always_scan=config['debug'])
 
-    # The ErrorController route (handles 404/500 error pages); it should
-    # likely stay at the top, ensuring it can always be resolved
-    map.connect('error/:action/:id', controller='error')
+    def index(self, filename):
+        """
+        Entry point to the controller. Opens a file in the repository using Paste's
+        FileApp.
+        """
+        file = os.path.join(config['debexpo.repository'], filename)
 
-    # CUSTOM ROUTES HERE
+        if os.path.isdir(file):
+            # DirectoryApp is in Paste 0.7.1. Paste 0.7.0 is in sid at the time
+            # of writing.
+            pass
+            #fapp = paste.fileapp.DirectoryApp(config['debexpo.repository'])
+        else:
+            fapp = paste.fileapp.FileApp(file)
 
-    map.connect('upload/:filename', controller='upload', action='index')
-
-    map.connect('debian/*filename', controller='debian', action='index')
-
-    map.connect(':controller/:action/:id')
-    map.connect('*url', controller='template', action='view')
-
-    return map
+        return fapp(request.environ, self.start_response)
