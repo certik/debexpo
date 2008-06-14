@@ -53,9 +53,10 @@ class Repository(object):
     """
     def __init__(self, repository):
         """
-        Class constructor. Sets the repository base directory variable.
+        Class constructor. Sets the repository base directory variable and other misc variables.
         """
         self.repository = repository
+        self.compression = [(gzip.GzipFile, 'gz'), (bz2.BZ2File, 'bz2')]
 
     def _dsc_to_sources(self, package_file):
         """
@@ -88,7 +89,6 @@ class Repository(object):
 
         # Get a nice rfc822 output of this dsc, now Sources, entry.
         return dsc.dump()
-
 
     def _get_sources_file(self, distribution, component):
         """
@@ -132,6 +132,23 @@ class Repository(object):
         # the finished Sources file.
         return '\n'.join(entries)
 
+    def _get_archs_list(self, list):
+        """
+        Takes a list of directory names and returns an altered list where only items
+        with "binary-" prefix stay. This "binary-" prefix is also removed.
+
+        For example, an input of ['binary-i386', 'binary-amd64', 'foo'] would produce
+        an output of ['i386', 'amd64'].
+
+        ``list``
+            List of directory names to look at.
+        """
+        for item in list:
+            if not item.startswith('binary-'):
+                list.remove(item)
+
+        return [z[7:] for z in list]
+
     def _append_current_distributions(self, distributions):
         """
         Take a look at the current directory layout and add distribution - component
@@ -139,46 +156,108 @@ class Repository(object):
         Sources file is empty then the file is deleted. If a package has no longer present
         but still exists in the current Sources file, this process will remove it.
         """
+        distsdir = os.path.join(self.repository, 'dists')
+
         # The first time the repository dists files are generated, the dists directory
         # isn't present.
-        if not os.path.isdir(os.path.join(self.repository, 'dists')):
+        if not os.path.isdir(distsdir):
             return distributions
 
-        dists = os.listdir(os.path.join(self.repository, 'dists'))
+        dists = os.listdir(distsdir)
 
         # Components are subdirectories in distribution directories.
         for dist in dists:
-            components = os.listdir(os.path.join(self.repository, 'dists', dist))
-            if distributions.has_key(dist):
-                # The distribution already exists in the dictionary.
-                for component in components:
-                    if distributions[dist].count(component) == 0:
-                        distributions[dist].append(component)
-            else:
-                # The distribution doesn't already exist in the dictionary.
-                distributions[dist] = components
+            components = os.listdir(os.path.join(distsdir, dist))
+
+            comps = {}
+
+            # Loop through each component.
+            for component in components:
+                # Get arch list.
+                archs = self._get_archs_list(os.listdir(os.path.join(distsdir, dist, component)))
+
+                if dist in distributions.keys():
+                    # The distribution already exists in the big dictionary. Therefore we need to
+                    # look at each component to see whether it already exists.
+
+                    if component in distributions[dist].keys():
+                        # The component already exists in the big dictionary under the current
+                        # distribution. Therefore we need to look at each arch to see whether it
+                        # already exists.
+
+                        for arch in archs:
+                            if arch not in distributions[dist][component]:
+                                # The arch doesn't already exist. Add it.
+                                distributions[dist][component].append(arch)
+                    else:
+                        # The component doesn't already exist. It can easily be added now then.
+                        distributions[dist][component] = archs
+                else:
+                    # The distribution doesn't already exist in the big dictionary. Therefore
+                    # we can use the temporary comps dictionary to store { component : [archs] }
+                    # information.
+                    comps[component] = archs
+
+            # Test whether the comps dictionary has been used. It will only have been used when
+            # the distribution didn't already exist in the big dictionary.
+            if len(comps) != 0:
+                distributions[dist] = comps
 
         return distributions
 
-    def _get_distributions_components(self):
+    def _get_dists_comps_archs(self):
         """
-        Return a dictionary of distribution and components in the distribution::
+        Return a dictionary of distribution, components and dists in the distribution::
 
-            { distribution1 : [ component1, component2, ... ],
-              distribution2 : ... }
+            { distribution1 : { component1 : [ arch1, arch2, ... ],
+                                component2 : [ arch3, ... ] },
+                                ...
+              distribution2 : ...
+            }
+
+        I'm not particularly happy with the implementation of this. Perhaps one day when I'm
+        much more skilled at SQLAlchemy, I'll take a look at this and see if I can perform
+        all the operations on the db level. That would be nice.
         """
         # Get distinct distributions from package_versions.
-        packages = meta.engine.execute(select([PackageVersion.c.distribution]).distinct())
+        dists = meta.engine.execute(select([PackageVersion.c.distribution]).distinct())
 
         distributions = {}
 
-        for package in packages.fetchall():
-            distributions[package[0]] = []
+        # Loop through each distribution.
+        for dist in dists.fetchall():
+            distributions[dist[0]] = {}
 
-            components = meta.engine.execute(select([PackageVersion.c.component], PackageVersion.c.distribution == package[0]).distinct())
+            components = meta.engine.execute(select([PackageVersion.c.component], PackageVersion.c.distribution == dist[0]).distinct())
 
+            comps = {}
+
+            # Loop through each component within the current distribution.
             for comp in components.fetchall():
-                distributions[package[0]].append(comp[0])
+
+                comps[comp[0]] = []
+
+                # Get all distinct archs...
+                archs_query = select([BinaryPackage.arch]).distinct()
+
+                # ...where an PackageVersion instance exists for it...
+                archs_query = archs_query.where(BinaryPackage.package_version_id == PackageVersion.id)
+
+                # ...where its distribution is the current one in iteration...
+                archs_query = archs_query.where(PackageVersion.distribution == dist[0])
+
+                # ...where its component is the current one in iteration...
+                archs_query = archs_query.where(PackageVersion.component == comp[0])
+
+                # ...execute that.
+                archs = meta.engine.execute(archs_query)
+
+                # Loop through each arch.
+                for arch in archs.fetchall():
+                    comps[comp[0]].append(arch[0])
+
+            # Add distribution to dictionary.
+            distributions[dist[0]] = comps
 
         return self._append_current_distributions(distributions)
 
@@ -216,13 +295,11 @@ class Repository(object):
         Updates all the Sources.{gz,bz2} files for all distributions and components
         by looking at all source packages.
         """
-        compression = [(gzip.GzipFile, 'gz'), (bz2.BZ2File, 'bz2')]
-
         # Get distributions and components.
-        dists = self._get_distributions_components()
+        dists = self._get_dists_comps_archs()
 
         for dist, components in dists.iteritems():
-            for component in components:
+            for component in components.keys():
                 # Make sure all directories are present.
                 self._check_directories(dist, component)
 
@@ -233,11 +310,11 @@ class Repository(object):
                 # If the Sources file is empty, remove Sources.{gz,bz2} files. This way the
                 # directory will be removed on a clean-up as it is empty.
                 if sources == '':
-                    for format, extension in compression:
+                    for format, extension in self.compression:
                         if os.path.isfile('%s.%s' % (filename, extension)):
                             os.remove('%s.%s' % (filename, extension))
                 else:
-                    for format, extension in compression:
+                    for format, extension in self.compression:
                         # Create the Sources files.
                         f = format('%s.%s' % (filename, extension), 'w')
                         f.write(sources)
