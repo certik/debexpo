@@ -271,7 +271,9 @@ class Importer(object):
 
         log.info('Importer started with arguments: %s' % sys.argv[1:])
 
+        from pylons import config
         from debexpo.lib.changes import Changes
+        from debexpo.lib.repository import Repository
         from debexpo.lib.utils import get_repository_dir
 
         # Try parsing the changes file, but fail if there's an error.
@@ -321,8 +323,15 @@ class Importer(object):
         # Create the database rows
         self._create_db_entries()
 
-        # Finally, remove the changes file
+        # Remove the changes file
         self._remove_changes()
+
+        # Refresh the Sources/Packages files.
+        log.info('Updating Sources and Packages files')
+        r = Repository(config['debexpo.repository'])
+        r.update()
+
+        log.info('Done')
 
 if __name__ == '__main__':
 
