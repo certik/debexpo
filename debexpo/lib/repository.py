@@ -36,7 +36,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import os
-from debian_bundle import deb822
+from debian_bundle import deb822, debfile
 from sqlalchemy import select
 import gzip
 import bz2
@@ -45,6 +45,7 @@ from debexpo.lib.utils import get_package_dir
 from debexpo.model import meta
 from debexpo.model.package_files import PackageFile
 from debexpo.model.source_packages import SourcePackage
+from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_versions import PackageVersion
 
 class Repository(object):
@@ -90,6 +91,29 @@ class Repository(object):
         # Get a nice rfc822 output of this dsc, now Sources, entry.
         return dsc.dump()
 
+    def _deb_to_packages(self, package_file):
+        """
+        Reads a binary package and outputs a Packages file entry.
+
+        ``file``
+            Filename of the deb to read.
+        """
+        filename = os.path.join(self.repository, package_file.filename)
+        package_version = package_file.binary_package.package_version
+        package = package_version.package
+
+        # Read the deb file.
+        deb = debfile.DebFile(filename).debcontrol()
+
+        # There are a few additions toa debian/control file to make a Packages entry, listed
+        # and acted upon below:
+
+        deb['Filename'] = package_file.filename
+        deb['Size'] = str(package_file.size)
+        deb['MD5sum'] = package_file.md5sum
+
+        return deb.dump()
+
     def _get_sources_file(self, distribution, component):
         """
         Does a query to find all packages that fit the criteria of distribution
@@ -130,6 +154,54 @@ class Repository(object):
 
         # Each entry is simply joined by a blank newline, so do just that to create
         # the finished Sources file.
+        return '\n'.join(entries)
+
+    def _get_packages_file(self, distribution, component, arch):
+        """
+        Does a query to find all packages that fit the criteria of distribution,
+        component and architecture and returns the contents of a Packages file.
+
+        ``distribution``
+            Name of the distribution to look at.
+
+        ``component``
+            Name of the component to look at.
+
+        ``arch``
+            Name of the architecture to look at.
+        """
+        # Get all PackageFile instances...
+        debfiles = meta.session.query(PackageFile)
+
+        # ...include only *.deb files...
+        debfiles = debfiles.filter(PackageFile.filename.like('%.deb'))
+
+        # ...where there is a BinaryPackage instance...
+        debfiles = debfiles.filter(PackageFile.binary_package_id == BinaryPackage.id)
+
+        # ...where the BinaryPackage has Arch: %(arch)s or Arch: all...
+        debfiles = debfiles.filter(BinaryPackage.arch == arch or BinaryPackage.arch == 'all')
+
+        # ...where there is a PackageVersion instance...
+        debfiles = debfiles.filter(BinaryPackage.package_version_id == PackageVersion.id)
+
+        # ...include only packages in the specified component...
+        debfiles = debfiles.filter(PackageVersion.component == component)
+
+        # ...include only package in the specified distribution...
+        debfiles = debfiles.filter(PackageVersion.distribution == distribution)
+
+        # ...and finally create a list of PackageFile instances.
+        debfiles = debfiles.all()
+
+        entries = []
+
+        # Loop through deb files.
+        for file in debfiles:
+            entries.append(self._deb_to_packages(file))
+
+        # Each entry is simply joined by a blank newline, so do just that to create
+        # the finished Packages file.
         return '\n'.join(entries)
 
     def _get_archs_list(self, list):
@@ -319,3 +391,42 @@ class Repository(object):
                         f = format('%s.%s' % (filename, extension), 'w')
                         f.write(sources)
                         f.close()
+
+    def update_packages(self):
+        """
+        Updates all the Packages.{gz,bz2} files for all distributions and components
+        by looking at all binary packages.
+        """
+        # Get distributions and components.
+        dists = self._get_dists_comps_archs()
+
+        for dist, components in dists.iteritems():
+            for component, archs in components.iteritems():
+                for arch in archs:
+                    # Make sure all directories are present.
+                    self._check_directories(dist, component, arch)
+
+                    # Create Packages file content.
+                    packages = self._get_packages_file(dist, component, arch)
+                    filename = os.path.join(self.repository, 'dists', dist, component, 'binary-%s' % arch, 'Packages')
+
+                    # If the Packages file is empty, remove Packages.{gz,bz2} files. This way
+                    # the directory will be removed on a clean-up as it is empty.
+                    if packages == '':
+                        for format, extension in self.compression:
+                            if os.path.isfile('%s.%s' % (filename, extension)):
+                                os.remove('%s.%s' % (filename, extension))
+                    else:
+                        for format, extension in self.compression:
+                            # Create the Packages files.
+                            f = format('%s.%s' % (filename, extension), 'w')
+                            f.write(packages)
+                            f.close()
+
+    def update(self):
+        """
+        Updates both Sources and Packages files in the repository.
+        """
+
+        self.update_sources()
+        self.update_packages()
