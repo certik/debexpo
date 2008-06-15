@@ -60,7 +60,9 @@ class DebianController(BaseController):
             # of writing.
             pass
             #fapp = paste.fileapp.DirectoryApp(config['debexpo.repository'])
-        else:
+        elif os.path.isfile(file):
             fapp = paste.fileapp.FileApp(file)
+        else:
+            abort(404, 'File not found')
 
         return fapp(request.environ, self.start_response)
