@@ -112,6 +112,9 @@ class TestUploadController(TestController):
 
         self.assertNotEqual(response.status, 401)
 
+        if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc')):
+            os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile1.dsc'))
+
     def testExtensionNotAllowed(self):
         """
         Tests whether uploads of an unknown file extensions are rejected with error code 403.
@@ -134,3 +137,6 @@ class TestUploadController(TestController):
         self.assertTrue(os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')))
 
         self.assertEqual(file(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')).read(), 'contents')
+
+        if os.path.isfile(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc')):
+            os.remove(os.path.join(config['debexpo.upload.incoming'], 'testfile2.dsc'))
