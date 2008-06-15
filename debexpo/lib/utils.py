@@ -93,7 +93,7 @@ def get_repository_dir(changes):
     ``changes``
         *Changes* class instance to look at.
     """
-    package_dir = get_package_dir(changes.get('Source'))
+    package_dir = get_package_dir(changes['Source'])
     component = changes.get_component()
 
     out = os.path.join('pool', component)

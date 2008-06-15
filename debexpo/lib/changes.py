@@ -79,14 +79,14 @@ class Changes(object):
         """
         return [z['name'] for z in self._data['Files']]
 
-    def get(self, key):
+    def __getitem__(self, key):
         """
         Returns the value of the rfc822 key specified.
 
         ``key``
             Key of data to request.
         """
-        return self._data.get(key)
+        return self._data[key]
 
     def get_component(self):
         """

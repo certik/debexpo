@@ -210,7 +210,7 @@ class Importer(object):
         qa_status = 1
 
         # Parse component and section from field in changes
-        component, section = parse_section(self.changes.get('files')[0]['section'])
+        component, section = parse_section(self.changes['files'][0]['section'])
 
         # Get uploader's User object
         user = meta.session.query(User).get(self.user_id)
@@ -218,23 +218,23 @@ class Importer(object):
             self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether package is already in the database
-        package_query = meta.session.query(Package).filter_by(name=self.changes.get('Source'))
+        package_query = meta.session.query(Package).filter_by(name=self.changes['Source'])
         if package_query.count() is 1:
-            log.info('Package %s already exists in the database' % self.changes.get('Source'))
+            log.info('Package %s already exists in the database' % self.changes['Source'])
             package = package_query.one()
         else:
-            log.info('Package %s is new to the system' % self.changes.get('Source'))
-            package = Package(name=self.changes.get('Source'), user=user)
-            package.description = self.changes.get('Description')[2:].replace('      - ', ' - ')
+            log.info('Package %s is new to the system' % self.changes['Source'])
+            package = Package(name=self.changes['Source'], user=user)
+            package.description = self.changes['Description'][2:].replace('      - ', ' - ')
             meta.session.save(package)
 
         # No need to check whether there is the same source name and same version as an existing
         # entry in the database as the upload controller tested whether similar filenames existed
         # in the repository. The only way this would be wrong is if the filename had a different
         # version in than the Version field in changes..
-        package_version = PackageVersion(package=package, version=self.changes.get('Version'),
-            section=section, distribution=self.changes.get('Distribution'), qa_status=qa_status,
-            component=component, closes=self.changes.get('Closes'))
+        package_version = PackageVersion(package=package, version=self.changes['Version'],
+            section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
+            component=component, closes=self.changes['Closes'])
         meta.session.save(package_version)
 
         source_package = SourcePackage(package_version=package_version)

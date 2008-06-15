@@ -60,14 +60,14 @@ class TestChangesController(TestCase):
         a = Changes(filename='debexpo/tests/changes/synce-hal_0.1-1_source.changes')
         b = Changes(string=contents)
 
-        self.assertEqual(a.get('Source'), b.get('Source'))
+        self.assertEqual(a['Source'], b['Source'])
 
-    def testGet(self):
+    def testGetitem(self):
         """
-        Tests Changes.get.
+        Tests Changes.__getitem__.
         """
-        self.assertEqual(self.changes.get('Source'), 'synce-hal')
-        self.assertEqual(self.changes.get('Urgency'), 'low')
+        self.assertEqual(self.changes['Source'], 'synce-hal')
+        self.assertEqual(self.changes['Urgency'], 'low')
 
     def testGetFiles(self):
         """
