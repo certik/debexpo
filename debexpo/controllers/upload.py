@@ -70,17 +70,17 @@ class UploadController(BaseController):
             Name of file being uploaded.
         """
         if request.method != 'PUT':
-            log.debug('Request with method %s attempted on Upload controller.' % request.method)
+            log.error('Request with method %s attempted on Upload controller.' % request.method)
             abort(405, 'The upload controller only deals with PUT requests.', headers=[('Allow', 'PUT')])
 
-        log.info('File upload: %s' % filename)
+        log.debug('File upload: %s' % filename)
 
         # Check the uploader's username and password
         user_id = self._check_credentials()
 
         # Check whether the file extension is supported by debexpo
         if not allowed_upload(filename):
-            log.debug('File type not supported: %s' % filename)
+            log.error('File type not supported: %s' % filename)
             abort(403, 'The uploaded file type is not supported')
 
         if 'debexpo.upload.incoming' not in config:
@@ -119,7 +119,7 @@ class UploadController(BaseController):
         """
         Responds to a request with a HTTP response code 401 requesting authentication.
         """
-        log.debug('Authorization not found in request headers')
+        log.error('Authorization not found in request headers')
 
         response.headers['WWW-Authenticate'] = 'Basic realm="debexpo"'
         abort(401, 'Please use your email and password when uploading')
@@ -149,7 +149,7 @@ class UploadController(BaseController):
             # Get user from database
             user = meta.session.query(User).filter_by(email=email).filter_by(password=md5.new(password).hexdigest()).one()
 
-            log.info('Authenticated as %s <%s>' % (user.name, user.email))
+            log.debug('Authenticated as %s <%s>' % (user.name, user.email))
 
             return user.id
 

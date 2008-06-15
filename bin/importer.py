@@ -126,7 +126,7 @@ class Importer(object):
         ``reason``
             String of why it failed.
         """
-        log.debug('Rejected: %s' % reason)
+        log.warning('Rejected: %s' % reason)
 
         self._remove_files()
 
@@ -191,7 +191,7 @@ class Importer(object):
         """
         Create entries in the Database for the package upload.
         """
-        log.info('Creating database entries')
+        log.debug('Creating database entries')
 
         # Horrible imports
         from debexpo.model import meta
@@ -220,10 +220,10 @@ class Importer(object):
         # Check whether package is already in the database
         package_query = meta.session.query(Package).filter_by(name=self.changes['Source'])
         if package_query.count() is 1:
-            log.info('Package %s already exists in the database' % self.changes['Source'])
+            log.debug('Package %s already exists in the database' % self.changes['Source'])
             package = package_query.one()
         else:
-            log.info('Package %s is new to the system' % self.changes['Source'])
+            log.debug('Package %s is new to the system' % self.changes['Source'])
             package = Package(name=self.changes['Source'], user=user)
             package.description = self.changes['Description'][2:].replace('      - ', ' - ')
             meta.session.save(package)
@@ -261,7 +261,7 @@ class Importer(object):
 
         # Commit all changes to the database
         meta.session.commit()
-        log.info('Committed package data to the database')
+        log.debug('Committed package data to the database')
 
     def main(self):
         """
@@ -273,7 +273,7 @@ class Importer(object):
         # Set up importer
         self._setup()
 
-        log.info('Importer started with arguments: %s' % sys.argv[1:])
+        log.debug('Importer started with arguments: %s' % sys.argv[1:])
 
         from pylons import config
         from debexpo.lib.changes import Changes
@@ -284,7 +284,7 @@ class Importer(object):
         try:
             self.changes = Changes(filename=self.changes_file)
         except Exception, e:
-            log.debug(e.message)
+            log.error(e.message)
             self._remove_changes()
             sys.exit(1)
 
@@ -312,7 +312,7 @@ class Importer(object):
             destdir = os.path.join(destdir, dir)
 
             if not os.path.isdir(destdir):
-                log.info('Creating directory: %s' % destdir)
+                log.debug('Creating directory: %s' % destdir)
                 os.mkdir(destdir)
 
         # Check whether the files are already present
@@ -331,11 +331,11 @@ class Importer(object):
         self._remove_changes()
 
         # Refresh the Sources/Packages files.
-        log.info('Updating Sources and Packages files')
+        log.debug('Updating Sources and Packages files')
         r = Repository(config['debexpo.repository'])
         r.update()
 
-        log.info('Done')
+        log.debug('Done')
 
 if __name__ == '__main__':
 
