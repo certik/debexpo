@@ -45,6 +45,8 @@ import sys
 import shutil
 from stat import *
 
+from sqlalchemy import exceptions
+
 log = None
 
 class Importer(object):
@@ -212,6 +214,8 @@ class Importer(object):
 
         # Get uploader's User object
         user = meta.session.query(User).get(self.user_id)
+        if user is None:
+            self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether package is already in the database
         package_query = meta.session.query(Package).filter_by(name=self.changes.get('Source'))
