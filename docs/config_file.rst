@@ -27,3 +27,10 @@ No default value -- this variable **must** be specified.
 This variable specifies the path to the importer script, distributed in ``bin/importer.py``. Therefore, this option is typically ``%(here)s/bin/importer.py``.
 
 No default value -- this variable **must** be specified.
+
+``debexpo.handle_debian``
+=========================
+
+This variable specifies whether debexpo should handle the ``/debian/`` directory. This can be set to false and let Apache handle this directory.
+
+The possible values for this variable are ``true`` or ``false``. It defaults to ``true``.

@@ -56,7 +56,8 @@ def make_map():
 
     map.connect('upload/:filename', controller='upload', action='index')
 
-    map.connect('debian/*filename', controller='debian', action='index')
+    if config['debexpo.handle_debian'].lower() == 'true':
+        map.connect('debian/*filename', controller='debian', action='index')
 
     map.connect(':controller/:action/:id')
     map.connect('*url', controller='template', action='view')
