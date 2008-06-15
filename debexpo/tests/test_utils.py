@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   test_utils.py — Test suite for debexpo.lib.utils
+#   test_utils.py — Test cases for debexpo.lib.utils
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -28,7 +28,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Test suite for debexpo.lib.utils.
+Test cases for debexpo.lib.utils.
 """
 
 __author__ = 'Jonny Lamb'

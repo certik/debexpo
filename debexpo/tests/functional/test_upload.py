@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   test_upload.py — UploadController test suite.
+#   test_upload.py — UploadController test cases
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -28,7 +28,7 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-UploadController test suite.
+UploadController test cases.
 """
 
 __author__ = 'Jonny Lamb'
