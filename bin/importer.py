@@ -211,10 +211,10 @@ class Importer(object):
         component, section = parse_section(self.changes.get('files')[0]['section'])
 
         # Get uploader's User object
-        user = meta.session.query(User).filter(User.id == self.user_id).one()
+        user = meta.session.query(User).get(self.user_id)
 
         # Check whether package is already in the database
-        package_query = meta.session.query(Package).filter(Package.name == self.changes.get('Source'))
+        package_query = meta.session.query(Package).filter_by(name=self.changes.get('Source'))
         if package_query.count() is 1:
             log.info('Package %s already exists in the database' % self.changes.get('Source'))
             package = package_query.one()

@@ -147,7 +147,7 @@ class UploadController(BaseController):
 
         try:
             # Get user from database
-            user = meta.session.query(User).filter(User.email == email).filter(User.password == md5.new(password).hexdigest()).one()
+            user = meta.session.query(User).filter_by(email=email).filter_by(password=md5.new(password).hexdigest()).one()
 
             log.info('Authenticated as %s <%s>' % (user.name, user.email))
 
