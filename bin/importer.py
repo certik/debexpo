@@ -285,7 +285,7 @@ class Importer(object):
             sys.exit(1)
 
         # Check whether the debexpo.repository variable is set
-        if not self.config.has_key('debexpo.repository'):
+        if 'debexpo.repository' not in self.config:
             self._fail('debexpo.repository not set')
 
         # Check whether debexpo.repository is a directory

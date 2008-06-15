@@ -83,7 +83,7 @@ class UploadController(BaseController):
             log.debug('File type not supported: %s' % filename)
             abort(403, 'The uploaded file type is not supported')
 
-        if not config.has_key('debexpo.upload.incoming'):
+        if 'debexpo.upload.incoming' not in config:
             log.critical('debexpo.upload.incoming variable not set')
             abort(500, 'The incoming directory has not been set')
 

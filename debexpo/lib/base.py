@@ -71,5 +71,5 @@ __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
            or __name == '_']
 
 # Set default config values:
-if not config.has_key('debexpo.handle_debian'):
+if 'debexpo.handle_debian' not in config:
     config['debexpo.handle_debian'] = 'true'
