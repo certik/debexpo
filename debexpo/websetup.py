@@ -73,9 +73,9 @@ def setup_config(command, filename, section, vars):
     meta.metadata.create_all(bind=meta.engine)
     log.info('Successfully setup database tables')
 
-    if not os.path.isdir(config['debexpo.incoming']):
+    if not os.path.isdir(config['debexpo.upload.incoming']):
         log.info('Creating incoming directory')
-        os.mkdir(config['debexpo.incoming'])
+        os.mkdir(config['debexpo.upload.incoming'])
     else:
         log.info('Incoming directory already exists')
 
