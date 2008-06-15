@@ -36,6 +36,7 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
+import os
 
 from paste.deploy import appconfig
 from pylons import config
@@ -67,7 +68,19 @@ def setup_config(command, filename, section, vars):
     conf = appconfig('config:' + filename)
     load_environment(conf.global_conf, conf.local_conf)
 
-    log.info("Creating tables")
+    log.info('Creating database tables')
     import_all_models()
     meta.metadata.create_all(bind=meta.engine)
-    log.info("Successfully setup")
+    log.info('Successfully setup database tables')
+
+    if not os.path.isdir(config['debexpo.incoming']):
+        log.info('Creating incoming directory')
+        os.mkdir(config['debexpo.incoming'])
+    else:
+        log.info('Incoming directory already exists')
+
+    if not os.path.isdir(config['debexpo.repository']):
+        log.info('Creating repository directory')
+        os.mkdir(config['debexpo.repository'])
+    else:
+        log.info('Repository directory already exists')
