@@ -232,9 +232,15 @@ class Importer(object):
         # entry in the database as the upload controller tested whether similar filenames existed
         # in the repository. The only way this would be wrong is if the filename had a different
         # version in than the Version field in changes..
+
+        try:
+            closes = self.changes['Closes']
+        except KeyError:
+            closes = None
+
         package_version = PackageVersion(package=package, version=self.changes['Version'],
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
-            component=component, closes=self.changes['Closes'])
+            component=component, closes=closes)
         meta.session.save(package_version)
 
         source_package = SourcePackage(package_version=package_version)
