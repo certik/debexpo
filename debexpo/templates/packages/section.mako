@@ -3,7 +3,7 @@
 
 <%def name="main()">
 
-<h1>${ _('Packages in section %s' % c.section) }</h1>
+<h1>${ _('Packages in section %s') % c.section }</h1>
 
 ${self.list()}
 
