@@ -1,0 +1,280 @@
+/* Stylesheet for mentors.debian.net */
+/* (c) 2005,2006 the mentors.debian.net team */
+/* You are free to use this style sheet on your own web pages
+   under the terms of the GNU General Public License 2 */
+
+body
+{
+    font-family: sans-serif;
+    font-size: 10pt;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+img
+{
+    border: 0;
+}
+
+h1,h2
+{
+    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
+    font-weight: normal;
+    color: #d70751;
+	margin: 0.5em 0 0.2em 0;
+	padding: 0 0 0 0;
+}
+
+h1
+{
+	font-size: 170%;
+	color: #000000;
+}
+
+h2
+{
+	font-size: 140%;
+    color: #808080;
+}
+
+
+#floatmenu
+{
+	float: left;
+	margin: 0.5ex;
+	padding: 0.5ex;
+	width: 20ex;
+}
+
+/* Menu item */
+.menuitem
+{
+    padding: 0.1em 0.2em 0.1em 0.2em;
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    border-left: 3px solid #d70751;
+    margin: 0.5em 0 0 0;
+    text-transform: uppercase;
+    -moz-border-radius-topright: 10%;
+    -webkit-border-top-right-radius: 10%;
+    border-radius-topright: 10%;
+}
+
+.menuitem-active
+{
+    padding: 0.1em 0.2em 0.1em 0.2em;
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    border-left: 3px solid #d70751;
+    margin: 0.5em 0 0 0;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+.menusubitem
+{
+	margin: 0 0 0 1em;
+	font-size: 9pt;
+	line-height: 2em;
+}
+
+.menusubitem-active
+{
+	margin: 0 0 0 1em;
+	font-size: 9pt;
+	line-height: 2em;
+    font-weight: bolder;
+}
+
+/*
+.menuitem a
+{
+	text-decoration: none;
+}
+*/
+
+/* The currently running CGI is highlighted */
+.currentcgi
+{
+	border: 1px solid red;
+}
+
+#maincontent
+{
+	margin: 0.5ex 0.5ex 0.5ex 22ex;
+	padding: 0 0 0 1ex;
+	_border-left: 1px dotted red;
+}
+
+#header
+{
+	background-color: #f0f0f0;
+	color: #707070;
+	padding: 0.5ex;
+	min-height: 75px;	/* the top area is at least as large as the debian logo */
+		/* does not work with the IE but you won't see me write hacks to
+         * support buggy browsers */
+    border-bottom: 1px solid #b0b0b0;
+}
+
+#debianlogo
+{
+	float: left;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+#headertitle
+{
+    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
+	font-size: 300%;
+	margin: 0;
+	margin-left: 70px;	/* indentation from the debian logo on the lft */
+	padding: 0;
+	font-weight: 100;
+}
+
+#headersubtitle
+{
+	padding: 0;
+	margin: 0;
+	margin-left: 70px;	/* indentation from the debian logo on the lft */
+	font-size: 110%;
+	font-weight: 500;
+}
+
+#footer
+{
+	background-color: #f0f0f0;
+	color: #707070;
+	padding: 0.2em 1em 0.2em 1em;
+	margin: 2em 0 0 0;
+	text-align: center;
+	clear: both;
+    border-top: 1px solid #b0b0b0;
+}
+
+#navigation
+{
+	padding: 0.2em 1em 0.2em 1em;
+	background: #e0e0e0;
+}
+
+#navigation > .right
+{
+	position: absolute;
+	right: 1em;
+}
+
+p,form
+{
+	color: #606060;
+	margin: 0.3ex 0em 1ex 0;
+	padding: 0 0 0 0;
+}
+
+pre
+{
+	color: #606060;
+    background-color: #f0f0f0;
+}
+
+a
+{
+	color: #606060;
+	text-decoration: underline;
+}
+
+a:hover
+{
+	_border-bottom: 1px solid #000000;
+	background-color: #f0f0f0;
+}
+
+ul
+{
+    color: #606060;
+}
+
+/*
+ul
+{
+	_background: #e0ffe0;
+	_margin: 0 0 0 0 0em;
+	padding: 0 0 0 1em;
+}
+
+li
+{
+	_background: #ffe0e0;
+	_list-style: none;
+	padding: 0;
+	margin: 0;
+}
+*/
+
+table
+{
+    border-collapse: collapse;
+    margin: 0.5em 0 0.5em 0;
+}
+
+/*
+tr
+{
+}
+*/
+
+td
+{
+    vertical-align: top;
+	color: #606060;
+    padding: 0.1em 1em 0.1em 0.1em;
+    margin: 0;
+}
+
+/* Table rows with light lines seperating the rows */
+td.lines
+{
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+th
+{
+	color: #606060;
+    font-weight: bolder;
+    text-align: left;
+    vertical-align: top;
+    padding-right: 1em;
+}
+
+/*
+fieldset 
+{ 
+	_border: 1px solid #808080; 
+}
+
+legend 
+{
+	padding: 0.2em 0.5em;
+	border: 1px solid #808080;
+	color: #808080;
+	_font-size: 90%;
+	_text-align: right;
+}
+*/
+
+.warning
+{
+    color: red;
+    font-weight: bolder;
+}
+
+.ok
+{
+    color: green;
+    font-weight: bolder;
+}
+
