@@ -40,6 +40,7 @@ from sqlalchemy import orm
 
 from debexpo.model import meta, OrmObject
 from debexpo.model.users import User
+from debexpo.lib.constants import PACKAGE_NEEDS_SPONSOR_UNKNOWN
 
 t_packages = sa.Table('packages', meta.metadata,
     sa.Column('id', sa.types.Integer, primary_key=True),
@@ -48,7 +49,7 @@ t_packages = sa.Table('packages', meta.metadata,
     sa.Column('description', sa.types.String(200), nullable=True),
     sa.Column('watch_counter', sa.types.Integer, default=0),
     sa.Column('download_counter', sa.types.Integer, default=0),
-    sa.Column('needs_sponsor', sa.types.Boolean, nullable=False, default=False),
+    sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=PACKAGE_NEEDS_SPONSOR_UNKNOWN),
     )
 
 class Package(OrmObject):
