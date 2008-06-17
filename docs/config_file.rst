@@ -34,3 +34,10 @@ No default value -- this variable **must** be specified.
 This variable specifies whether debexpo should handle the ``/debian/`` directory. This can be set to false and let Apache handle this directory.
 
 The possible values for this variable are ``true`` or ``false``. It defaults to ``true``.
+
+``debexpo.sitename``
+====================
+
+Name of the site repository. This is used as the title of the web pages.
+
+This defaults to *debexpo*.
