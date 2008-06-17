@@ -119,3 +119,14 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         return render('/packages/index.mako')
+
+    def section(self, id):
+        """
+        List of packages depending on section.
+        """
+        packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
+
+        c.config =config
+        c.packages = packages
+        c.section = id
+        return render('/packages/section.mako')
