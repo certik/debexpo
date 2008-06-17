@@ -1,0 +1,115 @@
+# -*- coding: utf-8 -*-
+#
+#   packages.py — Packages controller
+#
+#   This file is part of debexpo - http://debexpo.workaround.org
+#
+#   Copyright © 2008 Jonny Lamb <jonnylamb@jonnylamb.com
+#
+#   Permission is hereby granted, free of charge, to any person
+#   obtaining a copy of this software and associated documentation
+#   files (the "Software"), to deal in the Software without
+#   restriction, including without limitation the rights to use,
+#   copy, modify, merge, publish, distribute, sublicense, and/or sell
+#   copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following
+#   conditions:
+#
+#   The above copyright notice and this permission notice shall be
+#   included in all copies or substantial portions of the Software.
+#
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+#   HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+#   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+#   OTHER DEALINGS IN THE SOFTWARE.
+
+"""
+Holds the PackagesController class.
+"""
+
+__author__ = 'Jonny Lamb'
+__copyright__ = 'Copyright © 2008 Jonny Lamb'
+__license__ = 'MIT'
+
+import logging
+import apt_pkg
+
+from debexpo.lib.base import *
+
+from debexpo.model import meta
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.packages import Package
+from debexpo.model.users import User
+from debexpo.lib import constants
+
+log = logging.getLogger(__name__)
+
+class PackagesController(BaseController):
+
+    def _get_packages(self):
+        """
+        Return a dictionary with keys:
+
+        * name -- source package name
+        * description -- description of package
+        * version -- latest version uploaded to repository
+        * uploader -- name of uploader
+        * needs_sponsor -- whether the package needs a sponsor
+
+        of packages and their most recent versions.
+        """
+        packages = []
+
+        # Loop through all package lists.
+        for package in meta.session.query(Package).all():
+            # Get all package versions.
+            package_versions = meta.session.query(PackageVersion).filter_by(package_id=package.id).all()
+
+            # Keep a record of the most recent package version.
+            recent_package_version = None
+
+            # Loop through each package version and...
+            for package_version in package_versions:
+                if recent_package_version is None:
+                    recent_package_version = package_version
+                else:
+                    if apt_pkg.VersionCompare(recent_package_version.version, package_version.version) > 0:
+                        # ...record the most recent package version.
+                        recent_package_vession = package_version
+
+            # Make needs_sponsor slightly more pretty than a number.
+            needs_sponsor = {
+                constants.PACKAGE_NEEDS_SPONSOR_YES : _('Yes'),
+                constants.PACKAGE_NEEDS_SPONSOR_NO : _('No'),
+                constants.PACKAGE_NEEDS_SPONSOR_UNKNOWN : _('Unknown')
+            }[package.needs_sponsor]
+
+            # Add this package to the to-show list.
+            packages.append({
+                'name' : package.name,
+                'description' : package.description,
+                'version' : recent_package_version.version,
+                'uploader' : package.user.name,
+                'needs_sponsor' : needs_sponsor
+            })
+
+        return packages
+
+    def index(self):
+        """
+        Entry point into the PackagesController.
+        """
+        # I want to use apt_pkg.CompareVersions later, so init() needs to be called.
+        apt_pkg.init()
+
+        # List of packages to show in the list.
+        packages = self._get_packages()
+
+        # Render the page.
+        c.config = config
+        c.packages = packages
+        return render('/packages/index.mako')
