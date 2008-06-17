@@ -43,3 +43,8 @@ Tag-line of the repository. This is used under the main title of the web pages.
 ================
 
 Site logo of the repository to display at the top of the web pages.
+
+``debexpo.email``
+=================
+
+Email address of site support.
