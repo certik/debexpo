@@ -38,3 +38,8 @@ Name of the site repository. This is used as the title of the web pages.
 ===================
 
 Tag-line of the repository. This is used under the main title of the web pages.
+
+``debexpo.logo``
+================
+
+Site logo of the repository to display at the top of the web pages.
