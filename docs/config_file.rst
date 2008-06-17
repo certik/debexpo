@@ -41,3 +41,10 @@ The possible values for this variable are ``true`` or ``false``. It defaults to 
 Name of the site repository. This is used as the title of the web pages.
 
 This defaults to *debexpo*.
+
+``debexpo.tagline``
+===================
+
+Tag-line of the repository. This is used under the main title of the web pages.
+
+This defaults to "".

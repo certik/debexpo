@@ -76,3 +76,6 @@ if 'debexpo.handle_debian' not in config:
 
 if 'debexpo.sitename' not in config:
     config['debexpo.sitename'] = 'debexpo'
+
+if 'debexpo.tagline' not in config:
+    config['debexpo.tagline'] = 'tagline'
