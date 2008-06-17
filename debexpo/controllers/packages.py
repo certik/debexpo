@@ -107,12 +107,7 @@ class PackagesController(BaseController):
         return packages
 
     def _get_user(self, email):
-        try:
-            user = meta.session.query(User).filter_by(email=email).one()
-        except exceptions.InvalidRequestError:
-            user = None
-
-        return user
+        return meta.session.query(User).filter_by(email=email).first()
 
     def index(self):
         """
