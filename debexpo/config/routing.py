@@ -54,10 +54,19 @@ def make_map():
 
     # CUSTOM ROUTES HERE
 
-    map.connect('upload/:filename', controller='upload', action='index')
-
     if config['debexpo.handle_debian'].lower() == 'true':
         map.connect('debian/*filename', controller='debian', action='index')
+
+    map.connect('contact', 'contact', controller='index', action='contact')
+    map.connect('index', '', controller='index', action='index')
+    map.connect('intro', 'intro', controller='index', action='intro')
+    map.connect('my/:action', controller='my', action='index')
+    map.connect('news', 'news', controller='index', action='news')
+    map.connect('package', 'package/:package', controller='package', action='view')
+    map.connect('packages/:action/:id', controller='packages', action='index', id=None)
+    map.connect('qa', 'qa', controller='index', action='qa')
+    map.connect('register', controller='register', action='index')
+    map.connect('upload/:filename', controller='upload', action='index')
 
     map.connect(':controller/:action/:id')
     map.connect('*url', controller='template', action='view')
