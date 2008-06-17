@@ -69,13 +69,3 @@ class BaseController(WSGIController):
 # Include the '_' function in the public names
 __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
            or __name == '_']
-
-# Set default config values:
-if 'debexpo.handle_debian' not in config:
-    config['debexpo.handle_debian'] = 'true'
-
-if 'debexpo.sitename' not in config:
-    config['debexpo.sitename'] = 'debexpo'
-
-if 'debexpo.tagline' not in config:
-    config['debexpo.tagline'] = 'tagline'

@@ -4,13 +4,13 @@
 Config file
 ===========
 
+These are configuration options that go in the ini file that configures debexpo. Every option should be present otherwise debexpo will fail somewhere. A sane default is in the distributed ini file.
+
 ``debexpo.upload.incoming``
 ===========================
 
 This variable specifies the incoming directory. Newly uploaded files will be installed into this directory.
 Therefore, it should be writeable by the webserver.
-
-No default value -- this variable **must** be specified.
 
 ``debexpo.repository``
 ======================
@@ -19,32 +19,22 @@ This variable specifies the repository directory, where uploaded files are store
 For example, If this is set to ``/home/myexpo/files`` then the package 'cream' would have its files stored in ``/home/myexpo/files/cream/``.
 The directory does not have a Sources.gz file (no "apt-get source") but source packages can be downloaded via "dget ...dsc".
 
-No default value -- this variable **must** be specified.
-
 ``debexpo.importer``
 ====================
 
 This variable specifies the path to the importer script, distributed in ``bin/importer.py``. Therefore, this option is typically ``%(here)s/bin/importer.py``.
-
-No default value -- this variable **must** be specified.
 
 ``debexpo.handle_debian``
 =========================
 
 This variable specifies whether debexpo should handle the ``/debian/`` directory. This can be set to false and let Apache handle this directory.
 
-The possible values for this variable are ``true`` or ``false``. It defaults to ``true``.
-
 ``debexpo.sitename``
 ====================
 
 Name of the site repository. This is used as the title of the web pages.
 
-This defaults to *debexpo*.
-
 ``debexpo.tagline``
 ===================
 
 Tag-line of the repository. This is used under the main title of the web pages.
-
-This defaults to "".
