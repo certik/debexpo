@@ -50,7 +50,7 @@ log = logging.getLogger(__name__)
 
 class PackagesController(BaseController):
 
-    def _get_packages(self, package_version_filter=None):
+    def _get_packages(self, package_filter=None, package_version_filter=None):
         """
         Return a list of dictionaries with keys:
 
@@ -67,8 +67,13 @@ class PackagesController(BaseController):
 
         packages = []
 
+        packages_query = meta.session.query(Package)
+
+        if package_filter is not None:
+            packages_query = packages_query.filter(package_filter)
+
         # Loop through all package lists.
-        for package in meta.session.query(Package).all():
+        for package in packages_query.all():
             # Get all package versions.
             package_versions = meta.session.query(PackageVersion).filter_by(package_id=package.id)
 
