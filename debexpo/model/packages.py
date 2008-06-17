@@ -48,7 +48,7 @@ t_packages = sa.Table('packages', meta.metadata,
     sa.Column('description', sa.types.String(200), nullable=True),
     sa.Column('watch_counter', sa.types.Integer, default=0),
     sa.Column('download_counter', sa.types.Integer, default=0),
-    sa.Column('needs_sponsor', sa.types.Integer, nullable=False, default=False),
+    sa.Column('needs_sponsor', sa.types.Boolean, nullable=False, default=False),
     )
 
 class Package(OrmObject):
