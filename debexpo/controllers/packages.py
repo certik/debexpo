@@ -82,19 +82,11 @@ class PackagesController(BaseController):
 
             package_versions = package_versions.all()
 
-            # Keep a record of the most recent package version.
-            recent_package_version = None
+            if len(package_versions) != 0:
+                # The package version with the highest ID will be the most recent package version
+                # uploaded, so use that.
+                package_version = package_versions[-1]
 
-            # Loop through each package version and...
-            for package_version in package_versions:
-                if recent_package_version is None:
-                    recent_package_version = package_version
-                else:
-                    if apt_pkg.VersionCompare(recent_package_version.version, package_version.version) > 0:
-                        # ...record the most recent package version.
-                        recent_package_vession = package_version
-
-            if recent_package_version is not None:
                 # Make needs_sponsor slightly more pretty than a number.
                 needs_sponsor = {
                     constants.PACKAGE_NEEDS_SPONSOR_YES : _('Yes'),
@@ -106,7 +98,7 @@ class PackagesController(BaseController):
                 packages.append({
                     'name' : package.name,
                     'description' : package.description,
-                    'version' : recent_package_version.version,
+                    'version' : package_version.version,
                     'uploader' : package.user.name,
                     'needs_sponsor' : needs_sponsor
                 })
