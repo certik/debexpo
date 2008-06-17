@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import logging
 import apt_pkg
+from sqlalchemy import exceptions
 
 from debexpo.lib.base import *
 
@@ -106,12 +107,12 @@ class PackagesController(BaseController):
         return packages
 
     def _get_user(self, email):
-        users = meta.session.query(User).filter_by(email=email).all()
+        try:
+            user = meta.session.query(User).filter_by(email=email).one()
+        except exceptions.InvalidRequestError:
+            user = None
 
-        if len(users) != 1:
-            return None
-
-        return users[0]
+        return user
 
     def index(self):
         """
