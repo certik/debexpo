@@ -3,7 +3,7 @@
 
 <%def name="list()">
 
-<table>
+<table width="100%">
   <tr>
     <th>${ _('Package') }</th>
     <th>${ _('Description') }</th>
@@ -12,15 +12,25 @@
     <th>${ _('Needs a sponsor') }</th>
   </tr>
 
-% for package in c.packages:
-  <tr>
-    <td class="lines"><a href="${ h.url_for('package', package=package['name']) }">${ package['name'] }</a></td>
-    <td class="lines">${ package['description'] }</td>
-    <td class="lines">${ package['version'] }</td>
-    <td class="lines">${ package['uploader'] }</td>
-    <td class="lines">${ package['needs_sponsor'] }</td>
-  </tr>
-% endfor
+% if len(c.packages) > 0:
+
+    % for package in c.packages:
+      <tr>
+	<td class="lines"><a href="${ h.url_for('package', package=package['name']) }">${ package['name'] }</a></td>
+	<td class="lines">${ package['description'] }</td>
+	<td class="lines">${ package['version'] }</td>
+	<td class="lines">${ package['uploader'] }</td>
+	<td class="lines">${ package['needs_sponsor'] }</td>
+      </tr>
+    % endfor
+
+% else:
+
+    <tr>
+      <td class="lines" colspan="5" align="center">${ _('No packages') }</td>
+    </tr>
+
+% endif
 
 </table>
 
