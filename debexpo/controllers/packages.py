@@ -50,9 +50,9 @@ log = logging.getLogger(__name__)
 
 class PackagesController(BaseController):
 
-    def _get_packages(self):
+    def _get_packages(self, package_version_filter=None):
         """
-        Return a dictionary with keys:
+        Return a list of dictionaries with keys:
 
         * name -- source package name
         * description -- description of package
@@ -62,12 +62,20 @@ class PackagesController(BaseController):
 
         of packages and their most recent versions.
         """
+        # I want to use apt_pkg.CompareVersions later, so init() needs to be called.
+        apt_pkg.init()
+
         packages = []
 
         # Loop through all package lists.
         for package in meta.session.query(Package).all():
             # Get all package versions.
-            package_versions = meta.session.query(PackageVersion).filter_by(package_id=package.id).all()
+            package_versions = meta.session.query(PackageVersion).filter_by(package_id=package.id)
+
+            if package_version_filter is not None:
+                package_versions = package_versions.filter(package_version_filter)
+
+            package_versions = package_versions.all()
 
             # Keep a record of the most recent package version.
             recent_package_version = None
@@ -81,21 +89,22 @@ class PackagesController(BaseController):
                         # ...record the most recent package version.
                         recent_package_vession = package_version
 
-            # Make needs_sponsor slightly more pretty than a number.
-            needs_sponsor = {
-                constants.PACKAGE_NEEDS_SPONSOR_YES : _('Yes'),
-                constants.PACKAGE_NEEDS_SPONSOR_NO : _('No'),
-                constants.PACKAGE_NEEDS_SPONSOR_UNKNOWN : _('Unknown')
-            }[package.needs_sponsor]
+            if recent_package_version is not None:
+                # Make needs_sponsor slightly more pretty than a number.
+                needs_sponsor = {
+                    constants.PACKAGE_NEEDS_SPONSOR_YES : _('Yes'),
+                    constants.PACKAGE_NEEDS_SPONSOR_NO : _('No'),
+                    constants.PACKAGE_NEEDS_SPONSOR_UNKNOWN : _('Unknown')
+                }[package.needs_sponsor]
 
-            # Add this package to the to-show list.
-            packages.append({
-                'name' : package.name,
-                'description' : package.description,
-                'version' : recent_package_version.version,
-                'uploader' : package.user.name,
-                'needs_sponsor' : needs_sponsor
-            })
+                # Add this package to the to-show list.
+                packages.append({
+                    'name' : package.name,
+                    'description' : package.description,
+                    'version' : recent_package_version.version,
+                    'uploader' : package.user.name,
+                    'needs_sponsor' : needs_sponsor
+                })
 
         return packages
 
@@ -103,9 +112,6 @@ class PackagesController(BaseController):
         """
         Entry point into the PackagesController.
         """
-        # I want to use apt_pkg.CompareVersions later, so init() needs to be called.
-        apt_pkg.init()
-
         # List of packages to show in the list.
         packages = self._get_packages()
 
