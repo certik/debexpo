@@ -113,6 +113,14 @@ class PackagesController(BaseController):
 
         return packages
 
+    def _get_user(self, email):
+        users = meta.session.query(User).filter_by(email=email).all()
+
+        if len(users) != 1:
+            return None
+
+        return users[0]
+
     def index(self):
         """
         Entry point into the PackagesController.
@@ -131,7 +139,25 @@ class PackagesController(BaseController):
         """
         packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
 
-        c.config =config
+        c.config = config
         c.packages = packages
         c.section = id
         return render('/packages/section.mako')
+
+    def uploader(self, id):
+        """
+        List of packages depending on uploader.
+        """
+        user = self._get_user(id)
+
+        if user is not None:
+            packages = self._get_packages(package_filter=(Package.user_id == user.id))
+            username = user.name
+        else:
+            packages = []
+            username = id
+
+        c.config = config
+        c.packages = packages
+        c.username = username
+        return render('/packages/uploader.mako')
