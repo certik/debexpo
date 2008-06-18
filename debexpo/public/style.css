@@ -272,6 +272,11 @@ legend
     font-weight: bolder;
 }
 
+.error-message
+{
+    color: red;
+}
+
 .ok
 {
     color: green;
