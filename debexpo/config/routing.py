@@ -65,7 +65,7 @@ def make_map():
     map.connect('package', 'package/:package', controller='package', action='view')
     map.connect('packages/:action/:id', controller='packages', action='index', id=None)
     map.connect('qa', 'qa', controller='index', action='qa')
-    map.connect('register', 'register', controller='register', action='index')
+    map.connect('register', 'register/:action/:id', controller='register', action='index', id=None)
     map.connect('upload/:filename', controller='upload', action='index')
 
     map.connect(':controller/:action/:id')
