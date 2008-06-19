@@ -143,6 +143,36 @@ class RegisterController(BaseController):
         else:
             return render('/register/maintainer.mako')
 
+    @validate(schema=SponsorForm(), form='sponsor')
+    def _sponsor_submit(self):
+        """
+        Handles the form submission for a sponsor account registration.
+        """
+        # Activation key.
+        key = md5.new(str(random.random())).hexdigest()
+
+        u = User(name=self.form_result['name'],
+            email=self.form_result['email'],
+            password=md5.new(self.form_result['password']).hexdigest(),
+            lastlogin=datetime.now(),
+            verification=key,
+            status=constants.USER_STATUS_DEVELOPER)
+
+        meta.session.save(u)
+        meta.session.commit()
+
+        return render('/register/activate.mako')
+
+    def sponsor(self):
+        """
+        Provides the form for a sponsor account registration.
+        """
+        # Has the form been submitted?
+        if request.method == 'POST':
+            return self._sponsor_submit()
+        else:
+            return render('/register/sponsor.mako')
+
     def activate(self, id):
         """
         Upon given a verification ID, activate an account.
