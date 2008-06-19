@@ -70,12 +70,15 @@ class NewEmailToSystem(formencode.validators.Email):
 
         return formencode.validators.Email._to_python(self, value, c)
 
-class MaintainerForm(formencode.Schema):
-    """
-    Schema for the maintainer registration form.
-    """
+class NewDebianEmailToSystem(NewEmailToSystem):
+    def _to_python(self, value, c):
+        if not value.endswith('@debian.org'):
+            raise formencode.Invalid(_('You must use your debian.org email address to register'), value, c)
+
+        return NewEmailToSystem._to_python(self, value, c)
+
+class RegisterForm(formencode.Schema):
     name = formencode.validators.String(not_empty=True)
-    email = NewEmailToSystem(not_empty=True)
     password = formencode.validators.String(min=6)
     password_confirm = formencode.validators.String(min=6)
     commit = formencode.validators.String()
@@ -84,6 +87,18 @@ class MaintainerForm(formencode.Schema):
     chained_validators = [
         formencode.validators.FieldsMatch('password', 'password_confirm')
     ]
+
+class MaintainerForm(RegisterForm):
+    """
+    Schema for the maintainer registration form.
+    """
+    email = NewEmailToSystem(not_empty=True)
+
+class SponsorForm(RegisterForm):
+    """
+    Schema for the sponsor registration form.
+    """
+    email = NewDebianEmailToSystem(not_empty=True)
 
 class RegisterController(BaseController):
 
