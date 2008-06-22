@@ -43,6 +43,7 @@ from datetime import datetime
 
 from debexpo.lib.base import *
 from debexpo.lib import constants
+from debexpo.lib.email import Email
 from debexpo.model import meta
 from debexpo.model.users import User
 
@@ -114,6 +115,20 @@ class RegisterController(BaseController):
         """
         return render('/register/index.mako')
 
+    def _send_activate_email(self, key, recipient):
+        """
+        Sends an activation email to the potential new user.
+
+        ``key``
+            Activation key that's already stored in the database.
+
+        ``recipient``
+            Email address to send to.
+        """
+        email = Email('register_activate')
+        c.activate_url = 'http://' + request.host + h.url_for(action='activate', id=key)
+        email.send([recipient])
+
     @validate(schema=MaintainerForm(), form='maintainer')
     def _maintainer_submit(self):
         """
@@ -130,6 +145,8 @@ class RegisterController(BaseController):
 
         meta.session.save(u)
         meta.session.commit()
+
+        self._send_activate_email(key, self.form_result['email'])
 
         return render('/register/activate.mako')
 
@@ -160,6 +177,8 @@ class RegisterController(BaseController):
 
         meta.session.save(u)
         meta.session.commit()
+
+        self._send_activate_email(key, self.form_result['email'])
 
         return render('/register/activate.mako')
 
