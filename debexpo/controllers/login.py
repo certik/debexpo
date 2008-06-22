@@ -38,6 +38,7 @@ __license__ = 'MIT'
 import formencode
 import logging
 import md5
+from datetime import datetime
 
 from debexpo.lib.base import *
 from debexpo.model import meta
@@ -81,7 +82,13 @@ class LoginController(BaseController):
         session['user_id'] = u.id
         session.save()
 
-        return redirect_to(session['path_before_login'])
+        u.lastlogin = datetime.now()
+        meta.session.commit()
+
+        if 'path_before_login' in session:
+            return redirect_to(session['path_before_login'])
+        else:
+            return redirect_to(url_for('my', action=None)
 
     def index(self, get=False):
         """
