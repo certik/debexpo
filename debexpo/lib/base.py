@@ -54,6 +54,16 @@ class BaseController(WSGIController):
     Base controller class for all other controllers to extend.
     """
 
+    requires_auth = False
+
+    def __before__(self):
+        if self.requires_auth and 'user_id' not in session:
+            # Remember where we came from so that the user can be sent there
+            # after a successful login
+            session['path_before_login'] = request.path_info
+            session.save()
+            return redirect_to(h.url_for(controller='login'))
+
     def __call__(self, environ, start_response):
         """
         Invokes the Controller.

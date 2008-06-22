@@ -61,6 +61,7 @@ def make_map():
     map.connect('index', '', controller='index', action='index')
     map.connect('intro', 'intro', controller='index', action='intro')
     map.connect('my', 'my/:action', controller='my', action='index')
+    map.connect('login', controller='login', action='index')
     map.connect('news', 'news', controller='index', action='news')
     map.connect('package', 'package/:package', controller='package', action='view')
     map.connect('packages/:action/:id', controller='packages', action='index', id=None)
