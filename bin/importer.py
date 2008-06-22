@@ -75,6 +75,7 @@ class Importer(object):
         self.ini_file = ini
         self.user_id = user_id
         self.changes = None
+        self.user = None
 
     def _remove_changes(self):
         """
@@ -113,7 +114,22 @@ class Importer(object):
 
         self._remove_files()
 
-        # TODO email maintainer and site admin
+#        from debexpo.lib.email import Email
+#        from pylons import c
+#
+#        if self.user is not None:
+#            email = Email('importer_fail_maintainer')
+#            if 'Source' in self.changes:
+#                c.package = self.changes['Source']
+#            else:
+#                c.package = ''
+#
+#            email.send([self.user.email])
+#
+#        email = Email('importer_fail_admin')
+#        c.message = reason
+#        email.send([config['debexpo.email']])
+
         sys.exit(1)
 
     def _reject(self, reason):
@@ -213,8 +229,8 @@ class Importer(object):
         component, section = parse_section(self.changes['files'][0]['section'])
 
         # Get uploader's User object
-        user = meta.session.query(User).get(self.user_id)
-        if user is None:
+        self.user = meta.session.query(User).get(self.user_id)
+        if self.user is None:
             self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
         # Check whether package is already in the database
@@ -224,7 +240,7 @@ class Importer(object):
             package = package_query.one()
         else:
             log.debug('Package %s is new to the system' % self.changes['Source'])
-            package = Package(name=self.changes['Source'], user=user)
+            package = Package(name=self.changes['Source'], user=self.user)
             package.description = self.changes['Description'][2:].replace('      - ', ' - ')
             meta.session.save(package)
 
