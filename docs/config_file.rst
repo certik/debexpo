@@ -48,3 +48,8 @@ Site logo of the repository to display at the top of the web pages.
 =================
 
 Email address of site support.
+
+``debexpo.debian_specific``
+===========================
+
+Toggle whether to show Debian-specific contents of the site. Values are ``true`` or ``false``.
