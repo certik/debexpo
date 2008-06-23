@@ -73,7 +73,7 @@ class OrmObject(object):
     Contributed by ltbarcly (Justin Van Winkle).
     """
     def __init__(self, **kw):
-        if self.foreign is None:
+        if not hasattr(self, 'foreign'):
             self.foreign = []
         for key in kw:
             if key in self.c or key in self.foreign:
