@@ -54,6 +54,7 @@ class NewEmailToSystem(formencode.validators.Email):
     Email validator class to make sure there is not another user with
     the same email address already registered.
     """
+    allow = None
 
     def _to_python(self, value, c):
         """
@@ -64,7 +65,14 @@ class NewEmailToSystem(formencode.validators.Email):
 
         ``c``
         """
-        u = meta.session.query(User).filter_by(email=value).first()
+        u = meta.session.query(User).filter_by(email=value)
+
+        # self.allow contains a user_id that should be ignored (i.e. when the user
+        # wants to keep the same email).
+        if self.allow is not None:
+            u = u.filter(User.id != self.allow)
+
+        u = u.first()
 
         if u is not None:
            raise formencode.Invalid(_('A user with this email address is already registered on the system'), value, c)
