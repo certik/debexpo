@@ -303,12 +303,19 @@ class Importer(object):
         from debexpo.lib.changes import Changes
         from debexpo.lib.repository import Repository
         from debexpo.lib.utils import get_repository_dir
+        from debexpo.lib.plugins import Plugins
 
         # Try parsing the changes file, but fail if there's an error.
         try:
             self.changes = Changes(filename=self.changes_file)
         except Exception, e:
             log.error(e.message)
+            self._remove_changes()
+            sys.exit(1)
+
+        post_upload = Plugins('post-upload', self.changes, self.changes_file)
+        if post_upload.stop():
+            log.critical('post-upload plugins failed')
             self._remove_changes()
             sys.exit(1)
 
