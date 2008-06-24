@@ -39,7 +39,7 @@ import logging
 import md5
 
 from debexpo.lib.base import *
-from debexpo.lib import constants
+from debexpo.lib import constants, form
 from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm
 
 from debexpo.model import meta
@@ -61,13 +61,17 @@ class MyController(BaseController):
         c.config = config
         self.user = None
 
-    @validate(schema=DetailsForm(), form='index')
     def _details(self):
         """
         Handles a user submitting the details form.
         """
-        self.user.name = self.form_result['name']
-        self.user.email = self.form_result['email']
+        try:
+            fields = form.validate(DetailsForm, user_id=self.user.id)
+        except Exception, e:
+            return form.htmlfill(self.index(get=True), e)
+
+        self.user.name = fields['name']
+        self.user.email = fields['email']
 
         meta.session.commit()
 
@@ -126,9 +130,13 @@ class MyController(BaseController):
 
         return redirect_to(h.url_for('my', action=None))
 
-    def index(self):
+    def index(self, get=False):
         """
         Controller entry point. Displays forms to change user details.
+
+        ``get``
+            Whether to ignore request.method and assume it's a GET. This is useful
+            for validators to re-display the form if there's something wrong.
         """
         # Get User object.
         self.user = meta.session.query(User).get(session['user_id'])
@@ -138,7 +146,7 @@ class MyController(BaseController):
             return redirect_to(url_for(controller='login'))
 
         # A form has been submit.
-        if request.method == 'POST':
+        if request.method == 'POST' and get is False:
             try:
                 return { 'details' : self._details,
                   'gpg' : self._gpg,

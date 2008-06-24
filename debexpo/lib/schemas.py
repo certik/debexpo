@@ -37,8 +37,6 @@ __license__ = 'MIT'
 
 import formencode
 
-from pylons import session
-
 from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox
 
@@ -63,7 +61,7 @@ class DetailsForm(MyForm):
     Schema for updating user details in the my controller.
     """
     name = formencode.validators.String(not_empty=True)
-    email = NewEmailToSystem(not_empty=True, allow=session.get('user_id', None))
+    email = NewEmailToSystem(not_empty=True)
 
 class GpgForm(MyForm):
     """
