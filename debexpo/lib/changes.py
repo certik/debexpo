@@ -93,3 +93,9 @@ class Changes(object):
         Returns the component of the package.
         """
         return parse_section(self._data['Files'][0]['section'])[0]
+
+    def get_priority(self):
+        """
+        Returns the priority of the package.
+        """
+        return parse_section(self._data['Files'][0]['priority'])[1]

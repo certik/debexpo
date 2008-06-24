@@ -80,3 +80,9 @@ class TestChangesController(TestCase):
         Tests Changes.get_component().
         """
         self.assertEqual(self.changes.get_component(), 'main')
+
+    def testGetPriority(self):
+        """
+        Tests Changes.get_priority().
+        """
+        self.assertEqual(self.changes.get_priority(), 'optional')
