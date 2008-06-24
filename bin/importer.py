@@ -257,7 +257,8 @@ class Importer(object):
 
         package_version = PackageVersion(package=package, version=self.changes['Version'],
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
-            component=component, closes=closes, uploaded=datetime.now())
+            component=component, priority=self.changes.get_priority(), closes=closes,
+            uploaded=datetime.now())
         meta.session.save(package_version)
 
         source_package = SourcePackage(package_version=package_version)
