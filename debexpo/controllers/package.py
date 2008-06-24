@@ -62,13 +62,17 @@ class PackageController(BaseController):
         ``package``
             Package name to look at.
         """
+        log.debug('Details of package "%s" requested' % packagename)
 
         package = meta.session.query(Package).filter_by(name=packagename).first()
 
         if package is None:
+            log.error('Could not get package information')
             return redirect_to(h.url_for(controller='packages', packagename=None))
 
         c.package = package
         c.config = config
         c.package_dir = get_package_dir(package.name)
+
+        log.debug('Rendering page')
         return render('/package/index.mako')

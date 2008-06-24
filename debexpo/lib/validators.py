@@ -36,12 +36,15 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import formencode
+import logging
 import md5
 
 from debexpo.lib.base import *
 
 from debexpo.model import meta
 from debexpo.model.users import User
+
+log = logging.getLogger(__name__)
 
 class GpgKey(formencode.validators.FieldStorageUploadConverter):
     """
@@ -59,6 +62,7 @@ class GpgKey(formencode.validators.FieldStorageUploadConverter):
         ``c``
         """
         if not value.value.startswith('-----BEGIN PGP PUBLIC KEY BLOCK-----'):
+            log.error('GPG key does not start with BEGIN PGP PUBLIC KEY BLOCK')
             raise formencode.Invalid(_('Invalid GPG key'), value, c)
 
         return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
@@ -75,6 +79,7 @@ class CurrentPassword(formencode.validators.String):
         user = meta.session.query(User).get(session['user_id'])
 
         if user.password != md5.new(value).hexdigest():
+            log.error('Incorrect current password')
             raise formencode.Invalid(_('Incorrect password'), value, c)
 
         return formencode.validators.String._to_python(self, value, c)
@@ -110,7 +115,8 @@ class NewEmailToSystem(formencode.validators.Email):
         u = u.first()
 
         if u is not None:
-           raise formencode.Invalid(_('A user with this email address is already registered on the system'), value, c)
+            log.error('Email %s already found on system' % value)
+            raise formencode.Invalid(_('A user with this email address is already registered on the system'), value, c)
 
         return formencode.validators.Email._to_python(self, value, c)
 
@@ -130,6 +136,7 @@ class NewDebianEmailToSystem(NewEmailToSystem):
         ``c``
         """
         if not value.endswith('@debian.org'):
+            log.error('%s does not end with @debian.org' % value)
             raise formencode.Invalid(_('You must use your debian.org email address to register'), value, c)
 
         return NewEmailToSystem._to_python(self, value, c)

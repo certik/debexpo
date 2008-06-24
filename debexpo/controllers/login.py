@@ -62,17 +62,21 @@ class LoginController(BaseController):
         """
         Manages submissions to the login form.
         """
+        log.debug('Form validated successfully')
         password = md5.new(self.form_result['password']).hexdigest()
 
         u = None
         try:
             u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(password=password).filter_by(verification=None).one()
         except:
+            log.debug('Invalid email or password')
             c.message = _('Invalid email or password')
             return self.index(True)
 
         session['user_id'] = u.id
         session.save()
+
+        log.debug('Authentication successful; saving session')
 
         u.lastlogin = datetime.now()
         meta.session.commit()
@@ -91,6 +95,7 @@ class LoginController(BaseController):
         """
 
         if request.method == 'POST' and get is False:
+            log.debug('Login form submitted with email = "%s"' % request['POST'].get('email'))
             return self._login()
         else:
             return render('/login/index.mako')

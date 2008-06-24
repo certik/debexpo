@@ -68,9 +68,11 @@ class PackagesController(BaseController):
 
         packages = []
 
+        log.debug('Getting package list')
         packages_query = meta.session.query(Package)
 
         if package_filter is not None:
+            log.debug('Applying package list filter')
             packages_query = packages_query.filter(package_filter)
 
         # Loop through all package lists.
@@ -113,6 +115,8 @@ class PackagesController(BaseController):
         """
         Entry point into the PackagesController.
         """
+        log.debug('Main package listing requested')
+
         # List of packages to show in the list.
         packages = self._get_packages()
 
@@ -125,6 +129,8 @@ class PackagesController(BaseController):
         """
         List of packages depending on section.
         """
+        log.debug('Package listing on section = "%s" requested' % id)
+
         packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
 
         c.config = config
@@ -136,12 +142,15 @@ class PackagesController(BaseController):
         """
         List of packages depending on uploader.
         """
+        log.debug('Package listing on user.email = "%s" requested' % id)
+
         user = self._get_user(id)
 
         if user is not None:
             packages = self._get_packages(package_filter=(Package.user_id == user.id))
             username = user.name
         else:
+            log.warning('Could not find user')
             packages = []
             username = id
 

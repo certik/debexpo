@@ -38,7 +38,10 @@ __license__ = 'MIT'
 __contributors__ = ['Christoph Haas']
 
 import formencode
+import logging
 import pylons
+
+log = logging.getLogger(__name__)
 
 class State(object):
     """
@@ -71,6 +74,7 @@ def validate(schema, **state_kwargs):
     else:
         state = None
 
+    log.debug('Validating form against schema %s' % schema)
     return schema.to_python(pylons.request.params, state)
 
 def htmlfill(html, exception_error=None):

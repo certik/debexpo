@@ -65,16 +65,20 @@ class MyController(BaseController):
         """
         Handles a user submitting the details form.
         """
+        log.debug('Validating details form')
         try:
             fields = form.validate(DetailsForm, user_id=self.user.id)
         except Exception, e:
+            log.error('Failed validation')
             return form.htmlfill(self.index(get=True), e)
 
+        log.debug('Validation successful')
         self.user.name = fields['name']
         self.user.email = fields['email']
 
         meta.session.commit()
 
+        log.debug('Saved name and email and redirecting')
         return redirect_to(h.url_for('my', action=None))
 
     @validate(schema=GpgForm(), form='index')
@@ -82,16 +86,21 @@ class MyController(BaseController):
         """
         Handles a user submitting the GPG form.
         """
+        log.debug('GPG form validated successfully')
+
         # Should the key be deleted?
         if self.form_result['delete_gpg'] and self.user.gpg is not None:
+            log.debug('Deleting current GPG key')
             self.user.gpg = None
 
         # Should the key be updated.
         if 'gpg' in self.form_result and self.form_result['gpg'] is not None:
+            log.debug('Setting a new GPG key')
             self.user.gpg = self.form_result['gpg'].value
 
         meta.session.commit()
 
+        log.debug('Saved key changes and redirecting')
         return redirect_to(h.url_for('my', action=None))
 
     @validate(schema=PasswordForm(), form='index')
@@ -99,9 +108,13 @@ class MyController(BaseController):
         """
         Handles a user submitting the password form.
         """
+        log.debug('Password form validated successfully')
+
         # Simply set password.
         self.user.password = md5.new(self.form_result['password_new']).hexdigest()
         meta.session.commit()
+        log.debug('Saved new password and redirecting')
+
         return redirect_to(h.url_for('my', action=None))
 
     @validate(schema=OtherDetailsForm(), form='index')
@@ -109,6 +122,8 @@ class MyController(BaseController):
         """
         Handles a user submitting the other details form.
         """
+        log.debug('Other details form validated successfully')
+
         # A country ID of -1 means the country shouldn't be set.
         if self.form_result['country'] == -1:
             self.user.country = None
@@ -127,6 +142,7 @@ class MyController(BaseController):
                     self.user.status = constants.USER_STATUS_NORMAL
 
         meta.session.commit()
+        log.debug('Saved other details and redirecting')
 
         return redirect_to(h.url_for('my', action=None))
 
@@ -139,14 +155,19 @@ class MyController(BaseController):
             for validators to re-display the form if there's something wrong.
         """
         # Get User object.
+        log.debug('Getting user object for user_id = "%s"' % session['user_id'])
         self.user = meta.session.query(User).get(session['user_id'])
 
         if self.user is None:
             # Cannot find user from user_id.
+            log.debug('Cannot find user from user_id')
             return redirect_to(h.url_for(controller='login'))
+
+        log.debug('User object successfully selected')
 
         # A form has been submit.
         if request.method == 'POST' and get is False:
+            log.debug('A form has been submit')
             try:
                 return { 'details' : self._details,
                   'gpg' : self._gpg,
@@ -154,7 +175,10 @@ class MyController(BaseController):
                   'other_details' : self._other_details
                 }[request.params['form']]()
             except KeyError:
+                log.error('Could not find form name; defaulting to main page')
                 pass
+
+        log.debug('Populating template context')
 
         # The template will need to look at the user details.
         c.user = self.user
@@ -186,4 +210,5 @@ class MyController(BaseController):
             # TODO: Make this display the right key ID.
             c.currentgpg = '0xXXXXXX'
 
+        log.debug('Rendering page')
         return render('/my/index.mako')

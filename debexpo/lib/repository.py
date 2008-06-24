@@ -35,11 +35,12 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import os
-from debian_bundle import deb822, debfile
-from sqlalchemy import select
-import gzip
 import bz2
+import gzip
+from debian_bundle import deb822, debfile
+import logging
+import os
+from sqlalchemy import select
 
 from debexpo.lib.utils import get_package_dir
 from debexpo.model import meta
@@ -47,6 +48,8 @@ from debexpo.model.package_files import PackageFile
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_versions import PackageVersion
+
+log = logging.getLogger(__name__)
 
 class Repository(object):
     """
@@ -105,7 +108,7 @@ class Repository(object):
         # Read the deb file.
         deb = debfile.DebFile(filename).debcontrol()
 
-        # There are a few additions toa debian/control file to make a Packages entry, listed
+        # There are a few additions to a debian/control file to make a Packages entry, listed
         # and acted upon below:
 
         deb['Filename'] = package_file.filename
@@ -125,6 +128,9 @@ class Repository(object):
         ``component``
             Name of the component to look at.
         """
+        log.debug('Getting all sources files for dist = %s, component = %s, arch = %s' %
+            (distribution, component, arch))
+
         # Get all PackageFile instances...
         dscfiles = meta.session.query(PackageFile)
 
@@ -170,6 +176,9 @@ class Repository(object):
         ``arch``
             Name of the architecture to look at.
         """
+        log.debug('Getting all package files for dist = %s, component = %s, arch = %s' %
+            (distribution, component, arch))
+
         # Get all PackageFile instances...
         debfiles = meta.session.query(PackageFile)
 
@@ -291,6 +300,8 @@ class Repository(object):
         much more skilled at SQLAlchemy, I'll take a look at this and see if I can perform
         all the operations on the db level. That would be nice.
         """
+        log.debug('Creating dists -> components -> archs dictionary')
+
         # Get distinct distributions from package_versions.
         dists = meta.engine.execute(select([PackageVersion.c.distribution]).distinct())
 
@@ -360,6 +371,7 @@ class Repository(object):
             dir = os.path.join(dir, dirname)
 
             if not os.path.isdir(dir):
+                log.debug('Creating directory %s' % dir)
                 os.mkdir(dir)
 
     def update_sources(self):
@@ -367,6 +379,8 @@ class Repository(object):
         Updates all the Sources.{gz,bz2} files for all distributions and components
         by looking at all source packages.
         """
+        log.debug('Updating Sources files')
+
         # Get distributions and components.
         dists = self._get_dists_comps_archs()
 
@@ -384,10 +398,12 @@ class Repository(object):
                 if sources == '':
                     for format, extension in self.compression:
                         if os.path.isfile('%s.%s' % (filename, extension)):
+                            log.debug('Removing empty Sources file: %s' % filename)
                             os.remove('%s.%s' % (filename, extension))
                 else:
                     for format, extension in self.compression:
                         # Create the Sources files.
+                        log.debug('Creating Sources file: %s' % filename)
                         f = format('%s.%s' % (filename, extension), 'w')
                         f.write(sources)
                         f.close()
@@ -397,6 +413,8 @@ class Repository(object):
         Updates all the Packages.{gz,bz2} files for all distributions and components
         by looking at all binary packages.
         """
+        log.debug('Updating Packages files')
+
         # Get distributions and components.
         dists = self._get_dists_comps_archs()
 
@@ -415,10 +433,12 @@ class Repository(object):
                     if packages == '':
                         for format, extension in self.compression:
                             if os.path.isfile('%s.%s' % (filename, extension)):
+                                log.debug('Removing empty Packages file: %s' % filename)
                                 os.remove('%s.%s' % (filename, extension))
                     else:
                         for format, extension in self.compression:
                             # Create the Packages files.
+                            log.debug('Creating Packages file: %s' % filename)
                             f = format('%s.%s' % (filename, extension), 'w')
                             f.write(packages)
                             f.close()
@@ -427,6 +447,5 @@ class Repository(object):
         """
         Updates both Sources and Packages files in the repository.
         """
-
         self.update_sources()
         self.update_packages()

@@ -62,6 +62,7 @@ class RegisterController(BaseController):
         """
         Entry point to controller. Displays the index page.
         """
+        log.debug('Main register form requested')
         return render('/register/index.mako')
 
     def _send_activate_email(self, key, recipient):
@@ -74,6 +75,7 @@ class RegisterController(BaseController):
         ``recipient``
             Email address to send to.
         """
+        log.debug('Sending activation email')
         email = Email('register_activate')
         c.activate_url = 'http://' + request.host + h.url_for(action='activate', id=key)
         email.send([recipient])
@@ -83,6 +85,8 @@ class RegisterController(BaseController):
         """
         Handles the form submission for a maintainer account registration.
         """
+        log.debug('Maintainer form validated successfully')
+
         # Activation key.
         key = md5.new(str(random.random())).hexdigest()
 
@@ -97,6 +101,7 @@ class RegisterController(BaseController):
 
         self._send_activate_email(key, self.form_result['email'])
 
+        log.debug('New user saved')
         return render('/register/activate.mako')
 
     def maintainer(self):
@@ -105,8 +110,10 @@ class RegisterController(BaseController):
         """
         # Has the form been submitted?
         if request.method == 'POST':
+            log.debug('Maintainer form submitted')
             return self._maintainer_submit()
         else:
+            log.debug('Maintainer form requested')
             return render('/register/maintainer.mako')
 
     @validate(schema=SponsorForm(), form='sponsor')
@@ -114,6 +121,8 @@ class RegisterController(BaseController):
         """
         Handles the form submission for a sponsor account registration.
         """
+        log.debug('Sponsor form validated successfully')
+
         # Activation key.
         key = md5.new(str(random.random())).hexdigest()
 
@@ -129,6 +138,7 @@ class RegisterController(BaseController):
 
         self._send_activate_email(key, self.form_result['email'])
 
+        log.debug('New user saved')
         return render('/register/activate.mako')
 
     def sponsor(self):
@@ -137,8 +147,10 @@ class RegisterController(BaseController):
         """
         # Has the form been submitted?
         if request.method == 'POST':
+            log.debug('Sponsor form submitted')
             return self._sponsor_submit()
         else:
+            log.debug('Sponsor form requested')
             return render('/register/sponsor.mako')
 
     def activate(self, id):
@@ -148,9 +160,12 @@ class RegisterController(BaseController):
         ``id``
             ID to use to verify the account.
         """
+        log.debug('Activation request with key = %s' % id)
+
         user = meta.session.query(User).filter_by(verification=id).first()
 
         if user is not None:
+            log.debug('Activating user "%s"' % user.name)
             user.verification = None
             meta.session.commit()
 
