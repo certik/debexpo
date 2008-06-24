@@ -66,7 +66,7 @@ class PackageController(BaseController):
         package = meta.session.query(Package).filter_by(name=packagename).first()
 
         if package is None:
-            return redirect_to(h.url_for('packages'))
+            return redirect_to(h.url_for(controller='packages', packagename=None))
 
         c.package = package
         c.config = config
