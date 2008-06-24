@@ -46,7 +46,7 @@
 
     <tr>
       <th>${ _('Uploaded') }:</th>
-      <td>foo</td>
+      <td>${ package_version.uploaded }</td>
     </tr>
 
     <tr>
@@ -73,7 +73,7 @@
 
     <tr>
       <th>${ _('Priority') }:</th>
-      <td>foo</td>
+      <td>${ package_version.priority }</td>
     </tr>
 
 % if c.config['debexpo.debian_specific'] == 'true':
