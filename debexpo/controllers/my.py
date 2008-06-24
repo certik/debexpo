@@ -151,19 +151,18 @@ class MyController(BaseController):
         # The template will need to look at the user details.
         c.user = self.user
 
-        # Create the countries <option> values.
-        countries = '<option value="-1"'
-        if self.user.country is None:
-            countries += ' selected'
-        countries += '></option>'
+        # Create the countries values.
+        countries = { '' : -1 }
 
         for country in meta.session.query(UserCountry).all():
-            countries += '<option value=""'
-            if self.user.country_id == country.id:
-                countries += ' selected'
-            countries += '>%s</option>' % country.name
+            countries[country.name] = country.id
 
         c.countries = countries
+
+        if self.user.country is None:
+            c.current_country = -1
+        else:
+            c.current_country = self.user.country.id
 
         # Toggle whether Debian developer/maintainer forms should be shown.
         if self.user.status == constants.USER_STATUS_DEVELOPER:

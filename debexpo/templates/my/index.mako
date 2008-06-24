@@ -112,7 +112,7 @@
   <table>
     <tr>
       <td>${ _('Country') }:</td>
-      <td>${ h.select('country', c.countries) }</td>
+      <td>${ h.select('country', h.options_for_select(c.countries, c.current_country)) }</td>
     </tr>
 
     <tr>
