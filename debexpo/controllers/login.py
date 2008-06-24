@@ -66,7 +66,7 @@ class LoginController(BaseController):
 
         u = None
         try:
-            u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(password=password).one()
+            u = meta.session.query(User).filter_by(email=self.form_result['email']).filter_by(password=password).filter_by(verification=None).one()
         except:
             c.message = _('Invalid email or password')
             return self.index(True)
