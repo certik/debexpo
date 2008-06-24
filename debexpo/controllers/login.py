@@ -95,7 +95,7 @@ class LoginController(BaseController):
         """
 
         if request.method == 'POST' and get is False:
-            log.debug('Login form submitted with email = "%s"' % request['POST'].get('email'))
+            log.debug('Login form submitted with email = "%s"' % request.POST.get('email'))
             return self._login()
         else:
             return render('/login/index.mako')
