@@ -63,6 +63,11 @@ class RegisterController(BaseController):
         Entry point to controller. Displays the index page.
         """
         log.debug('Main register form requested')
+
+        if config['debexpo.debian_specific'] != 'true':
+            log.error('debexpo.debian_specific is !true; redirecting to maintainer form')
+            redirect_to(h.url_for(action='maintainer'))
+
         return render('/register/index.mako')
 
     def _send_activate_email(self, key, recipient):
@@ -145,6 +150,10 @@ class RegisterController(BaseController):
         """
         Provides the form for a sponsor account registration.
         """
+        if config['debexpo.debian_specific'] != 'true':
+            log.error('Sponsor form requested when debexpo.debian_specific option set to !true; redirecting to maintainer form')
+            redirect_to(h.url_for(action='maintainer'))
+
         # Has the form been submitted?
         if request.method == 'POST':
             log.debug('Sponsor form submitted')
