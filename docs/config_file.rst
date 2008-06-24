@@ -53,3 +53,8 @@ Email address of site support.
 ===========================
 
 Toggle whether to show Debian-specific contents of the site. Values are ``true`` or ``false``.
+
+``debexpo.plugins.post_upload``
+===============================
+
+Which post-upload plugins to run, in what order. Separate each plugin with a space.
