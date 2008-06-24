@@ -128,8 +128,8 @@ class Repository(object):
         ``component``
             Name of the component to look at.
         """
-        log.debug('Getting all sources files for dist = %s, component = %s, arch = %s' %
-            (distribution, component, arch))
+        log.debug('Getting all sources files for dist = %s, component = %s' %
+            (distribution, component))
 
         # Get all PackageFile instances...
         dscfiles = meta.session.query(PackageFile)
