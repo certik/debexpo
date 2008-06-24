@@ -36,7 +36,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
-import formencode
 import md5
 import random
 from datetime import datetime
@@ -44,70 +43,12 @@ from datetime import datetime
 from debexpo.lib.base import *
 from debexpo.lib import constants
 from debexpo.lib.email import Email
+from debexpo.lib.schemas import MaintainerForm, SponsorForm
+
 from debexpo.model import meta
 from debexpo.model.users import User
 
 log = logging.getLogger(__name__)
-
-class NewEmailToSystem(formencode.validators.Email):
-    """
-    Email validator class to make sure there is not another user with
-    the same email address already registered.
-    """
-    allow = None
-
-    def _to_python(self, value, c):
-        """
-        Validate the email address.
-
-        ``value``
-            Address to validate.
-
-        ``c``
-        """
-        u = meta.session.query(User).filter_by(email=value)
-
-        # self.allow contains a user_id that should be ignored (i.e. when the user
-        # wants to keep the same email).
-        if self.allow is not None:
-            u = u.filter(User.id != self.allow)
-
-        u = u.first()
-
-        if u is not None:
-           raise formencode.Invalid(_('A user with this email address is already registered on the system'), value, c)
-
-        return formencode.validators.Email._to_python(self, value, c)
-
-class NewDebianEmailToSystem(NewEmailToSystem):
-    def _to_python(self, value, c):
-        if not value.endswith('@debian.org'):
-            raise formencode.Invalid(_('You must use your debian.org email address to register'), value, c)
-
-        return NewEmailToSystem._to_python(self, value, c)
-
-class RegisterForm(formencode.Schema):
-    name = formencode.validators.String(not_empty=True)
-    password = formencode.validators.String(min=6)
-    password_confirm = formencode.validators.String(min=6)
-    commit = formencode.validators.String()
-
-    # Make sure password and password_confirm are the same.
-    chained_validators = [
-        formencode.validators.FieldsMatch('password', 'password_confirm')
-    ]
-
-class MaintainerForm(RegisterForm):
-    """
-    Schema for the maintainer registration form.
-    """
-    email = NewEmailToSystem(not_empty=True)
-
-class SponsorForm(RegisterForm):
-    """
-    Schema for the sponsor registration form.
-    """
-    email = NewDebianEmailToSystem(not_empty=True)
 
 class RegisterController(BaseController):
 

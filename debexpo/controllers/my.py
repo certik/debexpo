@@ -28,111 +28,25 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds the MyController and form schemas.
+Holds the MyController.
 """
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import formencode
 import logging
 import md5
 
 from debexpo.lib.base import *
 from debexpo.lib import constants
+from debexpo.lib.schemas import DetailsForm, GpgForm, PasswordForm, OtherDetailsForm
+
 from debexpo.model import meta
 from debexpo.model.users import User
 from debexpo.model.user_countries import UserCountry
-from debexpo.controllers.register import NewEmailToSystem
 
 log = logging.getLogger(__name__)
-
-class MyForm(formencode.Schema):
-    """
-    General schema for all forms in the controller to extend.
-    """
-    commit = formencode.validators.String()
-    form = formencode.validators.String()
-
-class DetailsForm(MyForm):
-    """
-    Schema for updating user details.
-    """
-    name = formencode.validators.String(not_empty=True)
-    email = NewEmailToSystem(not_empty=True, allow=session['user_id'])
-
-class GpgKey(formencode.validators.FieldStorageUploadConverter):
-    """
-    Validator for an uploaded GPG key. They must with the 'BEGIN PGP PUBLIC KEY BLOCK'
-    text.
-    """
-
-    def _to_python(self, value, c):
-        """
-        Validate the GPG key.
-
-        ``value``
-            FieldStorage uploaded file.
-
-        ``c``
-        """
-        if not value.value.startswith('-----BEGIN PGP PUBLIC KEY BLOCK-----'):
-            raise formencode.Invalid(_('Invalid GPG key'), value, c)
-
-        return formencode.validators.FieldStorageUploadConverter._to_python(self, value, c)
-
-class GpgForm(MyForm):
-    """
-    Schema for updating the user's GPG key.
-    """
-    gpg = GpgKey()
-    delete_gpg = formencode.validators.Int()
-
-class CurrentPassword(formencode.validators.String):
-    """
-    Validator for a current password depending on the session's user_id.
-    """
-
-    def _to_python(self, value, c):
-        """
-        Validate the password.
-        """
-        user = meta.session.query(User).get(session['user_id'])
-
-        if user.password != md5.new(value).hexdigest():
-            raise formencode.Invalid(_('Incorrect password'), value, c)
-
-        return formencode.validators.String._to_python(self, value, c)
-
-class PasswordForm(MyForm):
-    """
-    Schema for updating the user's password.
-    """
-    password_current = CurrentPassword()
-    password_confirm = formencode.validators.String(min=6)
-    password_new = formencode.validators.String(min=6)
-
-    # Make sure password_new and password_confirm are the same.
-    chained_validators = [
-        formencode.validators.FieldsMatch('password_new', 'password_confirm')
-    ]
-
-class CheckBox(formencode.validators.Int):
-    """
-    Validator for a checkbox. When not checked, it doesn't send, and formencode
-    complains.
-    """
-    if_missing = None
-
-class OtherDetailsForm(MyForm):
-    """
-    Schema for updating other details: country, jabber, ircnick and status.
-    """
-    country = formencode.validators.Number()
-    ircnick = formencode.validators.String()
-    jabber = formencode.validators.String()
-    status = CheckBox()
 
 class MyController(BaseController):
     """

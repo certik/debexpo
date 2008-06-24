@@ -28,31 +28,23 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Holds the LoginController class and LoginForm schema.
+Holds the LoginController class.
 """
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-import formencode
 import logging
 import md5
 from datetime import datetime
 
 from debexpo.lib.base import *
+from debexpo.lib.schemas import LoginForm
 from debexpo.model import meta
 from debexpo.model.users import User
 
 log = logging.getLogger(__name__)
-
-class LoginForm(formencode.Schema):
-    """
-    Schema for the login form.
-    """
-    email = formencode.validators.Email(not_empty=True)
-    password = formencode.validators.String(not_empty=True)
-    commit = formencode.validators.String()
 
 class LoginController(BaseController):
     """
