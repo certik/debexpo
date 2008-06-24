@@ -143,7 +143,7 @@ class MyController(BaseController):
 
         if self.user is None:
             # Cannot find user from user_id.
-            return redirect_to(url_for(controller='login'))
+            return redirect_to(h.url_for(controller='login'))
 
         # A form has been submit.
         if request.method == 'POST' and get is False:
