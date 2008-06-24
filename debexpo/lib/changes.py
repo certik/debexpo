@@ -99,3 +99,11 @@ class Changes(object):
         Returns the priority of the package.
         """
         return parse_section(self._data['Files'][0]['priority'])[1]
+
+    def get_dsc(self):
+        """
+        Returns the name of the .dsc file.
+        """
+        for item in self.get_files():
+            if item.endswith('.dsc'):
+                return item

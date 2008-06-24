@@ -86,3 +86,9 @@ class TestChangesController(TestCase):
         Tests Changes.get_priority().
         """
         self.assertEqual(self.changes.get_priority(), 'optional')
+
+    def testGetDsc(self):
+        """
+        Tests Changes.get_dsc().
+        """
+        self.assertEqual(self.changes.get_dsc(), 'synce-hal_0.1-1.dsc')
