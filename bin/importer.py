@@ -38,6 +38,7 @@ __license__ = 'MIT'
 
 from optparse import OptionParser
 import ConfigParser
+from datetime import datetime
 import logging
 import logging.config
 import os
@@ -256,7 +257,7 @@ class Importer(object):
 
         package_version = PackageVersion(package=package, version=self.changes['Version'],
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
-            component=component, closes=closes)
+            component=component, closes=closes, uploaded=datetime.now())
         meta.session.save(package_version)
 
         source_package = SourcePackage(package_version=package_version)

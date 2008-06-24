@@ -50,6 +50,7 @@ t_package_versions = sa.Table('package_versions', meta.metadata,
     sa.Column('qa_status', sa.types.Integer, nullable=False),
     sa.Column('component', sa.types.String(200), nullable=False),
     sa.Column('closes', sa.types.String(200), nullable=True),
+    sa.Column('uploaded', sa.types.DateTime, nullable=False),
     )
 
 class PackageVersion(OrmObject):
