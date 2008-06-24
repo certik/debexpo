@@ -143,7 +143,7 @@ class Importer(object):
         ``reason``
             String of why it failed.
         """
-        log.warning('Rejected: %s' % reason)
+        log.error('Rejected: %s' % reason)
 
         self._remove_files()
 
