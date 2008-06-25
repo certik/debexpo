@@ -48,6 +48,9 @@ log = logging.getLogger(__name__)
 plugin_stages = {
     'post-upload' : {
         'extract' : False,
+    },
+    'qa' : {
+        'extract' : True,
     }
 }
 

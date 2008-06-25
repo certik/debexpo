@@ -58,3 +58,8 @@ Toggle whether to show Debian-specific contents of the site. Values are ``true``
 ===============================
 
 Which post-upload plugins to run, in what order. Separate each plugin with a space.
+
+``debexpo.plugins.qa``
+===============================
+
+Which QA plugins to run, in what order. Separate each plugin with a space.
