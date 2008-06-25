@@ -41,7 +41,7 @@ import os
 from debexpo.lib import constants
 from debexpo.lib.base import *
 from debexpo.lib.utils import md5sum
-from debexpo.plugins import BasePlugin, PluginResult
+from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
