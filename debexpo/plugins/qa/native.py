@@ -61,9 +61,9 @@ class NativePlugin(BasePlugin):
             # Most uploads will not be native, and especially on mentors, a native
             # package is almost probably in error.
             log.warning('Package is native')
-            return [self.failed(__name__, 'Package is native', constants.PLUGIN_SEVERITY_WARNING)]
+            self.failed(__name__, 'Package is native', constants.PLUGIN_SEVERITY_WARNING)
         else:
             log.debug('Package is not native')
-            return [self.passed(__name__, 'Package is not native', constants.PLUGIN_SEVERITY_INFO)]
+            self.passed(__name__, 'Package is not native', constants.PLUGIN_SEVERITY_INFO)
 
 plugin = NativePlugin

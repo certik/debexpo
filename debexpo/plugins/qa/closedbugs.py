@@ -51,7 +51,6 @@ class ClosedBugsPlugin(BasePlugin):
         """
         Check to make sure the bugs closed belong to the package.
         """
-        result = []
         log.debug('Checking whether the bugs closed in the package belong to the package')
 
         try:
@@ -61,7 +60,6 @@ class ClosedBugsPlugin(BasePlugin):
                 server = SOAPpy.SOAPProxy('http://bugs.debian.org/cgi-bin/soap.cgi', 'Debbugs/SOAP')
             except:
                 log.critical('An error occurred when creating the SOAP proxy')
-                return []
 
             binary_packages = self.changes['Description'].split('\n')
             binary_packages = [t.strip() for t in binary_packages]
@@ -78,12 +76,11 @@ class ClosedBugsPlugin(BasePlugin):
 
                 if self._package_in_descriptions(name, binary_packages):
                     log.debug('Bug #%s belongs to this package' % bug)
-                    result.append(self.passed(__name__, 'Bug #%s belongs to this package', constants.PLUGIN_SEVERITY_INFO))
+                    self.passed(__name__, 'Bug #%s belongs to this package', constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.error('Bug #%s does not belong to this package' % bug)
-                    result.append(self.failed(__name__, 'Bug #%s does not belong to this package', constants.PLUGIN_SEVERITY_ERROR))
+                    self.failed(__name__, 'Bug #%s does not belong to this package', constants.PLUGIN_SEVERITY_ERROR)
 
-            return result
         except KeyError:
             log.debug('Package does not close any bugs')
 

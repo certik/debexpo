@@ -51,7 +51,6 @@ class GpgSignedPlugin(BasePlugin):
         """
         Check to make sure the changes file is GPG signed.
         """
-        result = []
         log.debug('Checking whether the changes file is GPG signed')
 
         for filename in [self.changes_file, self.changes.get_dsc()]:
@@ -66,11 +65,9 @@ class GpgSignedPlugin(BasePlugin):
 
             if contents.startswith('-----BEGIN PGP SIGNED MESSAGE-----'):
                 log.debug('File %s is GPG signed' % filename)
-                result.append(self.passed(__name__, 'File %s is GPG signed' % filename, constants.PLUGIN_SEVERITY_INFO))
+                self.passed(__name__, 'File %s is GPG signed' % filename, constants.PLUGIN_SEVERITY_INFO)
             else:
                 log.error('File %s is not GPG signed' % filename)
-                result.append(self.failed(__name__, 'File %s is not GPG signed' % filename, constants.PLUGIN_SEVERITY_ERROR))
-
-        return result
+                self.failed(__name__, 'File %s is not GPG signed' % filename, constants.PLUGIN_SEVERITY_ERROR)
 
 plugin = GpgSignedPlugin

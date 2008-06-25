@@ -69,9 +69,9 @@ class LintianPlugin(BasePlugin):
 
             output = 'Package is not Lintian clean\n' + output
             logmessage('Package is not Lintian clean')
-            return [self.failed(__name__, output, severity)]
+            self.failed(__name__, output, severity)
         else:
             log.debug('Package is Lintian clean')
-            return [self.passed(__name__, 'Package is Lintian clean', constants.PLUGIN_SEVERITY_INFO)]
+            self.passed(__name__, 'Package is Lintian clean', constants.PLUGIN_SEVERITY_INFO)
 
 plugin = LintianPlugin

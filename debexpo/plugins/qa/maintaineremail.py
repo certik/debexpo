@@ -65,10 +65,10 @@ class MaintainerEmailPlugin(BasePlugin):
 
                 if user.email == email[1:-1]:
                     log.debug('Maintainer email is the same as the uploader')
-                    return [self.passed(__name__, 'Maintainer email is the same as the uploader', constants.PLUGIN_SEVERITY_INFO)]
+                    self.passed(__name__, 'Maintainer email is the same as the uploader', constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.warning('%s != %s' % (user.email, email[1:-1]))
-                    return [self.failed(__name__, 'Changes file is not GPG signed', constants.PLUGIN_SEVERITY_WARNING)]
+                    self.failed(__name__, 'Changes file is not GPG signed', constants.PLUGIN_SEVERITY_WARNING)
 
         log.warning('Could not get the uploader\'s user details from the database')
 

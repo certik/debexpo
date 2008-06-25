@@ -57,24 +57,16 @@ class BasePlugin(object):
         """
         Runs all the tests in the self.tests list.
         """
-        result = []
+        self.result = []
         for test in self.tests:
             if hasattr(self, test):
-                ret = getattr(self, test)()
+                getattr(self, test)()
 
-                if ret is not None and type(ret) is list:
-                    result.extend(ret)
-                elif ret is not None and type(ret) is PluginResult:
-                    result.append(ret)
-                else:
-                    # Plugin didn't return anything of any value.
-                    pass
-
-        return result
+        return self.result
 
     def passed(self, name, data, severity):
         """
-        Returns a PluginResult for a passed test.
+        Adds a PluginResult for a passed test to the result list.
 
         ``name``
             Name of the plugin.
@@ -85,12 +77,12 @@ class BasePlugin(object):
         ``severity``
             Severity of the result.
         """
-        return PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_PASSED,
-            data=data, severity=severity)
+        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_PASSED,
+            data=data, severity=severity))
 
     def failed(self, name, data, severity):
         """
-        Returns a PluginResult for a failed test.
+        Adds a PluginResult for a failed test to the result list.
 
         ``name``
             Name of the plugin.
@@ -102,8 +94,8 @@ class BasePlugin(object):
             Severity of the result.
 
         """
-        return PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_FAILED,
-            data=data, severity=severity)
+        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_FAILED,
+            data=data, severity=severity))
 
 class PluginResult(object):
     """
