@@ -69,10 +69,10 @@ class WatchFilePlugin(BasePlugin):
 
         if self._watch_file_present():
             log.debug('Watch file present')
-            self.passed(__name__, 'debian/watch file exists', constants.PLUGIN_SEVERITY_INFO)
+            self.passed('watch-file-present', None, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Watch file not present')
-            self.failed(__name__, 'debian/watch does not exist', constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('watch-file-not-present', None, constants.PLUGIN_SEVERITY_WARNING)
 
     def check_watch_file_works(self):
         """
@@ -83,10 +83,10 @@ class WatchFilePlugin(BasePlugin):
 
         if self._watch_file_works():
             log.debug('Watch file works')
-            self.passed(__name__, 'debian/watch file works', constants.PLUGIN_SEVERITY_INFO)
+            self.passed('watch-file-works', None, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Watch file does not work')
-            self.failed(__name__, 'debian/watch file does not work\n' + self.output, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('watch-file-does-not-work', self.output, constants.PLUGIN_SEVERITY_WARNING)
 
     def check_new_upstream(self):
         """
@@ -98,9 +98,18 @@ class WatchFilePlugin(BasePlugin):
 
         if self.status == 256:
             log.debug('Package is the latest upstream version')
-            self.passed(__name__, 'Package is the latest upstream version', constants.PLUGIN_SEVERITY_INFO)
+            self.passed('no-new-upstream-version', None, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.warning('Package is not the latest upstream version')
-            self.failed(__name__, 'Package is not the latest upstream version\n' + self.output, constants.PLUGIN_SEVERITY_WARNING)
+            self.failed('new-upstream-available', self.output, constants.PLUGIN_SEVERITY_WARNING)
 
 plugin = WatchFilePlugin
+
+outcomes = {
+    'watch-file-present' : { 'name' : 'A watch file is present' },
+    'watch-file-not-present' : { 'name' : 'A watch file is not present' },
+    'watch-file-works' : { 'name' : 'The watch file works' },
+    'watch-file-does-not-work' : { 'name' : 'The watch file does not work' },
+    'new-upstream-available' : { 'name' : 'A new upstream version is available' },
+    'no-new-upstream-available' : { 'name' : 'Package is the latest upstream version' },
+}

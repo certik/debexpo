@@ -76,10 +76,10 @@ class ClosedBugsPlugin(BasePlugin):
 
                 if self._package_in_descriptions(name, binary_packages):
                     log.debug('Bug #%s belongs to this package' % bug)
-                    self.passed(__name__, 'Bug #%s belongs to this package', constants.PLUGIN_SEVERITY_INFO)
+                    self.passed('bug-in-package', None, constants.PLUGIN_SEVERITY_INFO)
                 else:
                     log.error('Bug #%s does not belong to this package' % bug)
-                    self.failed(__name__, 'Bug #%s does not belong to this package', constants.PLUGIN_SEVERITY_ERROR)
+                    self.failed('bug-not-in-package', bug, constants.PLUGIN_SEVERITY_ERROR)
 
         except KeyError:
             log.debug('Package does not close any bugs')
@@ -102,3 +102,8 @@ class ClosedBugsPlugin(BasePlugin):
         return False
 
 plugin = ClosedBugsPlugin
+
+outcomes = {
+    'bug-not-in-package' : { 'name' : 'A bug closed in this package doesn\'t belong to this package' },
+    'bug-in-package' : { 'name' : 'A bug closed in this package belongs to this package' },
+}

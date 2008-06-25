@@ -57,14 +57,19 @@ class CheckFilesPlugin(BasePlugin):
             log.debug('Checking md5sum of %s' % file['name'])
             sum = md5sum(os.path.join(config['debexpo.upload.incoming'], file['name']))
 
-            data = 'Changes file says md5sum is: %s\n' % file['md5sum']
-            data += 'Actual md5sum of file is: %s' % sum
+            data = 'Changes file says md5sum of %s is: %s\n' % (file['name'], file['md5sum'])
+            data += 'Actual md5sum of %s is: %s' % (file['name'], sum)
 
             if sum != file['md5sum']:
-                log.error('%s != %s; test failed' % (sum, file['md5sum']))
-                self.failed(__name__, data, constants.PLUGIN_SEVERITY_ERROR)
+                log.error('%s != %s' % (sum, file['md5sum']))
+                self.failed('md5sum-not-match', data, constants.PLUGIN_SEVERITY_ERROR)
             else:
                 log.debug('Test passed')
-                self.passed(__name__, data, constants.PLUGIN_SEVERITY_INFO)
+                self.passed('md5sum-match', None, constants.PLUGIN_SEVERITY_INFO)
 
 plugin = CheckFilesPlugin
+
+outcomes = {
+    'md5sum-not-match' : { 'name' : 'A package source file\'s md5sum does match its changes value' },
+    'md5sum-match' : { 'name' : 'A package source file\'s md5sum matches its changes value' },
+}

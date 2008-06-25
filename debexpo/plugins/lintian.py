@@ -60,18 +60,25 @@ class LintianPlugin(BasePlugin):
 
         if items and output != '':
             severity = constants.PLUGIN_SEVERITY_WARNING
+            outcome = 'lintian-warnings'
             logmessage = log.warning
             for item in items:
                 if item.startswith('E:'):
                     severity = constants.PLUGIN_SEVERITY_ERROR
+                    outcome = 'lintian-errors'
                     logmessage = log.error
                     break
 
-            output = 'Package is not Lintian clean\n' + output
             logmessage('Package is not Lintian clean')
-            self.failed(__name__, output, severity)
+            self.failed(outcome, output, severity)
         else:
             log.debug('Package is Lintian clean')
-            self.passed(__name__, 'Package is Lintian clean', constants.PLUGIN_SEVERITY_INFO)
+            self.passed('lintian-clean', None, constants.PLUGIN_SEVERITY_INFO)
 
 plugin = LintianPlugin
+
+outcomes = {
+    'lintian-clean' : { 'name' : 'Package is Lintian clean' },
+    'lintian-warnings' : { 'name' : 'Package has Lintian warnings' },
+    'lintian-errors' : { 'name' : 'Package has Lintian errors' },
+}

@@ -147,7 +147,7 @@ class Plugins(object):
             module = self._import_plugin(name)
 
             if hasattr(module, 'plugin'):
-                p = getattr(module, 'plugin')(changes=self.changes, \
+                p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
                     changes_file=self.changes_file, tempdir=self.tempdir,
                     user_id=self.user_id)
 

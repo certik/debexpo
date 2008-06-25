@@ -65,9 +65,14 @@ class GpgSignedPlugin(BasePlugin):
 
             if contents.startswith('-----BEGIN PGP SIGNED MESSAGE-----'):
                 log.debug('File %s is GPG signed' % filename)
-                self.passed(__name__, 'File %s is GPG signed' % filename, constants.PLUGIN_SEVERITY_INFO)
+                self.passed('gpg-signed', filename, constants.PLUGIN_SEVERITY_INFO)
             else:
                 log.error('File %s is not GPG signed' % filename)
-                self.failed(__name__, 'File %s is not GPG signed' % filename, constants.PLUGIN_SEVERITY_ERROR)
+                self.failed('not-gpg-signed', filename, constants.PLUGIN_SEVERITY_ERROR)
 
 plugin = GpgSignedPlugin
+
+outcomes = {
+    'gpg-signed' : { 'name' : 'A file is GPG signed' },
+    'not-gpg-signed' : { 'name' : 'A file is not GPG signed, and it should be' },
+}

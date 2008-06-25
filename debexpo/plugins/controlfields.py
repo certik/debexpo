@@ -44,6 +44,18 @@ from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
 
+fields = ['Homepage', 'Vcs-Browser', 'Vcs-Git', 'Vcs-Svn', 'Vcs-Bzr', 'Vcs-Hg']
+
+def _gen_outcomes():
+    outcomes = {}
+
+    for field in fields:
+        for isisnot in ['', '-not']:
+            outcomes['%s-is%s-present' % (field.lower(), isisnot)] = \
+                'The %s field is%s present in debian/control' % (field, isisnot.replace('-', ' '))
+
+    return outcomes
+
 class ControlFieldsPlugin(BasePlugin):
     tests = ['check_control_fields']
 
@@ -59,12 +71,14 @@ class ControlFieldsPlugin(BasePlugin):
             log.critical('Could not open dsc file; skipping plugin')
             return
 
-        for item in ['Homepage', 'Vcs-Browser', 'Vcs-Git', 'Vcs-Svn', 'Vcs-Bzr', 'Vcs-Hg']:
-
-            try:
-                self.info(__name__, '%s field is present: %s' % (item, dsc[item]))
-                log.debug('%s field is present: %s' % (item, dsc[item]))
-            except KeyError:
+        for item in fields:
+            if item in dsc:
+                self.info('%s-is-present' % item.lower(), '%s: %s' % (item, dsc[item]))
+                log.debug('%s: %s' % (item, dsc[item]))
+            else:
+                self.info('%s-is-not-present' % item.lower(), item)
                 log.debug('%s field is not present' % item)
 
 plugin = ControlFieldsPlugin
+
+outcomes = _gen_outcomes()

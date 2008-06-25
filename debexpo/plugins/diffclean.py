@@ -59,19 +59,24 @@ class DiffCleanPlugin(BasePlugin):
             log.warning('Package has no diff.gz file; native package?')
             return
 
-        diffstat = commands.getoutput('diffstat -p1 -l %s' % difffile)
+        diffstat = commands.getoutput('diffstat -p1 %s' % difffile)
 
         dirty = False
         for item in diffstat.split('\n'):
-            if not item.startswith('debian/'):
+            if not item.startswith(' debian/'):
                 dirty = True
                 break
 
         if not dirty:
             log.debug('Diff file %s is clean' % difffile)
-            self.passed(__name__, 'Diff file %s is clean' % difffile, constants.PLUGIN_SEVERITY_INFO)
+            self.passed('diff-clean', None, constants.PLUGIN_SEVERITY_INFO)
         else:
             log.error('Diff file %s is not clean' % difffile)
-            self.failed(__name__, 'Diff file %s is not clean' % difffile, constants.PLUGIN_SEVERITY_ERROR)
+            self.failed('diff-dirty', diffstat, constants.PLUGIN_SEVERITY_ERROR)
 
 plugin = DiffCleanPlugin
+
+outcomes = {
+    'diff-clean' : { 'name' : 'The diff.gz file is clean' },
+    'diff-dirty' : { 'name' : 'The diff.gz file is dirty' },
+}

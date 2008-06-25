@@ -64,12 +64,12 @@ class BasePlugin(object):
 
         return self.result
 
-    def passed(self, name, data, severity):
+    def passed(self, outcome, data, severity):
         """
         Adds a PluginResult for a passed test to the result list.
 
-        ``name``
-            Name of the plugin.
+        ``outcome``
+            Outcome tag of the test.
 
         ``data``
             Resulting data from the plugin, like more details about the process.
@@ -77,15 +77,15 @@ class BasePlugin(object):
         ``severity``
             Severity of the result.
         """
-        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_PASSED,
+        self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
-    def failed(self, name, data, severity):
+    def failed(self, outcome, data, severity):
         """
         Adds a PluginResult for a failed test to the result list.
 
-        ``name``
-            Name of the plugin.
+        ``outcome``
+            Outcome tag of the test.
 
         ``data``
             Resulting data from the plugin, like more details about the process.
@@ -94,20 +94,20 @@ class BasePlugin(object):
             Severity of the result.
 
         """
-        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_FAILED,
+        self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
-    def info(self, name, data):
+    def info(self, outcome, data):
         """
         Adds a PluginResult for an info test to the result list.
 
-        ``name``
-            Name of the plugin.
+        ``outcome``
+            Outcome tag of the test.
 
         ``data``
             Resulting data from the plugin, like more detail about the process.
         """
-        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_INFO,
+        self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=constants.PLUGIN_SEVERITY_INFO))
 
 class PluginResult(object):
@@ -140,7 +140,7 @@ class PluginResult(object):
         """
         Returns whether the test failed.
         """
-        return self.outcome == constants.PLUGIN_OUTCOME_FAILED
+        return self.severity > constants.PLUGIN_SEVERITY_INFO
 
     def stop(self):
         """
