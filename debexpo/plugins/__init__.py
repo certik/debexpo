@@ -97,6 +97,19 @@ class BasePlugin(object):
         self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_FAILED,
             data=data, severity=severity))
 
+    def info(self, name, data):
+        """
+        Adds a PluginResult for an info test to the result list.
+
+        ``name``
+            Name of the plugin.
+
+        ``data``
+            Resulting data from the plugin, like more detail about the process.
+        """
+        self.result.append(PluginResult(from_plugin=name, outcome=constants.PLUGIN_OUTCOME_INFO,
+            data=data, severity=constants.PLUGIN_SEVERITY_INFO))
+
 class PluginResult(object):
     """
     The class tests should return to provide details about a test.
