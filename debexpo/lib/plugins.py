@@ -39,6 +39,7 @@ import logging
 import os
 import tempfile
 import shutil
+import sys
 
 from debexpo.lib.base import *
 
@@ -143,8 +144,16 @@ class Plugins(object):
 
         # Run each plugin.
         for plugin in plugins.split(' '):
-            name = 'debexpo.plugins.%s' % plugin
-            module = self._import_plugin(name)
+            module = None
+            if 'debexpo.plugin_dir' in config and config['debexpo.plugindir'] != '':
+                # First try in the user-defined plugindir
+                sys.path.append(config['debexpo.plugindir'])
+                module = self._import_plugin(plugin)
+
+            if module is None:
+                # Try in debexpo.plugins
+                name = 'debexpo.plugins.%s' % plugin
+                module = self._import_plugin(name)
 
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \

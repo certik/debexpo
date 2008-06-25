@@ -63,3 +63,8 @@ Which post-upload plugins to run, in what order. Separate each plugin with a spa
 ===============================
 
 Which QA plugins to run, in what order. Separate each plugin with a space.
+
+``debexpo.plugindir``
+=====================
+
+Directory to add to path to put user-defined plugins in.
