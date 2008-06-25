@@ -61,7 +61,7 @@ class DiffCleanPlugin(BasePlugin):
         diffstat = commands.getoutput('diffstat -p1 %s' % difffile)
 
         dirty = False
-        for item in diffstat.split('\n'):
+        for item in diffstat.split('\n')[:-1]:
             if not item.startswith(' debian/'):
                 dirty = True
                 break
