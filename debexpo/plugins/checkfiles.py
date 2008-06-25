@@ -46,7 +46,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class CheckFilesPlugin(BasePlugin):
-    tests = ['test_md5sum']
 
     def test_md5sum(self):
         """

@@ -49,7 +49,6 @@ from debexpo.model.users import User
 log = logging.getLogger(__name__)
 
 class MaintainerEmailPlugin(BasePlugin):
-    tests = ['test_maintainer_email']
 
     def test_maintainer_email(self):
         """

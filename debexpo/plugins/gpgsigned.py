@@ -45,7 +45,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class GpgSignedPlugin(BasePlugin):
-    tests = ['test_gpg_signed']
 
     def test_gpg_signed(self):
         """

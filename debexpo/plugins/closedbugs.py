@@ -45,7 +45,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class ClosedBugsPlugin(BasePlugin):
-    tests = ['test_closed_bugs']
 
     def test_closed_bugs(self):
         """

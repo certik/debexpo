@@ -44,7 +44,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class NativePlugin(BasePlugin):
-    tests = ['test_native']
 
     def test_native(self):
         """

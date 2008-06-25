@@ -57,9 +57,8 @@ def _gen_outcomes():
     return outcomes
 
 class ControlFieldsPlugin(BasePlugin):
-    tests = ['check_control_fields']
 
-    def check_control_fields(self):
+    def test_control_fields(self):
         """
         Checks whether additional debian/control fields are present.
         """

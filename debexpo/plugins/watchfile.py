@@ -46,7 +46,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class WatchFilePlugin(BasePlugin):
-    tests = ['check_watch_file_present', 'check_watch_file_works', 'check_new_upstream']
 
     def _watch_file_present(self):
         return os.path.isfile(os.path.join('extracted', 'debian', 'watch'))
@@ -61,7 +60,7 @@ class WatchFilePlugin(BasePlugin):
         self._run_uscan()
         return (self.output.find('Newest version on remote site is') != -1)
 
-    def check_watch_file_present(self):
+    def test_watch_file_present(self):
         """
         Check to see whether there is a watch file in the package.
         """
@@ -74,7 +73,7 @@ class WatchFilePlugin(BasePlugin):
             log.warning('Watch file not present')
             self.failed('watch-file-not-present', None, constants.PLUGIN_SEVERITY_WARNING)
 
-    def check_watch_file_works(self):
+    def test_watch_file_works(self):
         """
         Check to see whether the watch file works.
         """
@@ -88,7 +87,7 @@ class WatchFilePlugin(BasePlugin):
             log.warning('Watch file does not work')
             self.failed('watch-file-does-not-work', self.output, constants.PLUGIN_SEVERITY_WARNING)
 
-    def check_new_upstream(self):
+    def test_new_upstream(self):
         """
         Check to see whether there is a new upstream version.
         """

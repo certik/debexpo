@@ -46,9 +46,8 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class LintianPlugin(BasePlugin):
-    tests = ['run_lintian']
 
-    def run_lintian(self):
+    def test_lintian(self):
         """
         Method to run lintian on the package.
         """

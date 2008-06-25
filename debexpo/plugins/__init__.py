@@ -58,9 +58,9 @@ class BasePlugin(object):
         Runs all the tests in the self.tests list.
         """
         self.result = []
-        for test in self.tests:
-            if hasattr(self, test):
-                getattr(self, test)()
+        for method in dir(self):
+            if method.startswith('test'):
+                getattr(self, method)()
 
         return self.result
 

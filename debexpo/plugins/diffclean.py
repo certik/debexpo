@@ -45,7 +45,6 @@ from debexpo.plugins import BasePlugin
 log = logging.getLogger(__name__)
 
 class DiffCleanPlugin(BasePlugin):
-    tests = ['test_diff_clean']
 
     def test_diff_clean(self):
         """
