@@ -117,3 +117,9 @@ class Changes(object):
                 return item
 
         return None
+
+    def get_pool_path(self):
+        """
+        Returns the path the changes file would be
+        """
+        return self._data.get_pool_path()

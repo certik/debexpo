@@ -83,24 +83,6 @@ def get_package_dir(source):
     else:
         return os.path.join(source[0], source)
 
-def get_repository_dir(changes):
-    """
-    Returns the directory in the repository to install a package into.
-
-    For example, a package with source name *foo* and in section *main*
-    would return a repository directory of ``pool/main/f/foo``.
-
-    ``changes``
-        *Changes* class instance to look at.
-    """
-    package_dir = get_package_dir(changes['Source'])
-    component = changes.get_component()
-
-    out = os.path.join('pool', component)
-    out = os.path.join(out, package_dir)
-
-    return out
-
 def md5sum(filename):
     """
     Returns the md5sum of a file specified.

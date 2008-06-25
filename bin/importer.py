@@ -212,7 +212,7 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
-        from debexpo.lib.utils import parse_section, get_repository_dir, md5sum
+        from debexpo.lib.utils import parse_section, md5sum
         from pylons import config
 
         # Import model objects
@@ -268,7 +268,7 @@ class Importer(object):
 
         # Add PackageFile objects to the database for each uploaded file
         for file in self.changes.get_files():
-            filename = os.path.join(get_repository_dir(self.changes), file)
+            filename = os.path.join(self.changes.get_pool_path(), file)
             sum = md5sum(os.path.join(config['debexpo.repository'], filename))
             size = os.stat(os.path.join(config['debexpo.repository'], filename))[ST_SIZE]
 
@@ -302,7 +302,6 @@ class Importer(object):
         from pylons import config
         from debexpo.lib.changes import Changes
         from debexpo.lib.repository import Repository
-        from debexpo.lib.utils import get_repository_dir
         from debexpo.lib.plugins import Plugins
 
         # Try parsing the changes file, but fail if there's an error.
@@ -339,7 +338,7 @@ class Importer(object):
 
         # Loop through parent directories in the target installation directory to make sure they
         # all exist. If not, create them.
-        for dir in get_repository_dir(self.changes).split('/'):
+        for dir in self.changes.get_pool_path().split('/'):
             destdir = os.path.join(destdir, dir)
 
             if not os.path.isdir(destdir):

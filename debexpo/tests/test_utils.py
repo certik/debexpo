@@ -75,14 +75,6 @@ class TestUtilsController(TestCase):
         self.assertEqual(t('foo'), 'f/foo')
         self.assertEqual(t('libfoo'), 'libf/libfoo')
 
-    def testGetRepositoryDir(self):
-        """
-        Tests debexpo.lib.utils.get_repository_dir.
-        """
-        c = Changes(filename='debexpo/tests/changes/synce-hal_0.1-1_source.changes')
-
-        self.assertEqual(get_repository_dir(c), 'pool/main/s/synce-hal')
-
     def testMd5sum(self):
         """
         Tests debexpo.lib.utils.md5sum.
