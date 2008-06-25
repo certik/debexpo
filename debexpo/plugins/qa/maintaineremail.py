@@ -71,6 +71,5 @@ class MaintainerEmailPlugin(BasePlugin):
                     return [self.failed(__name__, 'Changes file is not GPG signed', constants.PLUGIN_SEVERITY_WARNING)]
 
         log.warning('Could not get the uploader\'s user details from the database')
-        return []
 
 plugin = MaintainerEmailPlugin

@@ -60,7 +60,15 @@ class BasePlugin(object):
         result = []
         for test in self.tests:
             if hasattr(self, test):
-                result.extend(getattr(self, test)())
+                ret = getattr(self, test)()
+
+                if ret is not None and type(ret) is list:
+                    result.extend(ret)
+                elif ret is not None and type(ret) is PluginResult:
+                    result.append(ret)
+                else:
+                    # Plugin didn't return anything of any value.
+                    pass
 
         return result
 

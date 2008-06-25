@@ -86,7 +86,6 @@ class ClosedBugsPlugin(BasePlugin):
             return result
         except KeyError:
             log.debug('Package does not close any bugs')
-            return []
 
     def _package_in_descriptions(self, name, list):
         """
