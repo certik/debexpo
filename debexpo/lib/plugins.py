@@ -143,7 +143,7 @@ class Plugins(object):
 
         # Run each plugin.
         for plugin in plugins.split(' '):
-            name = 'debexpo.plugins.%s.%s' % (self.type.replace('_', ''), plugin)
+            name = 'debexpo.plugins.%s' % plugin
             module = self._import_plugin(name)
 
             if hasattr(module, 'plugin'):
