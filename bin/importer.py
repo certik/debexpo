@@ -331,7 +331,7 @@ class Importer(object):
         if not os.access(self.config['debexpo.repository'], os.W_OK):
             self._fail('debexpo.repository is not writeable')
 
-        qa = Plugins('qa', self.changes, self.changes_file)
+        qa = Plugins('qa', self.changes, self.changes_file, user_id=self.user_id)
         if qa.stop():
             self._reject('QA plugins failed the package')
 

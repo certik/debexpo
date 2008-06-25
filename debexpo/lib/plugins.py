@@ -56,7 +56,7 @@ plugin_stages = {
 
 class Plugins(object):
 
-    def __init__(self, type, changes, changes_file):
+    def __init__(self, type, changes, changes_file, user_id=None):
         """
         Class constructor. Sets class attributes and then runs the plugins.
 
@@ -68,10 +68,14 @@ class Plugins(object):
 
         ``changes_file``
             Name of the changes file.
+
+        ``user_id``
+            User ID of the uploader.
         """
         self.type = type.replace('-', '_')
         self.changes = changes
         self.changes_file = changes_file
+        self.user_id = user_id
         self.result = None
         self.tempdir = None
 
@@ -144,7 +148,8 @@ class Plugins(object):
 
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(changes=self.changes, \
-                    changes_file=self.changes_file, tempdir=self.tempdir)
+                    changes_file=self.changes_file, tempdir=self.tempdir,
+                    user_id=self.user_id)
 
                 result.extend(p.run())
 
