@@ -124,15 +124,18 @@ class Plugins(object):
         """
         Look in the config file and run the plugins.
         """
-        plugins = config['debexpo.plugins.' + self.type].split(' ')
+        plugins = config.get('debexpo.plugins.' + self.type)
         result = []
+
+        if plugins is None or plugins == '':
+            return result
 
         # Look at whether the plugins need extracting.
         if self.conf['extract']:
             self._extract()
 
         # Run each plugin.
-        for plugin in plugins:
+        for plugin in plugins.split(' '):
             name = 'debexpo.plugins.%s.%s' % (self.type.replace('_', ''), plugin)
             module = self._import_plugin(name)
 
