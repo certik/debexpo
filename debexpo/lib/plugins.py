@@ -35,6 +35,7 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+from debian_bundle import deb822
 import logging
 import os
 import tempfile
@@ -112,6 +113,14 @@ class Plugins(object):
         self.tempdir = tempfile.mkdtemp()
         for file in self.changes.get_files():
             shutil.copy(os.path.join(config['debexpo.upload.incoming'], file), self.tempdir)
+
+        # If the original tarball was pulled from Debian or from the repository, that
+        # also needs to be copied into this directory.
+        dsc = deb822.Dsc(open(self.changes.get_dsc()))
+        for item in dsc['Files']:
+            if item['name'] not in self.changes.get_files():
+                shutil.copy(os.path.join(config['debexpo.upload.incoming'], item['name']), self.tempdir)
+
         shutil.copy(os.path.join(config['debexpo.upload.incoming'], self.changes_file), self.tempdir)
 
         self.oldcurdir = os.path.abspath(os.path.curdir)
