@@ -68,3 +68,8 @@ Which QA plugins to run, in what order. Separate each plugin with a space.
 =====================
 
 Directory to add to path to put user-defined plugins in.
+
+``debexpo.debian_mirror``
+=========================
+
+Location of the most convenient Debian mirror.
