@@ -39,6 +39,7 @@ __license__ = 'MIT'
 from optparse import OptionParser
 import ConfigParser
 from datetime import datetime
+from debian_bundle import deb822
 import logging
 import logging.config
 import os
@@ -88,7 +89,7 @@ class Importer(object):
         """
         Removes all the files uploaded.
         """
-        for file in self.changes.get_files():
+        for file in self.files:
             os.remove(file)
 
         self._remove_changes()
@@ -267,7 +268,7 @@ class Importer(object):
         binary_package = None
 
         # Add PackageFile objects to the database for each uploaded file
-        for file in self.changes.get_files():
+        for file in self.files:
             filename = os.path.join(self.changes.get_pool_path(), file)
             sum = md5sum(os.path.join(config['debexpo.repository'], filename))
             size = os.stat(os.path.join(config['debexpo.repository'], filename))[ST_SIZE]
@@ -286,6 +287,22 @@ class Importer(object):
         # Commit all changes to the database
         meta.session.commit()
         log.debug('Committed package data to the database')
+
+    def _orig(self):
+        """
+        Look to see whether there is an orig tarball present, if the dsc refers to one.
+        If it is present or not necessary, this returns True. Otherwise, it returns the
+        name of the file required.
+        """
+        dsc = deb822.Dsc(open(self.changes.get_dsc()))
+        for file in dsc['Files']:
+            if file['name'].endswith('orig.tar.gz'):
+                if os.path.isfile(file['name']):
+                    return True
+                else:
+                    return file['name']
+
+        return True
 
     def main(self):
         """
@@ -312,11 +329,31 @@ class Importer(object):
             self._remove_changes()
             sys.exit(1)
 
+        self.files = self.changes.get_files()
+
+        # Look whether the orig tarball is present, and if not, try and get it from
+        # the repository.
+        orig = self._orig()
+        if orig is not True:
+            filename = os.path.join(self.config['debexpo.repository'],
+                self.changes.get_pool_path(), orig)
+            if os.path.isfile(filename):
+                shutil.copy(filename, config['debexpo.upload.incoming'])
+                self.files.append(orig)
+            else:
+                oldorig = orig
+                orig = None
+
         post_upload = Plugins('post-upload', self.changes, self.changes_file)
         if post_upload.stop():
             log.critical('post-upload plugins failed')
             self._remove_changes()
             sys.exit(1)
+
+        # Check whether a post-upload plugin has got the orig tarball from somewhere.
+        if orig is None:
+            if self._orig():
+                self.files.append(oldorig)
 
         # Check whether the debexpo.repository variable is set
         if 'debexpo.repository' not in self.config:
@@ -346,12 +383,18 @@ class Importer(object):
                 os.mkdir(destdir)
 
         # Check whether the files are already present
-        for file in self.changes.get_files():
+        toinstall = []
+        for file in self.files:
             if os.path.isfile(os.path.join(destdir, file)):
-                self._reject('File "%s" already exists' % file)
+                if not file.endswith('orig.tar.gz'):
+                    self._reject('File "%s" already exists' % file)
+                else:
+                    log.warning('%s is not being installed as it already exists' % file)
+            else:
+                toinstall.append(file)
 
         # Install files in repository
-        for file in self.changes.get_files():
+        for file in toinstall:
             shutil.move(file, os.path.join(destdir, file))
 
         # Create the database rows
