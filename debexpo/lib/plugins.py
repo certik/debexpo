@@ -53,7 +53,10 @@ plugin_stages = {
     },
     'qa' : {
         'extract' : True,
-    }
+    },
+    'post-upload-to-debian' : {
+        'extract' : False,
+    },
 }
 
 class Plugins(object):
