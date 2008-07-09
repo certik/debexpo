@@ -214,7 +214,6 @@ class Importer(object):
         # Horrible imports
         from debexpo.model import meta
         from debexpo.lib.utils import parse_section, md5sum
-        from pylons import config
 
         # Import model objects
         from debexpo.model.users import User
@@ -270,8 +269,8 @@ class Importer(object):
         # Add PackageFile objects to the database for each uploaded file
         for file in self.files:
             filename = os.path.join(self.changes.get_pool_path(), file)
-            sum = md5sum(os.path.join(config['debexpo.repository'], filename))
-            size = os.stat(os.path.join(config['debexpo.repository'], filename))[ST_SIZE]
+            sum = md5sum(os.path.join(self.config['debexpo.repository'], filename))
+            size = os.stat(os.path.join(self.config['debexpo.repository'], filename))[ST_SIZE]
 
             # Check for binary or source package file
             if file.endswith('.deb'):
@@ -316,7 +315,6 @@ class Importer(object):
 
         log.debug('Importer started with arguments: %s' % sys.argv[1:])
 
-        from pylons import config
         from debexpo.lib.changes import Changes
         from debexpo.lib.repository import Repository
         from debexpo.lib.plugins import Plugins
@@ -338,7 +336,7 @@ class Importer(object):
             filename = os.path.join(self.config['debexpo.repository'],
                 self.changes.get_pool_path(), orig)
             if os.path.isfile(filename):
-                shutil.copy(filename, config['debexpo.upload.incoming'])
+                shutil.copy(filename, self.config['debexpo.upload.incoming'])
                 self.files.append(orig)
             else:
                 oldorig = orig
@@ -405,7 +403,7 @@ class Importer(object):
 
         # Refresh the Sources/Packages files.
         log.debug('Updating Sources and Packages files')
-        r = Repository(config['debexpo.repository'])
+        r = Repository(self.config['debexpo.repository'])
         r.update()
 
         log.debug('Done')
