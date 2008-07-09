@@ -177,14 +177,14 @@ class Importer(object):
         Set up logging, import pylons/paste/debexpo modules, parse config file, create config
         class and chdir to the incoming directory.
         """
-        self._setup_logging()
-
         # Look for ini file
         if not os.path.isfile(self.ini_file):
             self._fail('Cannot find ini file')
 
+        self._setup_logging()
+
         # Import debexpo root directory
-        sys.path.append(os.path.dirname(options.ini))
+        sys.path.append(os.path.dirname(self.ini_file))
 
         # Import debexpo modules
         from paste.deploy import appconfig
