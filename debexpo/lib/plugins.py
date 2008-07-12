@@ -87,6 +87,7 @@ class Plugins(object):
         # Run the plugins.
         if type in plugin_stages:
             self.conf = plugin_stages[type]
+            log.debug('Running %s plugins' % type)
             self.result = self._run_plugins()
 
     def _import_plugin(self, name):
@@ -151,16 +152,20 @@ class Plugins(object):
             return result
 
         # Look at whether the plugins need extracting.
-        if self.conf['extract']:
+        if 'extract' in self.conf and self.conf['extract']:
+            log.debug('Extracting package for plugins')
             self._extract()
 
         # Run each plugin.
         for plugin in plugins.split(' '):
+            log.debug('Running %s plugin' % plugin)
             module = None
             if 'debexpo.plugin_dir' in config and config['debexpo.plugindir'] != '':
                 # First try in the user-defined plugindir
                 sys.path.append(config['debexpo.plugindir'])
                 module = self._import_plugin(plugin)
+                if module is not None:
+                    log.debug('Found plugin in debexpo.plugin_dir')
 
             if module is None:
                 # Try in debexpo.plugins
