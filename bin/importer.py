@@ -214,6 +214,7 @@ class Importer(object):
         # Horrible imports
         from debexpo.model import meta
         from debexpo.lib.utils import parse_section, md5sum
+        from debexpo.lib.plugins import Plugins
 
         # Import model objects
         from debexpo.model.users import User
@@ -286,6 +287,8 @@ class Importer(object):
         # Commit all changes to the database
         meta.session.commit()
         log.debug('Committed package data to the database')
+
+        Plugins('post-successful-upload', self.changes, self.changes_file)
 
     def _orig(self):
         """
