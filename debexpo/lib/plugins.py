@@ -57,6 +57,9 @@ plugin_stages = {
     'post-upload-to-debian' : {
         'extract' : False,
     },
+    'post-successful-upload' : {
+        'extract' : False,
+    },
 }
 
 class Plugins(object):

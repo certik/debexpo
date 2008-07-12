@@ -69,6 +69,11 @@ Which QA plugins to run, in what order. Separate each plugin with a space.
 
 Which plugins to run when the package is uploaded to Debian, in what order. Separate each plugin with a space.
 
+``debexpo.plugins.post_successful_upload``
+==========================================
+
+Which plugins to run when a package is successfully uploaded to the repository, in what order. Separate each plugin with a space.
+
 ``debexpo.plugindir``
 =====================
 
