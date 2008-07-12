@@ -288,8 +288,6 @@ class Importer(object):
         meta.session.commit()
         log.debug('Committed package data to the database')
 
-        Plugins('post-successful-upload', self.changes, self.changes_file)
-
     def _orig(self):
         """
         Look to see whether there is an orig tarball present, if the dsc refers to one.
@@ -400,6 +398,13 @@ class Importer(object):
 
         # Create the database rows
         self._create_db_entries()
+
+        # Execute post-successful-upload plugins
+        f = open(self.changes_file)
+        changes_contents = f.read()
+        f.close()
+        Plugins('post-successful-upload', self.changes, self.changes_file,
+            changes_contents=changes_contents)
 
         # Remove the changes file
         self._remove_changes()
