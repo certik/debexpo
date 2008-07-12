@@ -37,6 +37,7 @@ __license__ = 'MIT'
 
 import apt_pkg
 import logging
+import os
 
 from debexpo.lib import constants
 from debexpo.lib.base import *
@@ -44,10 +45,43 @@ from debexpo.plugins import BasePlugin
 
 from debexpo.model import meta
 from debexpo.model.packages import Package
+from debexpo.model.package_versions import PackageVersion
+from debexpo.model.source_packages import SourcePackage
+from debexpo.model.binary_packages import BinaryPackage
+from debexpo.model.package_files import PackageFile
 
 log = logging.getLogger(__name__)
 
 class RemovePackagePlugin(BasePlugin):
+
+    def _remove_package_versions(self, package_versions):
+        """
+        Remove a package version and all its dependant parts.
+
+        ``package_versions``
+            List of PackageVersions to remove.
+        """
+        for package_version in package_versions:
+            source_binary = package_version.source_packages
+            source_binary.extend(package_version.binary_packages)
+
+            for source_package in source_binary:
+                for package_file in source_package.package_files:
+                    filename = os.path.join(config['debexpo.repository'], package_file.filename)
+                    if os.path.isfile(filename):
+                        log.debug('Removing package file: %s' % package_file.filename)
+                        os.remove(filename)
+                    else:
+                        log.warning('Could not find package file: %s' % package_file.filename)
+
+                    log.debug('Deleting package file database entry: %s' % package_file.filename)
+                    meta.session.delete(package_file)
+
+                log.debug('Deleting source package database entry')
+                meta.session.delete(source_package)
+
+            log.debug('Deleting package version: %s' % package_version.version)
+            meta.session.delete(package_version)
 
     def test_remove_package(self):
         """
@@ -69,15 +103,20 @@ class RemovePackagePlugin(BasePlugin):
         keep_package_versions = []
         for package_version in package.package_versions:
             if apt_pkg.VersionCompare(self.changes['Version'], package_version.version) < 0:
-                keep_package_versions = package_version.version
+                keep_package_versions.append(package_version.version)
 
         if len(keep_package_versions) == 0:
             # Get rid of the whole package.
-            pass
+            self._remove_package_versions(package.package_versions)
+            log.debug('Deleting package database entry: %s' % package.name)
+            meta.session.delete(package)
 
         else:
             # Only remove certain package versions.
-            pass
+            to_delete = [x for x in package.package_versions if x not in keep_package_versions]
+            self._remove_package_versions(to_delete)
+
+        meta.session.commit()
 
 plugin = RemovePackagePlugin
 
