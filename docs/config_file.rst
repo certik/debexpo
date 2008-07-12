@@ -83,3 +83,8 @@ Directory to add to path to put user-defined plugins in.
 =========================
 
 Location of the most convenient Debian mirror.
+
+``debexpo.changes_list``
+========================
+
+Email to send package accepts to.
