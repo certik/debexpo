@@ -64,6 +64,7 @@ def make_map():
     map.connect('login', controller='login', action='index')
     map.connect('news', 'news', controller='index', action='news')
     map.connect('package', 'package/:packagename', controller='package', action='index')
+    map.connect('rfs', 'package/rfs/:packagename', controller='package', action='rfs')
     map.connect('packages/:action/:id', controller='packages', action='index', id=None)
     map.connect('qa', 'qa', controller='index', action='qa')
     map.connect('register', 'register/:action/:id', controller='register', action='index', id=None)

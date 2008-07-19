@@ -55,12 +55,8 @@ log = logging.getLogger(__name__)
 
 class PackageController(BaseController):
 
-    def index(self, packagename):
+    def _get_package(self, packagename):
         """
-        Entry point into the controller. Displays information about the package.
-
-        ``package``
-            Package name to look at.
         """
         log.debug('Details of package "%s" requested' % packagename)
 
@@ -73,6 +69,32 @@ class PackageController(BaseController):
         c.package = package
         c.config = config
         c.package_dir = get_package_dir(package.name)
+        return package
+
+    def index(self, packagename):
+        """
+        Entry point into the controller. Displays information about the package.
+
+        ``packagename``
+            Package name to look at.
+        """
+        package = self._get_package(packagename)
+        if not isinstance(package, Package):
+            return package
 
         log.debug('Rendering page')
         return render('/package/index.mako')
+
+    def rfs(self, packagename):
+        """
+        RFS boilerplate creation.
+
+        ``packagename``
+            Package name to look at.
+        """
+        package = self._get_package(packagename)
+        if not isinstance(package, Package):
+            return package
+
+        log.debug('Rendering page')
+        return render('/package/rfs.mako')
