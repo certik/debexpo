@@ -49,6 +49,7 @@ from debexpo.model.package_versions import PackageVersion
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_files import PackageFile
+from debexpo.model.package_info import PackageInfo
 
 log = logging.getLogger(__name__)
 
@@ -79,6 +80,10 @@ class RemovePackagePlugin(BasePlugin):
 
                 log.debug('Deleting source package database entry')
                 meta.session.delete(source_package)
+
+            log.debug('Deleting package info')
+            for info in package_version.package_info:
+                meta.session.delete(info)
 
             log.debug('Deleting package version: %s' % package_version.version)
             meta.session.delete(package_version)
