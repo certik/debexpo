@@ -56,12 +56,7 @@ class DebianController(BaseController):
         file = os.path.join(config['debexpo.repository'], filename)
         log.debug('%s requested' % filename)
 
-        if os.path.isdir(file):
-            # DirectoryApp is in Paste 0.7.1. Paste 0.7.0 is in sid at the time
-            # of writing.
-            pass
-            #fapp = paste.fileapp.DirectoryApp(config['debexpo.repository'])
-        elif os.path.isfile(file):
+        if os.path.isfile(file):
             fapp = paste.fileapp.FileApp(file)
         else:
             log.error('File not found')
