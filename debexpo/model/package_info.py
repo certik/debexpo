@@ -46,7 +46,7 @@ t_package_info = sa.Table('package_info', meta.metadata,
     sa.Column('package_version_id', sa.types.Integer, sa.ForeignKey('package_versions.id')),
     sa.Column('from_plugin', sa.types.String(200), nullable=False),
     sa.Column('outcome', sa.types.String(200), nullable=False),
-    sa.Column('data', sa.types.Text, nullable=False),
+    sa.Column('data', sa.types.Text, nullable=True),
     sa.Column('severity', sa.types.Integer, nullable=False),
     )
 
