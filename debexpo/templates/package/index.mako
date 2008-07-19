@@ -57,7 +57,7 @@
 
         % if pkgfile.filename.endswith('.dsc'):
 
-            <a href="/debian/${ pkgfile.filename }">/debian/${ pkgfile.filename }</a>
+            <a href="${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }">${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }</a>
 
 	% endif
 
