@@ -88,3 +88,8 @@ Location of the most convenient Debian mirror.
 ========================
 
 Email to send package accepts to.
+
+``debexpo.server``
+==================
+
+Server root URL debexpo is running on, including protocol and excluding trailing slash. For example ``http://localhost:5000``.
