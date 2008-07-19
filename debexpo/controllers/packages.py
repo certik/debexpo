@@ -158,3 +158,19 @@ class PackagesController(BaseController):
         c.packages = packages
         c.username = username
         return render('/packages/uploader.mako')
+
+    def my(self):
+        """
+        List of packages depending on current user logged in.
+        """
+        log.debug('Package listing on current user requested')
+
+        if self.requires_auth and 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            return redirect_to(h.url_for(controller='login'))
+
+        details = meta.session.query(User).filter_by(id=session['user_id']).one()
+
+        return self.uploader(details.email)
