@@ -59,10 +59,10 @@
 
             <a href="${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }">${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }</a>
 
-	% endif
+        % endif
 
     % endfor
-      
+
       </td>
     </tr>
 
