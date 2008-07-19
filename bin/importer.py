@@ -205,7 +205,7 @@ class Importer(object):
         if not os.path.isfile(self.changes_file):
             self._fail('Cannot find changes file')
 
-    def _create_db_entries(self):
+    def _create_db_entries(self, qa):
         """
         Create entries in the Database for the package upload.
         """
@@ -223,9 +223,7 @@ class Importer(object):
         from debexpo.model.source_packages import SourcePackage
         from debexpo.model.binary_packages import BinaryPackage
         from debexpo.model.package_files import PackageFile
-
-        # TODO
-        qa_status = 1
+        from debexpo.model.package_info import PackageInfo
 
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
@@ -256,6 +254,12 @@ class Importer(object):
         except KeyError:
             closes = None
 
+        # TODO: fix these magic numbers
+        if qa.stop():
+            qa_status = 1
+        else:
+            qa_status = 0
+
         package_version = PackageVersion(package=package, version=self.changes['Version'],
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
             component=component, priority=self.changes.get_priority(), closes=closes,
@@ -283,6 +287,11 @@ class Importer(object):
                 meta.session.save(PackageFile(filename=filename, binary_package=binary_package, size=size, md5sum=sum))
             else:
                 meta.session.save(PackageFile(filename=filename, source_package=source_package, size=size, md5sum=sum))
+
+        # Add PackageInfo objects to the database for the package_version
+        for result in qa.result:
+            meta.session.save(PackageInfo(package_version=package_version, from_plugin=result.from_plugin,
+                outcome=result.outcome, data=result.data, severity=result.severity))
 
         # Commit all changes to the database
         meta.session.commit()
@@ -397,7 +406,7 @@ class Importer(object):
             shutil.move(file, os.path.join(destdir, file))
 
         # Create the database rows
-        self._create_db_entries()
+        self._create_db_entries(qa)
 
         # Execute post-successful-upload plugins
         f = open(self.changes_file)
