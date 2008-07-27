@@ -39,3 +39,6 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 from webhelpers import *
+import pylons.controllers.util
+
+url_for = pylons.controllers.util.url_for
