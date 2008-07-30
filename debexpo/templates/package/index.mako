@@ -95,6 +95,71 @@
 
   </table>
 
+<h4>Comments</h4>
+
+% if len(package_version.package_comments) > 0:
+
+  <ol>
+
+  % for comment in package_version.package_comments:
+
+    <li>
+      <p>
+        <pre>${ comment.text }</pre>
+
+% if comment.outcome == c.constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK:
+
+  <span style="color: red;">${ _('Needs work') }</span>
+
+% elif comment.outcome == c.constants.PACKAGE_COMMENT_OUTCOME_PERFECT:
+
+  <span style="color: green;">${ _('Perfect') }</span>
+
+% endif
+
+        <i>${ comment.user.name } at ${ comment.time }</i>
+
+% if comment.status == c.constants.PACKAGE_COMMENT_STATUS_UPLOADED and c.config['debexpo.debian_specific'] == 'true':
+
+  <strong>${ _('Package has been uploaded to Debian') }</strong>
+
+% endif
+
+     </p>
+   </li>
+
+  % endfor
+
+  </ol>
+
+% else:
+
+<p><i>${ _('No comments') }</i></p>
+
+% endif
+
+<h4>New comment</h4>
+
+% if 'user_id' in c.session:
+
+${ h.rails.form(h.rails.url_for('comment', packagename=c.package.name)) }
+${ h.rails.hidden_field('package_version', package_version.id) }
+${ h.rails.text_area('text', size='82x10') }
+<br/>
+
+${ h.rails.select('outcome', h.rails.options_for_select(c.outcomes, c.constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED)) }
+
+% if config['debexpo.debian_specific'] == 'true' and c.user.status == c.constants.USER_STATUS_DEVELOPER:
+
+${ h.rails.check_box('status') } ${ _('Uploaded to Debian') }
+
+% endif
+
+${ h.rails.submit() }
+${ h.rails.end_form() }
+
+% endif
+
 </fieldset>
 
 % endfor

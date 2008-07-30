@@ -85,6 +85,10 @@ class RemovePackagePlugin(BasePlugin):
             for info in package_version.package_info:
                 meta.session.delete(info)
 
+            log.debug('Deleting package comments')
+            for comment in package_version.package_comments:
+                meta.session.delete(comment)
+
             log.debug('Deleting package version: %s' % package_version.version)
             meta.session.delete(package_version)
 

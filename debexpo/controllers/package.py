@@ -35,10 +35,12 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
+from datetime import datetime
 import logging
 import os
 
 from debexpo.lib.base import *
+from debexpo.lib import constants
 from debexpo.lib.utils import get_package_dir
 
 from debexpo.model import meta
@@ -82,6 +84,19 @@ class PackageController(BaseController):
         if not isinstance(package, Package):
             return package
 
+        c.session = session
+        c.constants = constants
+        c.outcomes = {
+            _('Unreviewed') : constants.PACKAGE_COMMENT_OUTCOME_UNREVIEWED,
+            _('Needs work') : constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK,
+            _('Perfect') : constants.PACKAGE_COMMENT_OUTCOME_PERFECT,
+        }
+
+        if 'user_id' in session:
+            c.user = meta.session.query(User).filter_by(id=session['user_id']).one()
+        else:
+            c.user = None
+
         log.debug('Rendering page')
         return render('/package/index.mako')
 
@@ -98,3 +113,30 @@ class PackageController(BaseController):
 
         log.debug('Rendering page')
         return render('/package/rfs.mako')
+
+    def comment(self, packagename):
+        """
+        Comment submission.
+
+        ``packagename``
+            Package name to look at.
+        """
+        package = self._get_package(packagename)
+        if not isinstance(package, Package):
+            return package
+
+        status = constants.PACKAGE_COMMENT_STATUS_NOT_UPLOADED
+        if 'status' in request.POST and request.POST['status']:
+            status = constants.PACKAGE_COMMENT_STATUS_UPLOADED
+
+        comment = PackageComment(user_id=session['user_id'],
+            package_version_id=request.POST['package_version'],
+            text=request.POST['text'],
+            time=datetime.now(),
+            outcome=request.POST['outcome'],
+            status=status)
+
+        meta.session.save(comment)
+        meta.session.commit()
+
+        return h.rails.redirect_to('package', packagename=packagename)
