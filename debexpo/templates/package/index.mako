@@ -41,7 +41,15 @@
   <table>
     <tr>
       <th>${ _('Version') }:</th>
-      <td>${ package_version.version }</td>
+      <td>${ package_version.version }
+
+% if c.config['debexpo.debian_specific'] == 'true' and 'user_id' in c.session and c.session['user_id'] == c.package.user_id:
+
+  (<a href="${ h.rails.url_for('rfs', packagename=c.package.name) }">${ _('View RFS template') }</a>)
+
+% endif
+
+      </td>
     </tr>
 
     <tr>
