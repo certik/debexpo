@@ -38,7 +38,23 @@ __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from webhelpers import *
-import pylons.controllers.util
-
-url_for = pylons.controllers.util.url_for
+from webhelpers import commands, \
+                       containers, \
+                       feedgenerator, \
+                       html, \
+                       markdown, \
+                       misc, \
+                       paginate, \
+                       pylonslib, \
+                       string24, \
+                       textile, \
+                       constants, \
+                       date, \
+                       hinclude, \
+                       htmlgen, \
+                       mimehelper, \
+                       number, \
+                       pagination, \
+                       rails, \
+                       text, \
+                       util

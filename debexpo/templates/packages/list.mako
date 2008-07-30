@@ -16,7 +16,7 @@
 
     % for package in c.packages:
       <tr>
-	<td class="lines"><a href="${ h.url_for('package', packagename=package['name']) }">${ package['name'] }</a></td>
+	<td class="lines"><a href="${ h.rails.url_for('package', packagename=package['name']) }">${ package['name'] }</a></td>
 	<td class="lines">${ package['description'] }</td>
 	<td class="lines">${ package['version'] }</td>
 	<td class="lines">${ package['uploader'] }</td>

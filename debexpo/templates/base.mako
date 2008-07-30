@@ -20,24 +20,24 @@
 
     <div id="floatmenu">
       <div class="menuitem">${ _('Welcome') }</div>
-      <div class="menusubitem"><a href="${ h.url_for('index') }">${ _('Start page') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('news') }">${ _('News') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('index') }">${ _('Start page') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('news') }">${ _('News') }</a></div>
 
       <div class="menuitem">${ _('For maintainers') }</div>
-      <div class="menusubitem"><a href="${ h.url_for('intro') }#maintainers">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for(controller='packages', action='my', id=None) }">${ _('My packages') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#maintainers">${ _('Introduction') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action='my', id=None) }">${ _('My packages') }</a></div>
 
       <div class="menuitem">For sponsors</div>
-      <div class="menusubitem"><a href="${ h.url_for('intro') }#sponsors">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for(controller='packages', action=None, id=None) }">${ _('Package list') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#sponsors">${ _('Introduction') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action=None, id=None) }">${ _('Package list') }</a></div>
 
       <div class="menuitem">${ _('Support') }</div>
-      <div class="menusubitem"><a href="${ h.url_for('qa') }">${ _('Q &amp; A') }</a></div>
-      <div class="menusubitem"><a href="${ h.url_for('contact') }">${ _('Contact') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('qa') }">${ _('Q &amp; A') }</a></div>
+      <div class="menusubitem"><a href="${ h.rails.url_for('contact') }">${ _('Contact') }</a></div>
     </div>
 
     <div id="maincontent">

@@ -10,7 +10,7 @@
 
     <p>
       ${ _('Your account has been activated.') }
-      ${ _('You can now %sproceed to login%s.') % ('<a href="' + h.url_for('my') + '">', '</a>') }
+      ${ _('You can now %sproceed to login%s.') % ('<a href="' + h.rails.url_for('my') + '">', '</a>') }
     </p>
 
 % else:

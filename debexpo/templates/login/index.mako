@@ -14,25 +14,25 @@
   <p><span class="error-message">${ c.message }</span></p>
 % endif
 
-  ${ h.form(h.url_for(), method='post') }
+  ${ h.rails.form_tag.form(h.rails.url_for(), method='post') }
 
   <table>
     <tr>
       <td>${ _('E-mail') }:</td>
-      <td>${ h.text_field('email') }</td>
+      <td>${ h.rails.form_tag.text_field('email') }</td>
     </tr>
     
     <tr>
       <td>${ _('Password') }:</td>
-      <td>${ h.password_field('password') }</td>
+      <td>${ h.rails.form_tag.password_field('password') }</td>
     </tr>
     
     <tr>
-      <td>${ h.submit(_('Submit')) }</td>
+      <td>${ h.rails.submit(_('Submit')) }</td>
     </tr>
   </table>
 
-  ${ h.end_form() }
+  ${ h.rails.end_form() }
 
 </fieldset>
 

@@ -17,13 +17,13 @@
 
   <p>blurb here</p>
 
-  <p><a href="${ h.url_for(action='maintainer') }">${ _('Click here to proceed') }</a>.</p>
+  <p><a href="${ h.rails.url_for(action='maintainer') }">${ _('Click here to proceed') }</a>.</p>
 
   <h2>${ _('Sponsor') }</h2>
 
   <p>blurb here</p>
 
-  <p><a href="${ h.url_for(action='sponsor') }">${ _('Click here to proceed') }</a>.</p>
+  <p><a href="${ h.rails.url_for(action='sponsor') }">${ _('Click here to proceed') }</a>.</p>
 
 </fieldset>
 
