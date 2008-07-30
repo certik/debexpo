@@ -165,7 +165,7 @@ class PackagesController(BaseController):
         """
         log.debug('Package listing on current user requested')
 
-        if self.requires_auth and 'user_id' not in session:
+        if 'user_id' not in session:
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
