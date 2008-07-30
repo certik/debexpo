@@ -43,6 +43,7 @@ from debian_bundle import deb822
 import logging
 import logging.config
 import os
+import re
 import sys
 import shutil
 from stat import *
@@ -260,10 +261,13 @@ class Importer(object):
         else:
             qa_status = 0
 
+        maintainer_matches = re.compile(r'(.*) <(.*)>').match(self.changes['Maintainer'])
+        maintainer = maintainer_matches.group(2)
+
         package_version = PackageVersion(package=package, version=self.changes['Version'],
             section=section, distribution=self.changes['Distribution'], qa_status=qa_status,
             component=component, priority=self.changes.get_priority(), closes=closes,
-            uploaded=datetime.now())
+            uploaded=datetime.now(), maintainer=maintainer)
         meta.session.save(package_version)
 
         source_package = SourcePackage(package_version=package_version)
