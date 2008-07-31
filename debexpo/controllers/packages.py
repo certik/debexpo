@@ -169,7 +169,7 @@ class PackagesController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect_to(h.url_for(controller='login'))
+            return redirect_to(h.rails.url_for(controller='login'))
 
         details = meta.session.query(User).filter_by(id=session['user_id']).one()
 
