@@ -113,7 +113,7 @@
 
     <li>
       <p>
-        <pre>${ comment.text }</pre>
+        <pre>${ h.util.html_escape(comment.text) }</pre>
 
 % if comment.outcome == c.constants.PACKAGE_COMMENT_OUTCOME_NEEDS_WORK:
 
