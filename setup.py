@@ -17,10 +17,10 @@ setup(
     include_package_data=True,
     test_suite='nose.collector',
     package_data={'debexpo': ['i18n/*/LC_MESSAGES/*.mo']},
-    #message_extractors = {'debexpo': [
-    #        ('**.py', 'python', None),
-    #        ('templates/**.mako', 'mako', None),
-    #        ('public/**', 'ignore', None)]},
+    message_extractors = {'debexpo': [
+            ('**.py', 'python', None),
+            ('templates/**.mako', 'mako', None),
+            ('public/**', 'ignore', None)]},
     entry_points="""
     [paste.app_factory]
     main = debexpo.config.middleware:make_app

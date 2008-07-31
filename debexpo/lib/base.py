@@ -42,7 +42,7 @@ from pylons import c, cache, config, g, request, response, session
 from pylons.controllers import WSGIController
 from pylons.controllers.util import abort, etag_cache, redirect_to
 from pylons.decorators import jsonify, validate
-from pylons.i18n import _, ungettext, N_
+from pylons.i18n import _, ungettext, N_, get_lang, set_lang
 from pylons.templating import render
 
 import debexpo.lib.helpers as h
@@ -57,6 +57,13 @@ class BaseController(WSGIController):
     requires_auth = False
 
     def __before__(self):
+        # Set language according to what the browser requested
+        user_agent_language = request.languages[0][0:2]
+        if user_agent_language in g.supported_languages:
+            set_lang(user_agent_language)
+        else:
+            set_lang(g.default_language)
+
         if self.requires_auth and 'user_id' not in session:
             # Remember where we came from so that the user can be sent there
             # after a successful login

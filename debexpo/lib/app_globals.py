@@ -50,4 +50,10 @@ class Globals(object):
         initialization and is available during requests via the 'g'
         variable.
         """
-        pass
+        # Supported languages for i18n
+        self.supported_languages = {
+            'en':'English',
+            'de':'Deutsch'
+            }
+        self.default_language = 'en'
+
