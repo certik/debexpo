@@ -179,7 +179,7 @@ class PackagesController(BaseController):
         """
         List of packages depending on the Maintainer email address.
         """
-        log.debug('Package listing on package_version.email = "%s" requested', id)
+        log.debug('Package listing on package_version.maintainer = "%s" requested', id)
 
         packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
 
