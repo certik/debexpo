@@ -174,3 +174,16 @@ class PackagesController(BaseController):
         details = meta.session.query(User).filter_by(id=session['user_id']).one()
 
         return self.uploader(details.email)
+
+    def maintainer(self, id):
+        """
+        List of packages depending on the Maintainer email address.
+        """
+        log.debug('Package listing on package_version.email = "%s" requested', id)
+
+        packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
+
+        c.config = config
+        c.packages = packages
+        c.maintainer = id
+        return render('/packages/maintainer.mako')
