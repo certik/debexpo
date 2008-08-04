@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2008-08-03 16:41+0200\n"
+"POT-Creation-Date: 2008-08-04 22:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,11 +25,11 @@ msgstr ""
 msgid "Unreviewed"
 msgstr ""
 
-#: debexpo/controllers/package.py:91 debexpo/templates/package/index.mako:120
+#: debexpo/controllers/package.py:91 debexpo/templates/package/index.mako:118
 msgid "Needs work"
 msgstr ""
 
-#: debexpo/controllers/package.py:92 debexpo/templates/package/index.mako:124
+#: debexpo/controllers/package.py:92 debexpo/templates/package/index.mako:122
 msgid "Perfect"
 msgstr ""
 
@@ -61,52 +61,36 @@ msgstr ""
 msgid "You must use your debian.org email address to register"
 msgstr ""
 
-#: debexpo/templates/base.mako:23
-msgid "Welcome"
-msgstr ""
-
-#: debexpo/templates/base.mako:24
+#: debexpo/templates/base.mako:31
 msgid "Start page"
 msgstr ""
 
-#: debexpo/templates/base.mako:25
+#: debexpo/templates/base.mako:35
 msgid "News"
 msgstr ""
 
-#: debexpo/templates/base.mako:27
-msgid "For maintainers"
-msgstr ""
-
-#: debexpo/templates/base.mako:28 debexpo/templates/base.mako:34
+#: debexpo/templates/base.mako:45 debexpo/templates/base.mako:67
 msgid "Introduction"
 msgstr ""
 
-#: debexpo/templates/base.mako:29 debexpo/templates/base.mako:35
+#: debexpo/templates/base.mako:49 debexpo/templates/base.mako:71
 msgid "Sign me up"
 msgstr ""
 
-#: debexpo/templates/base.mako:30 debexpo/templates/base.mako:36
-#: debexpo/templates/my/index.mako:6
+#: debexpo/templates/base.mako:53 debexpo/templates/base.mako:75
+#: debexpo/templates/my/index.mako:4
 msgid "My account"
 msgstr ""
 
-#: debexpo/templates/base.mako:31
+#: debexpo/templates/base.mako:57
 msgid "My packages"
 msgstr ""
 
-#: debexpo/templates/base.mako:37 debexpo/templates/packages/index.mako:6
-msgid "Package list"
+#: debexpo/templates/base.mako:85
+msgid "Q & A"
 msgstr ""
 
-#: debexpo/templates/base.mako:39
-msgid "Support"
-msgstr ""
-
-#: debexpo/templates/base.mako:40
-msgid "Q &amp; A"
-msgstr ""
-
-#: debexpo/templates/base.mako:41
+#: debexpo/templates/base.mako:89
 msgid "Contact"
 msgstr ""
 
@@ -162,240 +146,247 @@ msgid ""
 "in your web-browser:"
 msgstr ""
 
-#: debexpo/templates/login/index.mako:6 debexpo/templates/login/index.mako:9
+#: debexpo/templates/login/index.mako:4 debexpo/templates/login/index.mako:7
 msgid "Login"
 msgstr ""
 
-#: debexpo/templates/login/index.mako:11
+#: debexpo/templates/login/index.mako:9
 msgid "Please login to continue"
 msgstr ""
 
-#: debexpo/templates/login/index.mako:21 debexpo/templates/my/index.mako:21
-#: debexpo/templates/register/maintainer.mako:20
-#: debexpo/templates/register/sponsor.mako:20
+#: debexpo/templates/login/index.mako:19 debexpo/templates/my/index.mako:19
+#: debexpo/templates/register/maintainer.mako:18
+#: debexpo/templates/register/sponsor.mako:18
 msgid "E-mail"
 msgstr ""
 
-#: debexpo/templates/login/index.mako:26
-#: debexpo/templates/register/maintainer.mako:25
-#: debexpo/templates/register/sponsor.mako:25
+#: debexpo/templates/login/index.mako:24
+#: debexpo/templates/register/maintainer.mako:23
+#: debexpo/templates/register/sponsor.mako:23
 msgid "Password"
 msgstr ""
 
-#: debexpo/templates/login/index.mako:31 debexpo/templates/my/index.mako:26
-#: debexpo/templates/my/index.mako:66 debexpo/templates/my/index.mako:98
-#: debexpo/templates/my/index.mako:154
-#: debexpo/templates/register/maintainer.mako:35
-#: debexpo/templates/register/sponsor.mako:35
+#: debexpo/templates/login/index.mako:29 debexpo/templates/my/index.mako:24
+#: debexpo/templates/my/index.mako:64 debexpo/templates/my/index.mako:96
+#: debexpo/templates/my/index.mako:152
+#: debexpo/templates/register/maintainer.mako:33
+#: debexpo/templates/register/sponsor.mako:33
 msgid "Submit"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:9
+#: debexpo/templates/my/index.mako:7
 msgid "Change details"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:16 debexpo/templates/package/index.mako:10
+#: debexpo/templates/my/index.mako:14 debexpo/templates/package/index.mako:8
 msgid "Name"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:35
+#: debexpo/templates/my/index.mako:33
 msgid "Change GPG key"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:45
+#: debexpo/templates/my/index.mako:43
 msgid "Current GPG key"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:50
+#: debexpo/templates/my/index.mako:48
 msgid "Delete current key"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:61
+#: debexpo/templates/my/index.mako:59
 msgid "GPG key"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:76
+#: debexpo/templates/my/index.mako:74
 msgid "Change password"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:83
+#: debexpo/templates/my/index.mako:81
 msgid "Current password"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:88
+#: debexpo/templates/my/index.mako:86
 msgid "New password"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:93
+#: debexpo/templates/my/index.mako:91
 msgid "Confirm new password"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:107
+#: debexpo/templates/my/index.mako:105
 msgid "Change other details"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:114
+#: debexpo/templates/my/index.mako:112
 msgid "Country"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:119
+#: debexpo/templates/my/index.mako:117
 msgid "IRC nickname"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:124
+#: debexpo/templates/my/index.mako:122
 msgid "Jabber address"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:133
+#: debexpo/templates/my/index.mako:131
 msgid "Debian status"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:134
+#: debexpo/templates/my/index.mako:132
 msgid "Debian Developer"
 msgstr ""
 
-#: debexpo/templates/my/index.mako:141
+#: debexpo/templates/my/index.mako:139
 msgid "Debian Maintainer"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:6
+#: debexpo/templates/package/index.mako:4
 #, python-format
-msgid "Details about package %s"
+msgid "Details about package \"%s\""
 msgstr ""
 
-#: debexpo/templates/package/index.mako:15 debexpo/templates/packages/list.mako:11
+#: debexpo/templates/package/index.mako:13 debexpo/templates/packages/list.mako:9
 msgid "Uploader"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:28 debexpo/templates/packages/list.mako:9
+#: debexpo/templates/package/index.mako:26 debexpo/templates/packages/list.mako:7
 msgid "Description"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:34
+#: debexpo/templates/package/index.mako:32
 msgid "Package versions"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:43 debexpo/templates/packages/list.mako:10
+#: debexpo/templates/package/index.mako:41 debexpo/templates/packages/list.mako:8
 msgid "Version"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:48
+#: debexpo/templates/package/index.mako:46
 msgid "View RFS template"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:56
+#: debexpo/templates/package/index.mako:54
 msgid "Uploaded"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:61
+#: debexpo/templates/package/index.mako:59
 msgid "Debian Source Control file URL"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:78
+#: debexpo/templates/package/index.mako:76
 msgid "Section"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:83
+#: debexpo/templates/package/index.mako:81
 msgid "Priority"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:94
+#: debexpo/templates/package/index.mako:92
 msgid "Closes bugs"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:132
+#: debexpo/templates/package/index.mako:130
 msgid "Package has been uploaded to Debian"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:145
+#: debexpo/templates/package/index.mako:143
 msgid "No comments"
 msgstr ""
 
-#: debexpo/templates/package/index.mako:162
+#: debexpo/templates/package/index.mako:160
 msgid "Uploaded to Debian"
 msgstr ""
 
-#: debexpo/templates/package/rfs.mako:6
+#: debexpo/templates/package/rfs.mako:4
 #, python-format
 msgid "Template for an RFS for \"%s\""
 msgstr ""
 
-#: debexpo/templates/packages/list.mako:8
+#: debexpo/templates/package/rfs.mako:6
+msgid ""
+"An RFS is a <i>request for sponsorship</i>. If you want to show other people\n"
+"that you are looking for a sponsor for your package you can post an email to\n"
+"the debian-mentors mailing list containing information about your package."
+msgstr ""
+
+#: debexpo/templates/packages/index.mako:4
+msgid "Package list"
+msgstr ""
+
+#: debexpo/templates/packages/list.mako:6
 msgid "Package"
 msgstr ""
 
-#: debexpo/templates/packages/list.mako:12
+#: debexpo/templates/packages/list.mako:10
 msgid "Needs a sponsor"
 msgstr ""
 
-#: debexpo/templates/packages/list.mako:30
+#: debexpo/templates/packages/list.mako:28
 msgid "No packages"
 msgstr ""
 
-#: debexpo/templates/packages/maintainer.mako:6
+#: debexpo/templates/packages/maintainer.mako:4
 #, python-format
 msgid "Packages maintained by %s"
 msgstr ""
 
-#: debexpo/templates/packages/section.mako:6
+#: debexpo/templates/packages/section.mako:4
 #, python-format
 msgid "Packages in section %s"
 msgstr ""
 
-#: debexpo/templates/packages/uploader.mako:6
+#: debexpo/templates/packages/uploader.mako:4
 #, python-format
 msgid "Packages uploaded by %s"
 msgstr ""
 
-#: debexpo/templates/register/activate.mako:7
+#: debexpo/templates/register/activate.mako:5
 msgid "Check your email"
 msgstr ""
 
-#: debexpo/templates/register/activate.mako:10
+#: debexpo/templates/register/activate.mako:8
 msgid ""
 "An email has been sent to the email address you specified. Check it for "
 "instructions on how to activate your account."
 msgstr ""
 
-#: debexpo/templates/register/activated.mako:9
+#: debexpo/templates/register/activated.mako:7
 msgid "User activated"
 msgstr ""
 
-#: debexpo/templates/register/activated.mako:12
+#: debexpo/templates/register/activated.mako:10
 msgid "Your account has been activated."
 msgstr ""
 
-#: debexpo/templates/register/activated.mako:13
+#: debexpo/templates/register/activated.mako:11
 #, python-format
 msgid "You can now %sproceed to login%s."
 msgstr ""
 
-#: debexpo/templates/register/activated.mako:18
+#: debexpo/templates/register/activated.mako:16
 msgid "Invalid verification key"
 msgstr ""
 
-#: debexpo/templates/register/activated.mako:21
+#: debexpo/templates/register/activated.mako:19
 msgid "The verification key you entered has not been recognised. Please try again."
 msgstr ""
 
-#: debexpo/templates/register/index.mako:7
+#: debexpo/templates/register/index.mako:5
 #, python-format
 msgid "Sign up for your own account at %s"
 msgstr ""
 
-#: debexpo/templates/register/index.mako:10
-msgid "Account type"
-msgstr ""
-
-#: debexpo/templates/register/index.mako:13
+#: debexpo/templates/register/index.mako:8
 msgid "What type of account would you like to apply for?"
 msgstr ""
 
-#: debexpo/templates/register/index.mako:16
+#: debexpo/templates/register/index.mako:11
 msgid "Package Maintainer"
 msgstr ""
 
-#: debexpo/templates/register/index.mako:19
+#: debexpo/templates/register/index.mako:14
 msgid ""
 "A package maintainer is a person who takes care of Debian packages.\n"
 "    If you create Debian packages from certain pieces of (so called\n"
@@ -403,11 +394,11 @@ msgid ""
 "    an official Debian Developer (DD) or Debian Maintainer (DM)."
 msgstr ""
 
-#: debexpo/templates/register/index.mako:25
+#: debexpo/templates/register/index.mako:20
 msgid "Sponsor"
 msgstr ""
 
-#: debexpo/templates/register/index.mako:28
+#: debexpo/templates/register/index.mako:23
 msgid ""
 "Uploading new packages into Debian is only possible if you\n"
 "    are a Debian Developer (DD) or Debian Maintainer (DM). If you want\n"
@@ -415,26 +406,26 @@ msgid ""
 "    can be a sponsor and check and upload packages on their behalf."
 msgstr ""
 
-#: debexpo/templates/register/maintainer.mako:6
+#: debexpo/templates/register/maintainer.mako:4
 msgid "Sign up for a maintainer account"
 msgstr ""
 
-#: debexpo/templates/register/maintainer.mako:9
-#: debexpo/templates/register/sponsor.mako:9
+#: debexpo/templates/register/maintainer.mako:7
+#: debexpo/templates/register/sponsor.mako:7
 msgid "Account details"
 msgstr ""
 
-#: debexpo/templates/register/maintainer.mako:15
-#: debexpo/templates/register/sponsor.mako:15
+#: debexpo/templates/register/maintainer.mako:13
+#: debexpo/templates/register/sponsor.mako:13
 msgid "Full name"
 msgstr ""
 
-#: debexpo/templates/register/maintainer.mako:30
-#: debexpo/templates/register/sponsor.mako:30
+#: debexpo/templates/register/maintainer.mako:28
+#: debexpo/templates/register/sponsor.mako:28
 msgid "Confirm password"
 msgstr ""
 
-#: debexpo/templates/register/sponsor.mako:6
+#: debexpo/templates/register/sponsor.mako:4
 msgid "Sign up for a sponsor account"
 msgstr ""
 
