@@ -48,6 +48,7 @@ body
 fieldset {
     border: 1px solid #a0a0a0;
     padding: 0.5em 1em 0.5em 1em;
+    margin: 0.5em 0 0.5em 0;
     -moz-border-radius: .5em;
     -webkit-border-radius: .5em;
     border-radius: .5em;
@@ -55,8 +56,8 @@ fieldset {
 }
 
 legend {
-    border-left: 1px solid #a0a0a0;
-    border-right: 1px solid #a0a0a0;
+    border: 1px solid #a0a0a0;
+    background-color: #f0f0f0;
 }
 
 textarea {
@@ -106,6 +107,21 @@ td.navigation-td {
 /* Colored subsections of the left menu */
 #menu .start {
     background-color: #f8c078;
+    padding: 1em;
+}
+
+#menu .maintainers {
+    background-color: #97cc4c;
+    padding: 1em;
+}
+
+#menu .sponsors {
+    background-color: #99dbf0;
+    padding: 1em;
+}
+
+#menu .support {
+    background-color: #F5DF71;
     padding: 1em;
 }
 
@@ -191,7 +207,7 @@ td.navigation-td {
 #logo
 {
     float: right;
-    /*position: absolute;*/
+    position: absolute;
     top: 5px;
     right: 5px;
 }

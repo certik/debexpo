@@ -37,31 +37,64 @@
                 </li>
             </ul>
         </div>
+
+        <div class="maintainers">
+            <h2>Maintainers</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Introduction'),
+                        h.url_for('intro', anchor='maintainers')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Sign me up'),
+                        h.url_for(controller='register', action='maintainer')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My account'),
+                        h.url_for('my')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My packages'),
+                        h.url_for(controller='packages', action='my')) }
+                </li>
+            </ul>
+        </div>
+
+        <div class="sponsors">
+            <h2>Sponsors</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Introduction'),
+                        h.url_for('intro', anchor='sponsors')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Sign me up'),
+                        h.url_for(controller='register', action='sponsors')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My account'),
+                        h.url_for('my')) }
+                </li>
+            </ul>
+        </div>
+
+        <div class="support">
+            <h2>Support</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Q & A'),
+                        h.url_for('qa')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Contact'),
+                        h.url_for('contact')) }
+                </li>
+            </ul>
+        </div>
     </div>
 
-<%"""
-      <div class="menuitem">${ _('Welcome') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('index') }">${ _('Start page') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('news') }">${ _('News') }</a></div>
-
-      <div class="menuitem">${ _('For maintainers') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#maintainers">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action='my', id=None) }">${ _('My packages') }</a></div>
-
-      <div class="menuitem">For sponsors</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#sponsors">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action=None, id=None) }">${ _('Package list') }</a></div>
-
-      <div class="menuitem">${ _('Support') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('qa') }">${ _('Q &amp; A') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('contact') }">${ _('Contact') }</a></div>
-"""%>
-
-    </td><td>
+    </td>
+    <td>
 
     <!--Right column containing main content-->
     <div id="maincontent">
