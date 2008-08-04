@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
 <h1>${ _('Details about package %s') % c.package.name }</h1>
 
 <table>
@@ -35,7 +33,7 @@
 
 % for package_version in c.package.package_versions:
 
-<fieldset>
+<!--<fieldset>-->
   <legend>${ package_version.version }</legend>
 
   <table>
@@ -171,5 +169,3 @@ ${ h.rails.end_form() }
 </fieldset>
 
 % endfor
-
-</%def>

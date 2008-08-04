@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="../base.mako"/>
-
-<%def name="main()">
+<%inherit file="/base.mako"/>
 
 <h1>${ _('Login') }</h1>
 
@@ -21,12 +19,12 @@
       <td>${ _('E-mail') }:</td>
       <td>${ h.rails.form_tag.text_field('email') }</td>
     </tr>
-    
+
     <tr>
       <td>${ _('Password') }:</td>
       <td>${ h.rails.form_tag.password_field('password') }</td>
     </tr>
-    
+
     <tr>
       <td>${ h.rails.submit(_('Submit')) }</td>
     </tr>
@@ -35,5 +33,3 @@
   ${ h.rails.end_form() }
 
 </fieldset>
-
-</%def>

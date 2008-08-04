@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
 
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: Accepted ${ c.changes['Source'] } ${ c.changes['Version'] } (${ c.changes['Architecture'] })
 
 ${ c.changes_contents }
@@ -11,4 +11,3 @@ Accepted:
 ${ file['name'] }
   to ${ c.dest }/${ file['name'] }
 % endfor
-</%def>

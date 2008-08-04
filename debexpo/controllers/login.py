@@ -84,7 +84,7 @@ class LoginController(BaseController):
         if 'path_before_login' in session:
             return redirect_to(session['path_before_login'])
         else:
-            return redirect_to(url_for('my', action=None))
+            return redirect_to(h.url_for('/my'))
 
     def index(self, get=False):
         """

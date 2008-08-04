@@ -1,11 +1,11 @@
-/* Stylesheet for mentors.debian.net */
-/* (c) 2005,2006 the mentors.debian.net team */
-/* You are free to use this style sheet on your own web pages
-   under the terms of the GNU General Public License 2 */
+/* Stylesheet for debexpo */
+/* Derived from the mentors.debian.net stylesheet. */
+/* Copyright © 2008 Christoph Haas <email@christoph-haas.de> */
+/* and published under the same license as debexpo itself */
 
 body
 {
-    font-family: sans-serif;
+    font-family: Helvetica,Arial,sans-serif;
     font-size: 10pt;
     background-color: #ffffff;
     margin: 0;
@@ -19,33 +19,57 @@ img
 
 h1,h2
 {
-    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
-    font-weight: normal;
-    color: #d70751;
-	margin: 0.5em 0 0.2em 0;
-	padding: 0 0 0 0;
+    margin: 0.5em 0 0.2em 0;
+    padding: 0 0 0 0;
 }
 
 h1
 {
-	font-size: 170%;
-	color: #000000;
+    font-size: 150%;
+    color: #E98F1D;
 }
 
 h2
 {
-	font-size: 140%;
-    color: #808080;
+    font-size: 130%;
 }
 
-
+/* Navigation menu on the left site */
 #floatmenu
 {
-	float: left;
-	margin: 0.5ex;
-	padding: 0.5ex;
-	width: 20ex;
+    float: left;
+    width: 19em;
+    /*margin-right: 2em;*/
+    /* 7 pixel wide shadow on the right border of the menu */
+    background: right repeat-y url(/shadow-right.png);
+    padding-right: 7px;
+    margin-right: 20px;
 }
+
+/* Colored subsections of the left menu */
+#floatmenu .start {
+    background-color: #f8c078;
+    padding: 1em;
+}
+
+#floatmenu h2 {
+    font-size: 150%;
+    font-weight: normal;
+    margin: 0 0 .3em 0;
+    padding: 0;
+}
+
+#floatmenu ul {
+    padding: 0;
+    margin: 0 0 0 1em;
+    list-style-type: none;
+    color: #000000;
+    font-size: 110%;
+}
+
+#floatmenu li {
+}
+
 
 /* Menu item */
 .menuitem
@@ -74,91 +98,79 @@ h2
 
 .menusubitem
 {
-	margin: 0 0 0 1em;
-	font-size: 9pt;
-	line-height: 2em;
+    margin: 0 0 0 1em;
+    font-size: 9pt;
+    line-height: 2em;
 }
 
 .menusubitem-active
 {
-	margin: 0 0 0 1em;
-	font-size: 9pt;
-	line-height: 2em;
+    margin: 0 0 0 1em;
+    font-size: 9pt;
+    line-height: 2em;
     font-weight: bolder;
 }
-
-/*
-.menuitem a
-{
-	text-decoration: none;
-}
-*/
 
 /* The currently running CGI is highlighted */
 .currentcgi
 {
-	border: 1px solid red;
+    border: 1px solid red;
 }
 
 #maincontent
 {
-	margin: 0.5ex 0.5ex 0.5ex 22ex;
-	padding: 0 0 0 1ex;
-	_border-left: 1px dotted red;
+    padding: 1em 1em 1em 2em;
+    margin-left: 20em;
+    /*margin: 1em 1em 1em 2em;*/
+    /*padding: 0 0 0 1ex;*/
+    /*background-color: red;*/
 }
 
 #header
 {
-	background-color: #f0f0f0;
-	color: #707070;
-	padding: 0.5ex;
-	min-height: 75px;	/* the top area is at least as large as the debian logo */
-		/* does not work with the IE but you won't see me write hacks to
-         * support buggy browsers */
-    border-bottom: 1px solid #b0b0b0;
+    background-color: #000000;
+    color: #f0f0f0;
+    border-bottom: .5em solid #E98F1D;
+    padding: 0.7em 2em 0.7em 2em;
 }
 
-#debianlogo
+#logo
 {
-	float: left;
-	position: absolute;
-	top: 5px;
-	left: 5px;
+    float: right;
+    /*position: absolute;*/
+    top: 5px;
+    right: 5px;
 }
+
 #headertitle
 {
-    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
-	font-size: 300%;
-	margin: 0;
-	margin-left: 70px;	/* indentation from the debian logo on the lft */
-	padding: 0;
-	font-weight: 100;
+    font-family: Georgia, "Bitstream Vera Serif", Palatino, serif;
+    font-size: 250%;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
 }
 
 #headersubtitle
 {
-	padding: 0;
-	margin: 0;
-	margin-left: 70px;	/* indentation from the debian logo on the lft */
-	font-size: 110%;
-	font-weight: 500;
+    padding: 0;
+    margin: 0;
+    font-size: 110%;
+    font-weight: bold;
 }
 
 #footer
 {
-	background-color: #f0f0f0;
-	color: #707070;
-	padding: 0.2em 1em 0.2em 1em;
-	margin: 2em 0 0 0;
-	text-align: center;
-	clear: both;
-    border-top: 1px solid #b0b0b0;
+    background-color: #e5e5e5;
+    color: #808080;
+    padding: 0.2em 1em 0.2em 1em;
+    clear: both;
 }
 
 #navigation
 {
-	padding: 0.2em 1em 0.2em 1em;
-	background: #e0e0e0;
+    padding: 0.2em 1em 0.2em 1em;
+    background: #e0e0e0;
 }
 
 #navigation > .right
@@ -172,6 +184,7 @@ p,form
 	color: #606060;
 	margin: 0.3ex 0em 1ex 0;
 	padding: 0 0 0 0;
+        line-height: 1.8em;
 }
 
 pre
@@ -188,7 +201,6 @@ a
 
 a:hover
 {
-	_border-bottom: 1px solid #000000;
 	background-color: #f0f0f0;
 }
 
@@ -197,34 +209,11 @@ ul
     color: #606060;
 }
 
-/*
-ul
-{
-	_background: #e0ffe0;
-	_margin: 0 0 0 0 0em;
-	padding: 0 0 0 1em;
-}
-
-li
-{
-	_background: #ffe0e0;
-	_list-style: none;
-	padding: 0;
-	margin: 0;
-}
-*/
-
 table
 {
     border-collapse: collapse;
     margin: 0.5em 0 0.5em 0;
 }
-
-/*
-tr
-{
-}
-*/
 
 td
 {
@@ -250,22 +239,6 @@ th
     padding-right: 1em;
 }
 
-/*
-fieldset 
-{ 
-	_border: 1px solid #808080; 
-}
-
-legend 
-{
-	padding: 0.2em 0.5em;
-	border: 1px solid #808080;
-	color: #808080;
-	_font-size: 90%;
-	_text-align: right;
-}
-*/
-
 .warning
 {
     color: red;
@@ -282,4 +255,3 @@ legend
     color: green;
     font-weight: bolder;
 }
-

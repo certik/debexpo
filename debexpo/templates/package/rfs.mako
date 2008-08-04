@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
 <h1>${ _('Template for an RFS for "%s"') % c.package.name }</h1>
 
-<p>An RFS is a <i>request for sponsorship</i>. If you want to show other people
+<p>${ _('''An RFS is a <i>request for sponsorship</i>. If you want to show other people
 that you are looking for a sponsor for your package you can post an email to
-the debian-mentors mailing list containing information about your package.</p>
+the debian-mentors mailing list containing information about your package.''') }</p>
 
 <pre>
 From: ${ c.package.user.name } &lt;${ c.package.user.email }&gt
@@ -36,12 +34,10 @@ Alternatively, one can download the package with dget using this command:
   dget -x ${ c.config['debexpo.server'] }/debian/${ pkgfile.filename }
     % endif
 % endfor
- 
+
 I would be glad if someone uploaded this package for me.
 
 Kind regards,
 
 ${ c.package.user.name }
 </pre>
-
-</%def>

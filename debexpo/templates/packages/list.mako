@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="../base.mako"/>
-
-<%def name="list()">
+<%inherit file="/packages/index.mako"/>
 
 <table width="100%">
   <tr>
@@ -9,7 +7,7 @@
     <th>${ _('Description') }</th>
     <th>${ _('Version') }</th>
     <th>${ _('Uploader') }</th>
-    <th>${ _('Needs a sponsor') }</th>
+    <th>${ _('Needs a sponsor') }?</th>
   </tr>
 
 % if len(c.packages) > 0:
@@ -33,5 +31,3 @@
 % endif
 
 </table>
-
-</%def>

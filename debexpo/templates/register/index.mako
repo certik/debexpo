@@ -2,29 +2,26 @@
 
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
 <h1>${ _('Sign up for your own account at %s') % c.config['debexpo.sitename'] }</h1>
 
-<fieldset>
-  <legend>${ _('Account type') }</legend>
-
   <p>
-    First you must select what type of account you are applying for.
+    ${ _('What type of account would you like to apply for?') }
   </p>
 
-  <h2>${ _('Maintainer') }</h2>
+  <h2><a href="${ h.rails.url_for(action='maintainer') }">${ _('Package Maintainer') }</a></h2>
 
-  <p>blurb here</p>
+  <p>
+    ${ _('''A package maintainer is a person who takes care of Debian packages.
+    If you create Debian packages from certain pieces of (so called
+    "upstream") software then you are a maintainer. You do not need to be
+    an official Debian Developer (DD) or Debian Maintainer (DM).''') }
+  </p>
 
-  <p><a href="${ h.rails.url_for(action='maintainer') }">${ _('Click here to proceed') }</a>.</p>
+  <h2><a href="${ h.rails.url_for(action='sponsor') }">${ _('Sponsor') }</a></h2>
 
-  <h2>${ _('Sponsor') }</h2>
-
-  <p>blurb here</p>
-
-  <p><a href="${ h.rails.url_for(action='sponsor') }">${ _('Click here to proceed') }</a>.</p>
-
-</fieldset>
-
-</%def>
+  <p>
+    ${ _('''Uploading new packages into Debian is only possible if you
+    are a Debian Developer (DD) or Debian Maintainer (DM). If you want
+    to help package maintainers to get their packages into Debian you
+    can be a sponsor and check and upload packages on their behalf.''')}
+  </p>

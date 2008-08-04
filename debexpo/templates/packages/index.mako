@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-<%inherit file="list.mako"/>
-
-<%def name="main()">
+<%inherit file="/base.mako"/>
 
 <h1>${ _('Package list') }</h1>
 
-${self.list()}
-
-</%def>
+${ next.body() }

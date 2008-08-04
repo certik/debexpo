@@ -123,7 +123,7 @@ class PackagesController(BaseController):
         # Render the page.
         c.config = config
         c.packages = packages
-        return render('/packages/index.mako')
+        return render('/packages/list.mako')
 
     def section(self, id):
         """

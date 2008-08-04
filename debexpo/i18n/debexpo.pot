@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2008-07-31 17:55+0200\n"
+"POT-Creation-Date: 2008-08-03 16:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,52 +61,52 @@ msgstr ""
 msgid "You must use your debian.org email address to register"
 msgstr ""
 
-#: debexpo/templates/base.mako:22
+#: debexpo/templates/base.mako:23
 msgid "Welcome"
 msgstr ""
 
-#: debexpo/templates/base.mako:23
+#: debexpo/templates/base.mako:24
 msgid "Start page"
 msgstr ""
 
-#: debexpo/templates/base.mako:24
+#: debexpo/templates/base.mako:25
 msgid "News"
 msgstr ""
 
-#: debexpo/templates/base.mako:26
+#: debexpo/templates/base.mako:27
 msgid "For maintainers"
 msgstr ""
 
-#: debexpo/templates/base.mako:27 debexpo/templates/base.mako:33
+#: debexpo/templates/base.mako:28 debexpo/templates/base.mako:34
 msgid "Introduction"
 msgstr ""
 
-#: debexpo/templates/base.mako:28 debexpo/templates/base.mako:34
+#: debexpo/templates/base.mako:29 debexpo/templates/base.mako:35
 msgid "Sign me up"
 msgstr ""
 
-#: debexpo/templates/base.mako:29 debexpo/templates/base.mako:35
+#: debexpo/templates/base.mako:30 debexpo/templates/base.mako:36
 #: debexpo/templates/my/index.mako:6
 msgid "My account"
 msgstr ""
 
-#: debexpo/templates/base.mako:30
+#: debexpo/templates/base.mako:31
 msgid "My packages"
 msgstr ""
 
-#: debexpo/templates/base.mako:36 debexpo/templates/packages/index.mako:6
+#: debexpo/templates/base.mako:37 debexpo/templates/packages/index.mako:6
 msgid "Package list"
 msgstr ""
 
-#: debexpo/templates/base.mako:38
+#: debexpo/templates/base.mako:39
 msgid "Support"
 msgstr ""
 
-#: debexpo/templates/base.mako:39
+#: debexpo/templates/base.mako:40
 msgid "Q &amp; A"
 msgstr ""
 
-#: debexpo/templates/base.mako:40
+#: debexpo/templates/base.mako:41
 msgid "Contact"
 msgstr ""
 
@@ -387,17 +387,32 @@ msgstr ""
 msgid "Account type"
 msgstr ""
 
+#: debexpo/templates/register/index.mako:13
+msgid "What type of account would you like to apply for?"
+msgstr ""
+
 #: debexpo/templates/register/index.mako:16
-msgid "Maintainer"
+msgid "Package Maintainer"
 msgstr ""
 
-#: debexpo/templates/register/index.mako:20
-#: debexpo/templates/register/index.mako:26
-msgid "Click here to proceed"
+#: debexpo/templates/register/index.mako:19
+msgid ""
+"A package maintainer is a person who takes care of Debian packages.\n"
+"    If you create Debian packages from certain pieces of (so called\n"
+"    \"upstream\") software then you are a maintainer. You do not need to be\n"
+"    an official Debian Developer (DD) or Debian Maintainer (DM)."
 msgstr ""
 
-#: debexpo/templates/register/index.mako:22
+#: debexpo/templates/register/index.mako:25
 msgid "Sponsor"
+msgstr ""
+
+#: debexpo/templates/register/index.mako:28
+msgid ""
+"Uploading new packages into Debian is only possible if you\n"
+"    are a Debian Developer (DD) or Debian Maintainer (DM). If you want\n"
+"    to help package maintainers to get their packages into Debian you\n"
+"    can be a sponsor and check and upload packages on their behalf."
 msgstr ""
 
 #: debexpo/templates/register/maintainer.mako:6
