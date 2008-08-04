@@ -87,18 +87,16 @@ h3
 {
     font-size: 120%;
     margin: 1em 0 0.2em 0;
-    /*color: #E98F1D;*/
 }
 
 /* Navigation menu on the left site */
 #menu
 {
-    /* 7 pixel wide shadow on the right border of the menu */
-    /*background: right repeat-y url(/shadow-right.png);*/
-    /*padding-right: 7px;*/
+    background-color: #e5e5e5;
 }
 
 td.navigation-td {
+    /* 7 pixel wide shadow on the right border of the menu */
     background: right repeat-y url(/shadow-right.png);
     background-color: #f8c078;
     padding-right: 7px;
@@ -127,7 +125,6 @@ td.navigation-td {
 
 #menu h2 {
     font-size: 150%;
-    /*font-weight: normal;*/
     margin: 0 0 .3em 0;
     color: #000000;
 }
@@ -144,46 +141,6 @@ td.navigation-td {
 }
 
 
-/* Menu item */
-.menuitem
-{
-    padding: 0.1em 0.2em 0.1em 0.2em;
-    background-color: #f0f0f0;
-    border: 1px solid #d0d0d0;
-    border-left: 3px solid #d70751;
-    margin: 0.5em 0 0 0;
-    text-transform: uppercase;
-    -moz-border-radius-topright: 10%;
-    -webkit-border-top-right-radius: 10%;
-    border-radius-topright: 10%;
-}
-
-.menuitem-active
-{
-    padding: 0.1em 0.2em 0.1em 0.2em;
-    background-color: #f0f0f0;
-    border: 1px solid #d0d0d0;
-    border-left: 3px solid #d70751;
-    margin: 0.5em 0 0 0;
-    text-transform: uppercase;
-    font-weight: bolder;
-}
-
-.menusubitem
-{
-    margin: 0 0 0 1em;
-    font-size: 9pt;
-    line-height: 2em;
-}
-
-.menusubitem-active
-{
-    margin: 0 0 0 1em;
-    font-size: 9pt;
-    line-height: 2em;
-    font-weight: bolder;
-}
-
 /* The currently running CGI is highlighted */
 .currentcgi
 {
@@ -193,7 +150,6 @@ td.navigation-td {
 #maincontent
 {
     padding: 0 1em 1em 1em;
-    /*margin: 20em;*/
 }
 
 #header
@@ -259,13 +215,11 @@ p,form
 
 pre
 {
-    /*color: #606060;*/
     background-color: #f0f0f0;
 }
 
 a, a:visited
 {
-    /*color: #606060;*/
     color: #000000;
     border-bottom: 1px dashed #808080;
     text-decoration: none;
@@ -295,7 +249,7 @@ td.lines
 
 th
 {
-	color: #606060;
+    color: #606060;
     font-weight: bolder;
     text-align: left;
     vertical-align: top;
