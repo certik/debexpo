@@ -21,11 +21,20 @@
       </div>
     </div>
 
-    <div id="floatmenu">
+    <table><tr><td class="navigation-td">
+    <!--Left column containing navigation-->
+    <div id="menu">
         <div class="start">
             <h2>Welcome</h2>
             <ul>
-                <li>News</li>
+                <li>${ h.tags.link_to(
+                        _('Start page'),
+                        h.url_for('index')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('News'),
+                        h.url_for('news')) }
+                </li>
             </ul>
         </div>
     </div>
@@ -52,9 +61,14 @@
       <div class="menusubitem"><a href="${ h.rails.url_for('contact') }">${ _('Contact') }</a></div>
 """%>
 
+    </td><td>
+
+    <!--Right column containing main content-->
     <div id="maincontent">
       ${next.body()}
     </div>
+
+    </td></tr></table>
 
     <div id="footer">
         debexpo

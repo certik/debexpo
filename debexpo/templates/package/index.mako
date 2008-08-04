@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 <%inherit file="../base.mako"/>
 
-<h1>${ _('Details about package %s') % c.package.name }</h1>
+<h1>${ _('Details about package "%s"') % c.package.name }</h1>
 
 <table>
   <tr>
@@ -33,7 +33,7 @@
 
 % for package_version in c.package.package_versions:
 
-<!--<fieldset>-->
+<fieldset>
   <legend>${ package_version.version }</legend>
 
   <table>
@@ -101,7 +101,7 @@
 
   </table>
 
-<h4>Comments</h4>
+<h3>Comments</h3>
 
 % if len(package_version.package_comments) > 0:
 
@@ -144,7 +144,7 @@
 
 % endif
 
-<h4>New comment</h4>
+<h3>New comment</h3>
 
 % if 'user_id' in c.session:
 
