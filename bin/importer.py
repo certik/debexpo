@@ -356,7 +356,8 @@ class Importer(object):
                 oldorig = orig
                 orig = None
 
-        post_upload = Plugins('post-upload', self.changes, self.changes_file)
+        post_upload = Plugins('post-upload', self.changes, self.changes_file,
+            user_id=self.user_id)
         if post_upload.stop():
             log.critical('post-upload plugins failed')
             self._remove_changes()
