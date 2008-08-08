@@ -42,6 +42,7 @@ import os
 from debexpo.lib.base import *
 from debexpo.lib import constants
 from debexpo.lib.utils import get_package_dir
+from debexpo.lib.email import Email
 
 from debexpo.model import meta
 from debexpo.model.packages import Package
@@ -138,5 +139,18 @@ class PackageController(BaseController):
 
         meta.session.save(comment)
         meta.session.commit()
+
+        subscribers = meta.session.query(PackageSubscription).filter_by(package=packagename).filter(\
+            PackageSubscription <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
+
+        if len(subscribers) >= 0:
+            user = meta.session.query(User).filter_by(id=session['user_id']).one()
+            c.package = packagename
+            c.comment = request.POST['text']
+            c.user = user
+            c.config = config
+
+            email = Email('comment_posted')
+            email.send([s.user.email for s in subscribers])
 
         return h.rails.redirect_to('package', packagename=packagename)

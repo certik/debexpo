@@ -225,6 +225,7 @@ class Importer(object):
         from debexpo.model.binary_packages import BinaryPackage
         from debexpo.model.package_files import PackageFile
         from debexpo.model.package_info import PackageInfo
+        from debexpo.model.package_subscriptions import PackageSubscription
 
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
@@ -300,6 +301,20 @@ class Importer(object):
         # Commit all changes to the database
         meta.session.commit()
         log.debug('Committed package data to the database')
+
+        subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
+            PackageSubscription <= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
+
+        if len(subscribers) >= 0:
+            c.package = packagename
+            c.version = self.changes['Version']
+            c.user = self.user
+            c.config = config
+
+            email = Email('package_uploaded')
+            email.send([s.user.email for s in subscribers])
+
+            log.debug('Sent out package subscription emails')
 
     def _orig(self):
         """
