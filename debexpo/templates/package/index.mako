@@ -27,6 +27,15 @@
     <td>${ c.package.description }</td>
   </tr>
 
+% if 'user_id' in c.session:
+
+  <tr>
+    <th>${ _('Subscribe') }:</th>
+    <td><a href="${ h.rails.url_for('subscribe', packagename=c.package.name) }">${ _('Edit your subscription') }</a></td>
+  </tr>
+
+% endif
+
 </table>
 
 <h1>${ _('Package versions') }</h1>

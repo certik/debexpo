@@ -53,6 +53,7 @@ from debexpo.model.package_info import PackageInfo
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.binary_packages import BinaryPackage
 from debexpo.model.package_files import PackageFile
+from debexpo.model.package_subscriptions import PackageSubscription
 
 log = logging.getLogger(__name__)
 
@@ -114,6 +115,63 @@ class PackageController(BaseController):
 
         log.debug('Rendering page')
         return render('/package/rfs.mako')
+
+    def subscribe(self, packagename):
+        """
+        Package subscripton.
+
+        ``packagename``
+            Package name to look at.
+        """
+        if 'user_id' not in session:
+            log.debug('Requires authentication')
+            session['path_before_login'] = request.path_info
+            session.save()
+            return redirect_to(h.rails.url_for(controller='login'))
+
+        package = self._get_package(packagename)
+        if not isinstance(package, Package):
+            return package
+
+        query = meta.session.query(PackageSubscription).filter_by(package=packagename).filter_by(user_id=session['user_id'])
+        subscription = query.first()
+
+        if request.method == 'POST':
+            # The form has been submitted.
+            if subscription is None:
+                # There is no previous subscription.
+                if request.POST['level'] != -1:
+                    log.debug('Creating new subscription on %s' % packagename)
+                    subscribe = PackageSubscription(package=packagename, user_id=session['user_id'],
+                        level=request.POST['level'])
+                    meta.session.save(subscribe)
+
+            else:
+                # There is a previous subscription.
+                if request.POST['level'] != -1:
+                    log.debug('Changing previous subscription on %s' % packagename)
+                    subscription.level = request.POST['level']
+                else:
+                    log.debug('Deleting previous subscription on %s' % packagename)
+                    meta.session.delete(subscription)
+
+            meta.session.commit()
+            return redirect_to(h.rails.url_for('package', packagename=packagename))
+
+        c.subscriptions = {
+            _('No subscription') : -1,
+            _('Package upload notifications only') : constants.SUBSCRIPTION_LEVEL_UPLOADS,
+            _('Package upload and comment notifications') : constants.SUBSCRIPTION_LEVEL_COMMENTS
+        }
+
+        if subscription is None:
+            c.current_subscription = -1
+        else:
+            c.current_subscription = subscription.level
+
+
+        log.debug('Rendering page')
+        return render('/package/subscribe.mako')
 
     def comment(self, packagename):
         """
