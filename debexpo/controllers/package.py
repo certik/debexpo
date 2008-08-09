@@ -141,7 +141,7 @@ class PackageController(BaseController):
         meta.session.commit()
 
         subscribers = meta.session.query(PackageSubscription).filter_by(package=packagename).filter(\
-            PackageSubscription <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
+            PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_COMMENTS).all()
 
         if len(subscribers) >= 0:
             user = meta.session.query(User).filter_by(id=session['user_id']).one()
