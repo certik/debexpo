@@ -216,6 +216,7 @@ class Importer(object):
         from debexpo.model import meta
         from debexpo.lib.utils import parse_section, md5sum
         from debexpo.lib.plugins import Plugins
+        from debexpo.lib import constants
 
         # Import model objects
         from debexpo.model.users import User
