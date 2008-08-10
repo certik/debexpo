@@ -307,16 +307,16 @@ class Importer(object):
         subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
             PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
 
-        if len(subscribers) >= 0:
-            c.package = packagename
-            c.version = self.changes['Version']
-            c.user = self.user
-            c.config = config
+#        if len(subscribers) >= 0:
+#            c.package = self.changes['Source']
+#            c.version = self.changes['Version']
+#            c.user = self.user
+#            c.config = config
 
-            email = Email('package_uploaded')
-            email.send([s.user.email for s in subscribers])
+#            email = Email('package_uploaded')
+#            email.send([s.user.email for s in subscribers])
 
-            log.debug('Sent out package subscription emails')
+#            log.debug('Sent out package subscription emails')
 
     def _orig(self):
         """
