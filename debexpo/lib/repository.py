@@ -44,6 +44,7 @@ from sqlalchemy import select
 
 from debexpo.lib.utils import get_package_dir
 from debexpo.model import meta
+from debexpo.model.packages import Package
 from debexpo.model.package_files import PackageFile
 from debexpo.model.source_packages import SourcePackage
 from debexpo.model.binary_packages import BinaryPackage
@@ -117,7 +118,7 @@ class Repository(object):
 
         return deb.dump()
 
-    def _get_sources_file(self, distribution, component):
+    def get_sources_file(self, distribution, component, user_id=None):
         """
         Does a query to find all packages that fit the criteria of distribution
         and component and returns the contents of a Sources file.
@@ -127,6 +128,9 @@ class Repository(object):
 
         ``component``
             Name of the component to look at.
+
+        ``user_id``
+            Only look at a certain user's packages.
         """
         log.debug('Getting all sources files for dist = %s, component = %s' %
             (distribution, component))
@@ -149,6 +153,13 @@ class Repository(object):
         # ...include only package in the specified distribution...
         dscfiles = dscfiles.filter(PackageVersion.distribution == distribution)
 
+        if user_id is not None:
+            # ...where there is a Package instance...
+            dscfiles = dscfiles.filter(PackageVersion.package_id == Package.id)
+
+            # ...include only packages from this user
+            dscfiles = dscfiles.filter(Package.user_id == user_id)
+
         # ...and finally create a list of PackageFile instances.
         dscfiles = dscfiles.all()
 
@@ -162,7 +173,7 @@ class Repository(object):
         # the finished Sources file.
         return '\n'.join(entries)
 
-    def _get_packages_file(self, distribution, component, arch):
+    def get_packages_file(self, distribution, component, arch, user_id=None):
         """
         Does a query to find all packages that fit the criteria of distribution,
         component and architecture and returns the contents of a Packages file.
@@ -175,6 +186,9 @@ class Repository(object):
 
         ``arch``
             Name of the architecture to look at.
+
+        ``user_id``
+            Only look at a certain user's packages.
         """
         log.debug('Getting all package files for dist = %s, component = %s, arch = %s' %
             (distribution, component, arch))
@@ -199,6 +213,13 @@ class Repository(object):
 
         # ...include only package in the specified distribution...
         debfiles = debfiles.filter(PackageVersion.distribution == distribution)
+
+        if user_id is not None:
+            # ...where there is a Package instance...
+            debfiles = debfiles.filter(PackageVersion.package_id == Package.id)
+
+            # ...include only packages from this user
+            debfiles = debfiles.filter(Package.user_id == user_id)
 
         # ...and finally create a list of PackageFile instances.
         debfiles = debfiles.all()
@@ -390,7 +411,7 @@ class Repository(object):
                 self._check_directories(dist, component)
 
                 # Create Sources file content.
-                sources = self._get_sources_file(dist, component)
+                sources = self.get_sources_file(dist, component)
                 filename = os.path.join(self.repository, 'dists', dist, component, 'source', 'Sources')
 
                 # If the Sources file is empty, remove Sources.{gz,bz2} files. This way the
@@ -425,7 +446,7 @@ class Repository(object):
                     self._check_directories(dist, component, arch)
 
                     # Create Packages file content.
-                    packages = self._get_packages_file(dist, component, arch)
+                    packages = self.get_packages_file(dist, component, arch)
                     filename = os.path.join(self.repository, 'dists', dist, component, 'binary-%s' % arch, 'Packages')
 
                     # If the Packages file is empty, remove Packages.{gz,bz2} files. This way
