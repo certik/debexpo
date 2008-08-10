@@ -71,6 +71,8 @@ def make_map():
     map.connect('qa', 'qa', controller='index', action='qa')
     map.connect('register', 'register/:action/:id', controller='register', action='index', id=None)
     map.connect('upload/:filename', controller='upload', action='index')
+    map.connect('ppa', 'ppa/:email', controller='ppa', action='index')
+    map.connect('ppa/:email/*filename', controller='ppa', action='file')
 
     map.connect(':controller/:action/:id')
     map.connect('*url', controller='template', action='view')
