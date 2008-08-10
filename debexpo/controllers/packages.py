@@ -60,6 +60,7 @@ class PackagesController(BaseController):
         * version -- latest version uploaded to repository
         * uploader -- name of uploader
         * needs_sponsor -- whether the package needs a sponsor
+        * package_version_id -- the ID of the most recent package version
 
         of packages and their most recent versions.
         """
@@ -103,7 +104,8 @@ class PackagesController(BaseController):
                     'description' : package.description,
                     'version' : package_version.version,
                     'uploader' : package.user.name,
-                    'needs_sponsor' : needs_sponsor
+                    'needs_sponsor' : needs_sponsor,
+                    'package_version_id' : package_version.id
                 })
 
         return packages
