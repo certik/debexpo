@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
-<h1>${ _('Details about package %s') % c.package.name }</h1>
+<h1>${ _('Details about package "%s"') % c.package.name }</h1>
 
 <table>
   <tr>
@@ -28,6 +26,15 @@
     <th>${ _('Description') }:</th>
     <td>${ c.package.description }</td>
   </tr>
+
+% if 'user_id' in c.session:
+
+  <tr>
+    <th>${ _('Subscribe') }:</th>
+    <td><a href="${ h.rails.url_for('subscribe', packagename=c.package.name) }">${ _('Edit your subscription') }</a></td>
+  </tr>
+
+% endif
 
 </table>
 
@@ -103,7 +110,7 @@
 
   </table>
 
-<h4>Comments</h4>
+<h3>Comments</h3>
 
 % if len(package_version.package_comments) > 0:
 
@@ -146,7 +153,7 @@
 
 % endif
 
-<h4>New comment</h4>
+<h3>New comment</h3>
 
 % if 'user_id' in c.session:
 
@@ -171,5 +178,3 @@ ${ h.rails.end_form() }
 </fieldset>
 
 % endfor
-
-</%def>

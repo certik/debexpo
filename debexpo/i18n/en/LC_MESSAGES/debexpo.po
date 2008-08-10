@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: debexpo 0.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2008-07-31 17:55+0200\n"
-"PO-Revision-Date: 2008-07-31 21:24+0200\n"
+"POT-Creation-Date: 2008-08-03 15:26+0200\n"
+"PO-Revision-Date: 2008-08-03 16:40+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -61,52 +61,52 @@ msgstr ""
 msgid "You must use your debian.org email address to register"
 msgstr ""
 
-#: debexpo/templates/base.mako:22
+#: debexpo/templates/base.mako:23
 msgid "Welcome"
 msgstr ""
 
-#: debexpo/templates/base.mako:23
+#: debexpo/templates/base.mako:24
 msgid "Start page"
 msgstr ""
 
-#: debexpo/templates/base.mako:24
+#: debexpo/templates/base.mako:25
 msgid "News"
 msgstr ""
 
-#: debexpo/templates/base.mako:26
+#: debexpo/templates/base.mako:27
 msgid "For maintainers"
 msgstr ""
 
-#: debexpo/templates/base.mako:27 debexpo/templates/base.mako:33
+#: debexpo/templates/base.mako:28 debexpo/templates/base.mako:34
 msgid "Introduction"
 msgstr ""
 
-#: debexpo/templates/base.mako:28 debexpo/templates/base.mako:34
+#: debexpo/templates/base.mako:29 debexpo/templates/base.mako:35
 msgid "Sign me up"
 msgstr ""
 
-#: debexpo/templates/base.mako:29 debexpo/templates/base.mako:35
+#: debexpo/templates/base.mako:30 debexpo/templates/base.mako:36
 #: debexpo/templates/my/index.mako:6
 msgid "My account"
 msgstr ""
 
-#: debexpo/templates/base.mako:30
+#: debexpo/templates/base.mako:31
 msgid "My packages"
 msgstr ""
 
-#: debexpo/templates/base.mako:36 debexpo/templates/packages/index.mako:6
+#: debexpo/templates/base.mako:37 debexpo/templates/packages/index.mako:6
 msgid "Package list"
 msgstr ""
 
-#: debexpo/templates/base.mako:38
+#: debexpo/templates/base.mako:39
 msgid "Support"
 msgstr ""
 
-#: debexpo/templates/base.mako:39
+#: debexpo/templates/base.mako:40
 msgid "Q &amp; A"
 msgstr ""
 
-#: debexpo/templates/base.mako:40
+#: debexpo/templates/base.mako:41
 msgid "Contact"
 msgstr ""
 

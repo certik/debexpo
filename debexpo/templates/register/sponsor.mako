@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
 <h1>${ _('Sign up for a sponsor account') }</h1>
 
 <fieldset>
@@ -15,17 +13,17 @@
       <td>${ _('Full name') }:</td>
       <td>${ h.rails.text_field('name') }</td>
     </tr>
-    
+
     <tr>
       <td>${ _('E-mail') }:</td>
       <td>${ h.rails.text_field('email') }</td>
     </tr>
-    
+
     <tr>
       <td>${ _('Password') }:</td>
       <td>${ h.rails.password_field('password') }</td>
     </tr>
-    
+
     <tr>
       <td>${ _('Confirm password') }:</td>
       <td>${ h.rails.password_field('password_confirm') }</td>
@@ -39,5 +37,3 @@
   ${ h.rails.end_form() }
 
 </fieldset>
-
-</%def>

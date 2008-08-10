@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   helpers.py — Helper functions
+#   package_subscriptions.py — package_subscriptions table model
 #
 #   This file is part of debexpo - http://debexpo.workaround.org
 #
@@ -28,35 +28,29 @@
 #   OTHER DEALINGS IN THE SOFTWARE.
 
 """
-Helper functions.
-
-Consists of functions to typically be used within templates, but also
-available to Controllers. This module is available to both as 'h'.
+Holds package_subscriptions table model.
 """
 
 __author__ = 'Jonny Lamb'
 __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
-from webhelpers import commands, \
-                       containers, \
-                       feedgenerator, \
-                       html, \
-                       markdown, \
-                       misc, \
-                       paginate, \
-                       pylonslib, \
-                       string24, \
-                       textile, \
-                       constants, \
-                       date, \
-                       hinclude, \
-                       htmlgen, \
-                       mimehelper, \
-                       number, \
-                       pagination, \
-                       rails, \
-                       text, \
-                       util
-from webhelpers.html import tags
-from routes import url_for
+import sqlalchemy as sa
+from sqlalchemy import orm
+
+from debexpo.model import meta, OrmObject
+from debexpo.model.users import User
+
+t_package_subscriptions = sa.Table('package_subscriptions', meta.metadata,
+    sa.Column('id', sa.types.Integer, primary_key=True),
+    sa.Column('user_id', sa.types.Integer, sa.ForeignKey('users.id')),
+    sa.Column('package', sa.types.String(200), nullable=False),
+    sa.Column('level', sa.types.Integer, nullable=False),
+    )
+
+class PackageSubscription(OrmObject):
+    foreign = ['user']
+
+orm.mapper(PackageSubscription, t_package_subscriptions, properties={
+    'user' : orm.relation(User, backref='package_subscriptions')
+})

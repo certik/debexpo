@@ -38,6 +38,7 @@ __license__ = 'MIT'
 import logging
 import apt_pkg
 from sqlalchemy import exceptions
+from pylons.i18n import get_lang
 
 from debexpo.lib.base import *
 
@@ -60,6 +61,7 @@ class PackagesController(BaseController):
         * version -- latest version uploaded to repository
         * uploader -- name of uploader
         * needs_sponsor -- whether the package needs a sponsor
+        * package_version_id -- the ID of the most recent package version
 
         of packages and their most recent versions.
         """
@@ -103,7 +105,8 @@ class PackagesController(BaseController):
                     'description' : package.description,
                     'version' : package_version.version,
                     'uploader' : package.user.name,
-                    'needs_sponsor' : needs_sponsor
+                    'needs_sponsor' : needs_sponsor,
+                    'package_version_id' : package_version.id
                 })
 
         return packages
@@ -123,7 +126,49 @@ class PackagesController(BaseController):
         # Render the page.
         c.config = config
         c.packages = packages
-        return render('/packages/index.mako')
+        c.feed_url = h.rails.url_for('packages_feed')
+        return render('/packages/list.mako')
+
+    def feed(self, filter=None, id=None):
+        feed = h.feedgenerator.Rss201rev2Feed(
+            title=_('%s packages' % config['debexpo.sitename']),
+            link=config['debexpo.server'] + h.rails.url_for('packages'),
+            description=_('A feed of packages on %s' % config['debexpo.sitename']),
+            language=get_lang()[0])
+
+        if filter == 'section':
+            packages = self._get_packages(package_version_filter=(PackageVersion.section == id))
+
+        elif filter == 'uploader':
+            user = self._get_user(id)
+            if user is not None:
+                packages = self._get_packages(package_filter=(Package.user_id == user.id))
+            else:
+                packages = {}
+
+        elif filter == 'maintainer':
+            packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
+
+        else:
+            packages = self._get_packages()
+
+        for item in packages:
+            desc = _('Package %s uploaded by %s.' % (item['name'], item['uploader']))
+
+            desc += '<br/><br/>'
+
+            if item['needs_sponsor']:
+                desc += _('Uploader is currently looking for a sponsor.')
+            else:
+                desc += _('Uploader is currently not looking for a sponsor.')
+
+            desc += '<br/><br/>' + item['description']
+
+            feed.add_item(title='%s %s' % (item['name'], item['version']),
+                link=config['debexpo.server'] + h.rails.url_for('package', packagename=item['name']),
+                description=desc, unique_id=str(item['package_version_id']))
+
+        return feed.writeString('utf-8')
 
     def section(self, id):
         """
@@ -136,6 +181,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.section = id
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='section', id=id)
         return render('/packages/section.mako')
 
     def uploader(self, id):
@@ -157,6 +203,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.username = username
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='uploader', id=id)
         return render('/packages/uploader.mako')
 
     def my(self):
@@ -186,4 +233,5 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.maintainer = id
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='maintainer', id=id)
         return render('/packages/maintainer.mako')

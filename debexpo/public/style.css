@@ -1,7 +1,40 @@
-/* Stylesheet for mentors.debian.net */
-/* (c) 2005,2006 the mentors.debian.net team */
-/* You are free to use this style sheet on your own web pages
-   under the terms of the GNU General Public License 2 */
+/* Stylesheet for debexpo */
+/* Remotely derived from the mentors.debian.net stylesheet. */
+/* Copyright © 2008 Christoph Haas <email@christoph-haas.de> */
+/* and published under the same license as debexpo itself */
+
+/* Yahoo's CSS reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset,img {
+    border:0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+    font-style:normal;
+    font-weight:normal;
+}
+ol,ul {
+    list-style:none;
+}
+caption,th {
+    text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-size:100%;
+    font-weight:normal;
+}
+q:before,q:after {
+    content:'';
+}
+abbr,acronym { border:0;
+}
+/*-----------------------------------------*/
 
 body
 {
@@ -12,153 +45,158 @@ body
     padding: 0;
 }
 
+fieldset {
+    border: 1px solid #a0a0a0;
+    padding: 0.5em 1em 0.5em 1em;
+    margin: 0.5em 0 0.5em 0;
+    -moz-border-radius: .5em;
+    -webkit-border-radius: .5em;
+    border-radius: .5em;
+    background-color: #f0f0f0;
+}
+
+legend {
+    border: 1px solid #a0a0a0;
+    background-color: #f0f0f0;
+}
+
+textarea {
+    border: 1px solid #a0a0a0;
+}
+
 img
 {
     border: 0;
 }
 
-h1,h2
-{
-    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
-    font-weight: normal;
-    color: #d70751;
-	margin: 0.5em 0 0.2em 0;
-	padding: 0 0 0 0;
-}
-
 h1
 {
-	font-size: 170%;
-	color: #000000;
+    font-size: 150%;
+    margin: 1em 0 0.5em 0;
+    color: #E98F1D;
 }
 
 h2
 {
-	font-size: 140%;
-    color: #808080;
+    font-size: 130%;
+    margin: 1em 0 0.2em 0;
+    color: #E98F1D;
 }
 
-
-#floatmenu
+h3
 {
-	float: left;
-	margin: 0.5ex;
-	padding: 0.5ex;
-	width: 20ex;
+    font-size: 120%;
+    margin: 1em 0 0.2em 0;
 }
 
-/* Menu item */
-.menuitem
+/* Navigation menu on the left site */
+#menu
 {
-    padding: 0.1em 0.2em 0.1em 0.2em;
-    background-color: #f0f0f0;
-    border: 1px solid #d0d0d0;
-    border-left: 3px solid #d70751;
-    margin: 0.5em 0 0 0;
-    text-transform: uppercase;
-    -moz-border-radius-topright: 10%;
-    -webkit-border-top-right-radius: 10%;
-    border-radius-topright: 10%;
+    background-color: #e5e5e5;
 }
 
-.menuitem-active
-{
-    padding: 0.1em 0.2em 0.1em 0.2em;
-    background-color: #f0f0f0;
-    border: 1px solid #d0d0d0;
-    border-left: 3px solid #d70751;
-    margin: 0.5em 0 0 0;
-    text-transform: uppercase;
-    font-weight: bolder;
+td.navigation-td {
+    /* 7 pixel wide shadow on the right border of the menu */
+    background: right repeat-y url(/shadow-right.png);
+    background-color: #f8c078;
+    padding-right: 7px;
 }
 
-.menusubitem
-{
-	margin: 0 0 0 1em;
-	font-size: 9pt;
-	line-height: 2em;
+/* Colored subsections of the left menu */
+#menu .start {
+    background-color: #f8c078;
+    padding: 1em;
 }
 
-.menusubitem-active
-{
-	margin: 0 0 0 1em;
-	font-size: 9pt;
-	line-height: 2em;
-    font-weight: bolder;
+#menu .maintainers {
+    background-color: #97cc4c;
+    padding: 1em;
 }
 
-/*
-.menuitem a
-{
-	text-decoration: none;
+#menu .sponsors {
+    background-color: #99dbf0;
+    padding: 1em;
 }
-*/
+
+#menu .support {
+    background-color: #F5DF71;
+    padding: 1em;
+}
+
+#menu h2 {
+    font-size: 150%;
+    margin: 0 0 .3em 0;
+    color: #000000;
+}
+
+#menu ul {
+    padding: 0;
+    margin: 0 0 0 1em;
+    list-style-type: none;
+    color: #000000;
+    font-size: 110%;
+}
+
+#menu li {
+}
+
 
 /* The currently running CGI is highlighted */
 .currentcgi
 {
-	border: 1px solid red;
+    border: 1px solid red;
 }
 
 #maincontent
 {
-	margin: 0.5ex 0.5ex 0.5ex 22ex;
-	padding: 0 0 0 1ex;
-	_border-left: 1px dotted red;
+    padding: 0 1em 1em 1em;
 }
 
 #header
 {
-	background-color: #f0f0f0;
-	color: #707070;
-	padding: 0.5ex;
-	min-height: 75px;	/* the top area is at least as large as the debian logo */
-		/* does not work with the IE but you won't see me write hacks to
-         * support buggy browsers */
-    border-bottom: 1px solid #b0b0b0;
+    background-color: #000000;
+    color: #f0f0f0;
+    border-bottom: .5em solid #E98F1D;
+    padding: 0.7em 2em 0.7em 2em;
 }
 
-#debianlogo
+#logo
 {
-	float: left;
-	position: absolute;
-	top: 5px;
-	left: 5px;
+    float: right;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
+
 #headertitle
 {
-    font-family: "Bitstream Vera Serif", Georgia, Palatino, serif;
-	font-size: 300%;
-	margin: 0;
-	margin-left: 70px;	/* indentation from the debian logo on the lft */
-	padding: 0;
-	font-weight: 100;
+    font-family: Georgia, "Bitstream Vera Serif", Palatino, serif;
+    font-size: 250%;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
 }
 
 #headersubtitle
 {
-	padding: 0;
-	margin: 0;
-	margin-left: 70px;	/* indentation from the debian logo on the lft */
-	font-size: 110%;
-	font-weight: 500;
+    padding: 0;
+    margin: 0;
+    font-size: 110%;
+    font-weight: bold;
 }
 
 #footer
 {
-	background-color: #f0f0f0;
-	color: #707070;
-	padding: 0.2em 1em 0.2em 1em;
-	margin: 2em 0 0 0;
-	text-align: center;
-	clear: both;
-    border-top: 1px solid #b0b0b0;
+    background-color: #e5e5e5;
+    color: #808080;
+    padding: 0.2em 1em 0.2em 1em;
+    clear: both;
 }
 
 #navigation
 {
-	padding: 0.2em 1em 0.2em 1em;
-	background: #e0e0e0;
+    padding: 0.2em 1em 0.2em 1em;
+    background: #e0e0e0;
 }
 
 #navigation > .right
@@ -172,24 +210,24 @@ p,form
 	color: #606060;
 	margin: 0.3ex 0em 1ex 0;
 	padding: 0 0 0 0;
+        line-height: 1.8em;
 }
 
 pre
 {
-	color: #606060;
     background-color: #f0f0f0;
 }
 
-a
+a, a:visited
 {
-	color: #606060;
-	text-decoration: underline;
+    color: #000000;
+    border-bottom: 1px dashed #808080;
+    text-decoration: none;
 }
 
 a:hover
 {
-	_border-bottom: 1px solid #000000;
-	background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 ul
@@ -197,41 +235,9 @@ ul
     color: #606060;
 }
 
-/*
-ul
-{
-	_background: #e0ffe0;
-	_margin: 0 0 0 0 0em;
-	padding: 0 0 0 1em;
-}
-
-li
-{
-	_background: #ffe0e0;
-	_list-style: none;
-	padding: 0;
-	margin: 0;
-}
-*/
-
-table
-{
-    border-collapse: collapse;
-    margin: 0.5em 0 0.5em 0;
-}
-
-/*
-tr
-{
-}
-*/
-
 td
 {
     vertical-align: top;
-	color: #606060;
-    padding: 0.1em 1em 0.1em 0.1em;
-    margin: 0;
 }
 
 /* Table rows with light lines seperating the rows */
@@ -243,28 +249,12 @@ td.lines
 
 th
 {
-	color: #606060;
+    color: #606060;
     font-weight: bolder;
     text-align: left;
     vertical-align: top;
     padding-right: 1em;
 }
-
-/*
-fieldset 
-{ 
-	_border: 1px solid #808080; 
-}
-
-legend 
-{
-	padding: 0.2em 0.5em;
-	border: 1px solid #808080;
-	color: #808080;
-	_font-size: 90%;
-	_text-align: right;
-}
-*/
 
 .warning
 {
@@ -282,4 +272,3 @@ legend
     color: green;
     font-weight: bolder;
 }
-

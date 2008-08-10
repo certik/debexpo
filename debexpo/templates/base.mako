@@ -1,16 +1,26 @@
 # -*- coding: utf-8 -*-
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 
   <head>
     <link rel="stylesheet" type="text/css" href="/style.css" />
     <title>${ c.config['debexpo.sitename'] }</title>
+
+% if c.feed_url:
+
+    <link rel="alternate" href="${ c.feed_url }" title="RSS Feed" type="application/rss+xml" />
+
+% endif
+
   </head>
 
   <body>
     <div id="header">
-      <div id="debianlogo">
-        <img src="${ c.config['debexpo.logo'] }" alt="${ c.config['debexpo.sitename'] } logo" />
+      <div id="logo">
+        ${ h.tags.image(
+            c.config['debexpo.logo'],
+            c.config['debexpo.sitename'])}
       </div>
 
       <div id="headertitle">${ c.config['debexpo.sitename'] }</div>
@@ -18,32 +28,94 @@
       </div>
     </div>
 
-    <div id="floatmenu">
-      <div class="menuitem">${ _('Welcome') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('index') }">${ _('Start page') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('news') }">${ _('News') }</a></div>
+    <table><tr><td class="navigation-td">
+    <!--Left column containing navigation-->
+    <div id="menu">
+        <div class="start">
+            <h2>Welcome</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Start page'),
+                        h.url_for('index')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('News'),
+                        h.url_for('news')) }
+                </li>
+            </ul>
+        </div>
 
-      <div class="menuitem">${ _('For maintainers') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#maintainers">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action='my', id=None) }">${ _('My packages') }</a></div>
+        <div class="maintainers">
+            <h2>Maintainers</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Introduction'),
+                        h.url_for('intro', anchor='maintainers')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Sign me up'),
+                        h.url_for(controller='register', action='maintainer')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My account'),
+                        h.url_for('my')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My packages'),
+                        h.url_for(controller='packages', action='my')) }
+                </li>
+            </ul>
+        </div>
 
-      <div class="menuitem">For sponsors</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('intro') }#sponsors">${ _('Introduction') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('register') }">${ _('Sign me up') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('my') }">${ _('My account') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for(controller='packages', action=None, id=None) }">${ _('Package list') }</a></div>
+        <div class="sponsors">
+            <h2>Sponsors</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Introduction'),
+                        h.url_for('intro', anchor='sponsors')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Sign me up'),
+                        h.url_for(controller='register', action='sponsors')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('My account'),
+                        h.url_for('my')) }
+                </li>
+            </ul>
+        </div>
 
-      <div class="menuitem">${ _('Support') }</div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('qa') }">${ _('Q &amp; A') }</a></div>
-      <div class="menusubitem"><a href="${ h.rails.url_for('contact') }">${ _('Contact') }</a></div>
+        <div class="support">
+            <h2>Support</h2>
+            <ul>
+                <li>${ h.tags.link_to(
+                        _('Q & A'),
+                        h.url_for('qa')) }
+                </li>
+                <li>${ h.tags.link_to(
+                        _('Contact'),
+                        h.url_for('contact')) }
+                </li>
+            </ul>
+        </div>
     </div>
 
+    </td>
+    <td>
+
+    <!--Right column containing main content-->
     <div id="maincontent">
-      ${self.main()}
+      ${next.body()}
     </div>
 
-    <div id="footer"><a href="mailto:${ c.config['debexpo.email'] }">${ c.config['debexpo.email'] }</a></div>
+    </td></tr></table>
+
+    <div id="footer">
+        debexpo
+        -
+        Copyright © 2008 Jonny Lamb
+        -
+        <a href="mailto:${ c.config['debexpo.email'] }">Support contact</a>
+    </div>
   </body>
 </html>

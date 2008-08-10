@@ -216,6 +216,8 @@ class Importer(object):
         from debexpo.model import meta
         from debexpo.lib.utils import parse_section, md5sum
         from debexpo.lib.plugins import Plugins
+        from debexpo.lib import constants
+        from pylons import c
 
         # Import model objects
         from debexpo.model.users import User
@@ -225,6 +227,7 @@ class Importer(object):
         from debexpo.model.binary_packages import BinaryPackage
         from debexpo.model.package_files import PackageFile
         from debexpo.model.package_info import PackageInfo
+        from debexpo.model.package_subscriptions import PackageSubscription
 
         # Parse component and section from field in changes
         component, section = parse_section(self.changes['files'][0]['section'])
@@ -301,6 +304,20 @@ class Importer(object):
         meta.session.commit()
         log.debug('Committed package data to the database')
 
+        subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
+            PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
+
+#        if len(subscribers) >= 0:
+#            c.package = self.changes['Source']
+#            c.version = self.changes['Version']
+#            c.user = self.user
+#            c.config = config
+
+#            email = Email('package_uploaded')
+#            email.send([s.user.email for s in subscribers])
+
+#            log.debug('Sent out package subscription emails')
+
     def _orig(self):
         """
         Look to see whether there is an orig tarball present, if the dsc refers to one.
@@ -356,7 +373,8 @@ class Importer(object):
                 oldorig = orig
                 orig = None
 
-        post_upload = Plugins('post-upload', self.changes, self.changes_file)
+        post_upload = Plugins('post-upload', self.changes, self.changes_file,
+            user_id=self.user_id)
         if post_upload.stop():
             log.critical('post-upload plugins failed')
             self._remove_changes()

@@ -2,8 +2,6 @@
 
 <%inherit file="../base.mako"/>
 
-<%def name="main()">
-
 % if c.user is not None:
 
     <h1>${ _('User activated') }</h1>
@@ -22,5 +20,3 @@
     </p>
 
 % endif
-
-</%def>
