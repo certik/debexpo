@@ -195,12 +195,15 @@ class PackagesController(BaseController):
         if user is not None:
             packages = self._get_packages(package_filter=(Package.user_id == user.id))
             username = user.name
+            email = user.email
         else:
             log.warning('Could not find user')
             packages = []
             username = id
+            email = id
 
         c.config = config
+        c.email = email
         c.packages = packages
         c.username = username
         c.feed_url = h.rails.url_for('packages_filter_feed', filter='uploader', id=id)
