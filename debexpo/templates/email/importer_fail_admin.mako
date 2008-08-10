@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
 
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: ${ _('Failure in importer') }
 
 ${ _('''Hello,
@@ -13,4 +13,4 @@ ${ c.message }
 
 ${ _('This message can be found in the logs.') }
 
-${ _('Thanks,') }</%def>
+${ _('Thanks,') }

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
-
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: ${ _('Failed to import %s') % c.package }
 
 ${ _('''Hello,
@@ -13,4 +12,4 @@ and not your package.
 Sorry for the inconvenience. The administrator has been notified.
 Please try again soon.''') % c.package }
 
-${ _('Thanks,') }</%def>
+${ _('Thanks,') }

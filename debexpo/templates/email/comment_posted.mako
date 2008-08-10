@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
-
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: ${ _('Comment posted on %s' % c.package) }
 
 ${ _('''A comment has been posted on a package that you are subscribed to.
@@ -16,4 +15,4 @@ ${ c.config['debexpo.server'] }/${ h.rails.url_for('package', packagename=c.pack
 
 ${ _('You can change your subscription by visiting your user account settings.') }
 
-${ _('Thanks,') }</%def>
+${ _('Thanks,') }

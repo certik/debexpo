@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
-
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: ${ _('New %s package uploaded' % c.package) }
 
 ${ _('%s %s has been uploaded to the archive by %s.', (c.package, c.version, c.user.name)) }
@@ -12,4 +11,4 @@ ${ c.config['debexpo.server'] }/${ h.rails.url_for('package', packagename=c.pack
 
 ${ _('You can change your subscription by visiting your user account settings.') }
 
-${ _('Thanks,') }</%def>
+${ _('Thanks,') }

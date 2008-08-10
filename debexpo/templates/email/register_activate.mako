@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
-
-<%def name="main()">To: ${ c.to }
+To: ${ c.to }
 Subject: ${ _('Please activate your account') }
 
 ${ _('''Hello,
@@ -11,4 +10,4 @@ in your web-browser:''') }
 
 ${ c.activate_url }
 
-${ _('Thanks,') }</%def>
+${ _('Thanks,') }

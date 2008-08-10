@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 From: ${ c.sender }
-${ self.main() }
+${ next.body() }
 
--- 
+--
 ${ c.config['debexpo.sitename'] }

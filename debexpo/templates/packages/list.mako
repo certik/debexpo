@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-<%inherit file="/packages/index.mako"/>
 
 <table width="100%">
   <tr>
