@@ -164,8 +164,6 @@ class PackagesController(BaseController):
 
             desc += '<br/><br/>' + item['description']
 
-            print desc
-
             feed.add_item(title='%s %s' % (item['name'], item['version']),
                 link=config['debexpo.server'] + h.rails.url_for('package', packagename=item['name']),
                 description=desc, unique_id=str(item['package_version_id']))
