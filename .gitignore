@@ -3,3 +3,4 @@ docs/.build/
 debexpo.db*
 data/
 *~
+*.kpf
