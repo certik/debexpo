@@ -217,6 +217,7 @@ class Importer(object):
         from debexpo.lib.utils import parse_section, md5sum
         from debexpo.lib.plugins import Plugins
         from debexpo.lib import constants
+        from pylons import c
 
         # Import model objects
         from debexpo.model.users import User
