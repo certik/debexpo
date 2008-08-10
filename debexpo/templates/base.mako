@@ -6,6 +6,13 @@
   <head>
     <link rel="stylesheet" type="text/css" href="/style.css" />
     <title>${ c.config['debexpo.sitename'] }</title>
+
+% if c.feed_url:
+
+    <link rel="alternate" href="${ c.feed_url }" title="RSS Feed" type="application/rss+xml" />
+
+% endif
+
   </head>
 
   <body>

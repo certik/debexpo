@@ -126,6 +126,7 @@ class PackagesController(BaseController):
         # Render the page.
         c.config = config
         c.packages = packages
+        c.feed_url = h.rails.url_for('packages_feed')
         return render('/packages/list.mako')
 
     def feed(self, filter=None, id=None):
@@ -182,6 +183,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.section = id
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='section', id=id)
         return render('/packages/section.mako')
 
     def uploader(self, id):
@@ -203,6 +205,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.username = username
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='uploader', id=id)
         return render('/packages/uploader.mako')
 
     def my(self):
@@ -232,4 +235,5 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.maintainer = id
+        c.feed_url = h.rails.url_for('packages_filter_feed', filter='maintainer', id=id)
         return render('/packages/maintainer.mako')
