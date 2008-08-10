@@ -57,11 +57,14 @@ class ErrorController(BaseController):
         """
         Renders the error document.
         """
-        page = error_document_template % \
-            dict(prefix=request.environ.get('SCRIPT_NAME', ''),
-                 code=request.params.get('code', ''),
-                 message=request.params.get('message', ''))
-        return page
+        c.message = request.params.get('message', '-')
+        c.code = int(request.params.get('code', '-'))
+        return render('/error.mako')
+        #page = error_document_template % \
+        #    dict(prefix=request.environ.get('SCRIPT_NAME', ''),
+        #         code=request.params.get('code', ''),
+        #         message=request.params.get('message', ''))
+        #return page
 
     def img(self, id):
         """

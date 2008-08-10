@@ -272,3 +272,10 @@ th
     color: green;
     font-weight: bolder;
 }
+
+/* Red box for HTTP errors (40x) */
+.error-border {
+    border: 1em solid red;
+    padding: 1em;
+    margin-top: 2em;
+}

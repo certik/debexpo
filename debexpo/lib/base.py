@@ -71,6 +71,8 @@ class BaseController(WSGIController):
             session.save()
             return redirect_to(h.url_for(controller='login'))
 
+        c.config = config
+
     def __call__(self, environ, start_response):
         """
         Invokes the Controller.
