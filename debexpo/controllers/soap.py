@@ -61,6 +61,7 @@ class DebexpoService(SimpleWSGISoapApp):
         if email is not None:
             user = pkg_ctl._get_user(email)
             if user is None:
+                log.error('Could not find user; returning empty list')
                 return []
             package_filter = (Package.user_id == user.id)
 
@@ -80,6 +81,7 @@ class DebexpoService(SimpleWSGISoapApp):
         """
         Return package list filtered on uploader.
         """
+        log.debug('Getting packages filtered on uploader = %s' % email)
         return self._get_packages(email=email)
 
     @soapmethod(String, _returns=Array(Array(String)))
@@ -87,6 +89,7 @@ class DebexpoService(SimpleWSGISoapApp):
         """
         Return package list filtered on section.
         """
+        log.debug('Getting packages filtered on section = %s' % section)
         return self._get_packages(package_version_filter=(PackageVersion.section == section))
 
     @soapmethod(String, _returns=Array(Array(String)))
@@ -94,6 +97,7 @@ class DebexpoService(SimpleWSGISoapApp):
         """
         Return package list filtered on maintainer.
         """
+        log.debug('Getting packages filtered on maintainer = %s' % email)
         return self._get_packages(package_version_filter=(PackageVersion.maintainer == email))
 
     @soapmethod(_returns=Array(Array(String)))
@@ -101,6 +105,7 @@ class DebexpoService(SimpleWSGISoapApp):
         """
         Return package list.
         """
+        log.debug('Getting package list')
         return self._get_packages()
 
 SoapController = DebexpoService()
