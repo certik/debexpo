@@ -54,62 +54,30 @@ class PackagesController(BaseController):
 
     def _get_packages(self, package_filter=None, package_version_filter=None):
         """
-        Return a list of dictionaries with keys:
+        Returns a list of packages that fit the filters.
 
-        * name -- source package name
-        * description -- description of package
-        * version -- latest version uploaded to repository
-        * uploader -- name of uploader
-        * needs_sponsor -- whether the package needs a sponsor
-        * package_version_id -- the ID of the most recent package version
+        ``package_filter``
+            An SQLAlchemy filter on the package.
 
-        of packages and their most recent versions.
+        ``package_version_filter``
+            An SQLAlchemy filter on the package.
         """
         # I want to use apt_pkg.CompareVersions later, so init() needs to be called.
         apt_pkg.init()
 
-        packages = []
-
         log.debug('Getting package list')
-        packages_query = meta.session.query(Package)
+        query = meta.session.query(Package)
 
         if package_filter is not None:
             log.debug('Applying package list filter')
-            packages_query = packages_query.filter(package_filter)
+            query = query.filter(package_filter)
 
-        # Loop through all package lists.
-        for package in packages_query.all():
-            # Get all package versions.
-            package_versions = meta.session.query(PackageVersion).filter_by(package_id=package.id)
+        if package_version_filter is not None:
+            log.debug('Applying package version list filter')
+            query = query.filter(Package.id == PackageVersion.package_id)
+            query = query.filter(package_version_filter)
 
-            if package_version_filter is not None:
-                package_versions = package_versions.filter(package_version_filter)
-
-            package_versions = package_versions.all()
-
-            if len(package_versions) != 0:
-                # The package version with the highest ID will be the most recent package version
-                # uploaded, so use that.
-                package_version = package_versions[-1]
-
-                # Make needs_sponsor slightly more pretty than a number.
-                needs_sponsor = {
-                    constants.PACKAGE_NEEDS_SPONSOR_YES : _('Yes'),
-                    constants.PACKAGE_NEEDS_SPONSOR_NO : _('No'),
-                    constants.PACKAGE_NEEDS_SPONSOR_UNKNOWN : _('Unknown')
-                }[package.needs_sponsor]
-
-                # Add this package to the to-show list.
-                packages.append({
-                    'name' : package.name,
-                    'description' : package.description,
-                    'version' : package_version.version,
-                    'uploader' : package.user.name,
-                    'needs_sponsor' : needs_sponsor,
-                    'package_version_id' : package_version.id
-                })
-
-        return packages
+        return query.all()
 
     def _get_user(self, email):
         return meta.session.query(User).filter_by(email=email).first()
@@ -144,7 +112,7 @@ class PackagesController(BaseController):
             if user is not None:
                 packages = self._get_packages(package_filter=(Package.user_id == user.id))
             else:
-                packages = {}
+                packages = []
 
         elif filter == 'maintainer':
             packages = self._get_packages(package_version_filter=(PackageVersion.maintainer == id))
@@ -153,20 +121,20 @@ class PackagesController(BaseController):
             packages = self._get_packages()
 
         for item in packages:
-            desc = _('Package %s uploaded by %s.' % (item['name'], item['uploader']))
+            desc = _('Package %s uploaded by %s.' % (item.name, item.user.name))
 
             desc += '<br/><br/>'
 
-            if item['needs_sponsor']:
+            if item.needs_sponsor:
                 desc += _('Uploader is currently looking for a sponsor.')
             else:
                 desc += _('Uploader is currently not looking for a sponsor.')
 
-            desc += '<br/><br/>' + item['description']
+            desc += '<br/><br/>' + item.description
 
-            feed.add_item(title='%s %s' % (item['name'], item['version']),
-                link=config['debexpo.server'] + h.rails.url_for('package', packagename=item['name']),
-                description=desc, unique_id=str(item['package_version_id']))
+            feed.add_item(title='%s %s' % (item.name, item.package_versions[-1].version),
+                link=config['debexpo.server'] + h.rails.url_for('package', packagename=item.name),
+                description=desc, unique_id=str(item.package_versions[-1].id))
 
         return feed.writeString('utf-8')
 
