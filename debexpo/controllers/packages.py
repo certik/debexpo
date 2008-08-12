@@ -127,7 +127,7 @@ class PackagesController(BaseController):
         c.config = config
         c.packages = packages
         c.feed_url = h.rails.url_for('packages_feed')
-        return render('/packages/list.mako')
+        return render('/packages/index.mako')
 
     def feed(self, filter=None, id=None):
         feed = h.feedgenerator.Rss201rev2Feed(

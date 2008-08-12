@@ -3,4 +3,4 @@
 
 <h1>${ _('Package list') }</h1>
 
-${ next.body() }
+<%include file="list.mako" />
