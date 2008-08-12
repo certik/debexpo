@@ -70,9 +70,10 @@ class DebexpoService(SimpleWSGISoapApp):
 
         out = []
         for item in packages:
-            out.append([item['name'], item['version'],
-                item['uploader'], item['description'],
-                config['debexpo.server'] + h.rails.url_for('package', packagename=item['name'])])
+            out.append([item.name, item.package_versions[-1].version,
+                '%s <%s>' % (item.user.name, item.user.email),
+                item.description,
+                config['debexpo.server'] + h.rails.url_for('package', packagename=item.name)])
 
         return out
 
