@@ -109,4 +109,50 @@ class DebexpoService(SimpleWSGISoapApp):
         log.debug('Getting package list')
         return self._get_packages()
 
+    @soapmethod(String, String, _returns=Array(String))
+    def package(self, name, version):
+        """
+        Return details a specific package and version.
+        """
+        q = meta.session.query(Package).filter_by(name=name)
+        q = q.filter(Package.id == PackageVersion.package_id)
+        q = q.filter(PackageVersion.version == version)
+        package = q.first()
+
+        if package is None:
+            return []
+
+        r = meta.session.query(PackageVersion).filter_by(version=version)
+        r = r.filter(PackageVersion.package_id == Package.id)
+        r = r.filter(Package.name == name)
+        package_version = r.first()
+
+        if package_version is None:
+            return []
+
+        return [package.name,
+            '%s <%s>' % (package.user.name, package.user.email),
+            package.description,
+            str(package.needs_sponsor),
+            package_version.version,
+            package_version.section,
+            package_version.distribution,
+            package_version.component,
+            package_version.priority,
+            package_version.closes,
+            str(package_version.uploaded)]
+
+    @soapmethod(String, _returns=Array(String))
+    def versions(self, name):
+        """
+        Returns a list of package versions for a package.
+        """
+        q = meta.session.query(Package).filter_by(name=name)
+        package = q.first()
+
+        if package is None:
+            return []
+
+        return [pv.version for pv in package.package_versions]
+
 SoapController = DebexpoService()
