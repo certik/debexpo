@@ -233,7 +233,7 @@ class Importer(object):
         component, section = parse_section(self.changes['files'][0]['section'])
 
         # Get uploader's User object
-        self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None)
+        self.user = meta.session.query(User).filter_by(id=self.user_id).filter_by(verification=None).first()
         if self.user is None:
             self._fail('Couldn\'t find user with id %s. Exiting.' % self.user_id)
 
