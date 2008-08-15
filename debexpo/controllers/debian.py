@@ -56,8 +56,12 @@ class DebianController(BaseController):
         file = os.path.join(config['debexpo.repository'], filename)
         log.debug('%s requested' % filename)
 
+        content_type = None
+        if filename.endswith('.dsc'):
+            content_type = 'text/plain'
+
         if os.path.isfile(file):
-            fapp = paste.fileapp.FileApp(file)
+            fapp = paste.fileapp.FileApp(file, content_type=content_type)
         else:
             log.error('File not found')
             abort(404, 'File not found')
