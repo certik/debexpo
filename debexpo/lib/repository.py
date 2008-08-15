@@ -76,6 +76,10 @@ class Repository(object):
         package_version = package_file.source_package.package_version
         package = package_version.package
 
+        if not os.path.isfile(filename):
+            log.critical('Cannot find file %s' % filename)
+            return ''
+
         # Read the dsc file.
         dsc = deb822.Dsc(DecodingFile(filename))
 
@@ -107,6 +111,10 @@ class Repository(object):
         filename = os.path.join(self.repository, package_file.filename)
         package_version = package_file.binary_package.package_version
         package = package_version.package
+
+        if not os.path.isfile(filename):
+            log.critical('Cannot find file %s' % filename)
+            return ''
 
         # Read the deb file.
         deb = debfile.DebFile(filename).debcontrol()
