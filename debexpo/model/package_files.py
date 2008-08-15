@@ -55,6 +55,6 @@ class PackageFile(OrmObject):
     foreign = ['binary_package', 'source_package']
 
 orm.mapper(PackageFile, t_package_files, properties={
-    'binary_package' : orm.relation(BinaryPackage, backref='package_files'),
-    'source_package' : orm.relation(SourcePackage, backref='package_files'),
+    'binary_package' : orm.relation(BinaryPackage, backref='package_files', cascade='delete'),
+    'source_package' : orm.relation(SourcePackage, backref='package_files', cascade='delete'),
 })

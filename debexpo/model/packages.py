@@ -56,5 +56,5 @@ class Package(OrmObject):
     foreign = ['user']
 
 orm.mapper(Package, t_packages, properties={
-    'user' : orm.relation(User, backref='packages')
+    'user' : orm.relation(User, backref='packages', cascade='delete')
 })

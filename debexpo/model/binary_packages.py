@@ -51,5 +51,5 @@ class BinaryPackage(OrmObject):
     foreign = ['package_version']
 
 orm.mapper(BinaryPackage, t_binary_packages, properties={
-    'package_version' : orm.relation(PackageVersion, backref='binary_packages'),
+    'package_version' : orm.relation(PackageVersion, backref='binary_packages', cascade='delete'),
 })

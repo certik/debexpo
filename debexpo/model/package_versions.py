@@ -59,5 +59,5 @@ class PackageVersion(OrmObject):
     foreign = ['package']
 
 orm.mapper(PackageVersion, t_package_versions, properties={
-    'package' : orm.relation(Package, backref='package_versions')
+    'package' : orm.relation(Package, backref='package_versions', cascade='delete')
 })
