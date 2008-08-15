@@ -42,7 +42,9 @@ import logging
 import os
 from sqlalchemy import select
 
-from debexpo.lib.utils import get_package_dir
+from debexpo.lib.utils import get_package_dir, DecodingFile
+
+
 from debexpo.model import meta
 from debexpo.model.packages import Package
 from debexpo.model.package_files import PackageFile
@@ -75,7 +77,7 @@ class Repository(object):
         package = package_version.package
 
         # Read the dsc file.
-        dsc = deb822.Dsc(file(filename))
+        dsc = deb822.Dsc(DecodingFile(filename))
 
         # There are a few differences between a dsc file and a Sources entry, listed and acted
         # upon below:

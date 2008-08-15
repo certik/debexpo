@@ -43,6 +43,7 @@ import shutil
 import sys
 
 from debexpo.lib.base import *
+from debexpo.lib.utils import DecodingFile
 
 log = logging.getLogger(__name__)
 
@@ -123,7 +124,7 @@ class Plugins(object):
 
         # If the original tarball was pulled from Debian or from the repository, that
         # also needs to be copied into this directory.
-        dsc = deb822.Dsc(open(self.changes.get_dsc()))
+        dsc = deb822.Dsc(DecodingFile(self.changes.get_dsc()))
         for item in dsc['Files']:
             if item['name'] not in self.changes.get_files():
                 shutil.copy(os.path.join(config['debexpo.upload.incoming'], item['name']), self.tempdir)

@@ -42,7 +42,7 @@ import urllib
 
 from debexpo.lib import constants
 from debexpo.lib.base import *
-from debexpo.lib.utils import md5sum
+from debexpo.lib.utils import md5sum, DecodingFile
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ class GetOrigTarballPlugin(BasePlugin):
         Check whether there is an original tarball referenced by the dsc file, but not
         actually in the package upload.
         """
-        dsc = deb822.Dsc(file(self.changes.get_dsc()))
+        dsc = deb822.Dsc(DecodingFile(self.changes.get_dsc()))
 
         orig = None
         for dscfile in dsc['Files']:
