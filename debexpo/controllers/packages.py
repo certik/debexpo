@@ -130,7 +130,7 @@ class PackagesController(BaseController):
             else:
                 desc += _('Uploader is currently not looking for a sponsor.')
 
-            desc += '<br/><br/>' + item.description
+            desc += '<br/><br/>' + item.description.replace('\n', '<br/>')
 
             feed.add_item(title='%s %s' % (item.name, item.package_versions[-1].version),
                 link=config['debexpo.server'] + h.rails.url_for('package', packagename=item.name),

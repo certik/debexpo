@@ -24,7 +24,7 @@
 
   <tr>
     <th>${ _('Description') }:</th>
-    <td>${ c.package.description }</td>
+    <td>${ c.package.description.replace('\n', '<br/>') }</td>
   </tr>
 
 % if 'user_id' in c.session:
