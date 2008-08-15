@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-<%inherit file="base.mako"/>
-To: ${ c.to }
+<%inherit file="base.mako"/>To: ${ c.to }
 Subject: ${ _('Failed to import %s') % c.package }
 
 ${ _('''Hello,
