@@ -76,7 +76,7 @@
                 </li>
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
-                        h.url_for(controller='register', action='sponsors')) }
+                        h.url_for(controller='register', action='sponsor')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('My account'),
