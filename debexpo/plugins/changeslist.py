@@ -56,6 +56,9 @@ class ChangesListPlugin(BasePlugin):
         if not config.get('debexpo.changes_list', None):
             return
 
+        if config['debexpo.changes_list'] == '':
+            return
+
         email = Email('changes_list')
         to = config['debexpo.changes_list']
         email.send([to], changes=self.changes,
