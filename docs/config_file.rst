@@ -93,3 +93,8 @@ Email to send package accepts to.
 ==================
 
 Server root URL debexpo is running on, including protocol and excluding trailing slash. For example ``http://localhost:5000``.
+
+``debexpo.frontpage``
+=====================
+
+Path to file to include which contains HTML for the front page. This defaults to ``%(here)s/debexpo/public/frontpage.html``.
