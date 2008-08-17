@@ -92,11 +92,11 @@ class Repository(object):
         # There needs to be a "Directory" field to tell the package manager where to download the
         # package from. This is in the format (for the test package in the component "main"):
         #   pool/main/t/test
-        dsc['Directory'] = 'pool/%s/%s' % (package_version.component, get_package_dir(package.name))
+        dsc['Directory'] = str('pool/%s/%s' % (package_version.component, get_package_dir(package.name)))
 
         # The dsc file, its size, and its md5sum needs to be added to the "Files" field. This is
         # unsurprisingly not in the original dsc file!
-        dsc['Files'].append({'md5sum' : package_file.md5sum, 'size': package_file.size, 'name' : package_file.filename.split('/')[-1]})
+        dsc['Files'].append({'md5sum' : package_file.md5sum, 'size': str(package_file.size), 'name' : str(package_file.filename.split('/')[-1])})
 
         # Get a nice rfc822 output of this dsc, now Sources, entry.
         return dsc.dump()
