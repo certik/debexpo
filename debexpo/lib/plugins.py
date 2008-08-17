@@ -118,8 +118,8 @@ class Plugins(object):
         to extract them.
         """
         self.tempdir = tempfile.mkdtemp()
-        for file in self.changes.get_files():
-            shutil.copy(os.path.join(config['debexpo.upload.incoming'], file), self.tempdir)
+        for filename in self.changes.get_files():
+            shutil.copy(os.path.join(config['debexpo.upload.incoming'], filename), self.tempdir)
 
         # If the original tarball was pulled from Debian or from the repository, that
         # also needs to be copied into this directory.
