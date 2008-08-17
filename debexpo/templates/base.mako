@@ -38,10 +38,10 @@
                         _('Start page'),
                         h.url_for('index')) }
                 </li>
-                <li>${ h.tags.link_to(
+<!--                <li>${ h.tags.link_to(
                         _('News'),
                         h.url_for('news')) }
-                </li>
+                </li>-->
             </ul>
         </div>
 
@@ -88,10 +88,10 @@
         <div class="support">
             <h2>Support</h2>
             <ul>
-                <li>${ h.tags.link_to(
+<!--                <li>${ h.tags.link_to(
                         _('Q & A'),
                         h.url_for('qa')) }
-                </li>
+                </li>-->
                 <li>${ h.tags.link_to(
                         _('Contact'),
                         h.url_for('contact')) }
