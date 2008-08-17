@@ -214,6 +214,7 @@ class Importer(object):
 
         # Horrible imports
         from debexpo.model import meta
+        from debexpo.lib.base import h
         from debexpo.lib.utils import parse_section, md5sum
         from debexpo.lib.email import Email
         from debexpo.lib.plugins import Plugins
@@ -314,6 +315,13 @@ class Importer(object):
                 version=self.changes['Version'], user=self.user)
 
             log.debug('Sent out package subscription emails')
+
+        # Send success email to uploader
+        email = Email('successful_upload')
+        dsc_url = self.config['debexpo.server'] + '/debian/' + self.changes.get_pool_path() + '/' + self.changes.get_dsc()
+        rfs_url = self.config['debexpo.server'] + h.rails.url_for('rfs', packagename=self.changes['Source'])
+        email.send([self.user.email], package=self.changes['Source'],
+            dsc_url=dsc_url, rfs_url=rfs_url)
 
     def _orig(self):
         """
