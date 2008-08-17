@@ -36,11 +36,20 @@ __copyright__ = 'Copyright © 2008 Jonny Lamb'
 __license__ = 'MIT'
 
 import logging
+import os
 import smtplib
+from mako.template import Template
+from mako.lookup import TemplateLookup
 
-from debexpo.lib.base import *
+from debexpo.lib.base import config, h
+from gettext import gettext
 
 log = logging.getLogger(__name__)
+
+class FakeC(object):
+    def __init__(self, **kw):
+        for key in kw:
+            setattr(self, key, kw[key])
 
 class Email(object):
     def __init__(self, template):
@@ -53,7 +62,6 @@ class Email(object):
         self.template = template
         self.server = config['global_conf']['smtp_server']
         self.auth = None
-        c.sender = '%s <%s>' % (config['debexpo.sitename'], config['debexpo.email'])
 
         # Look whether auth is required.
         if 'smtp_username' in config['global_conf'] and 'smtp_password' in config['global_conf']:
@@ -63,7 +71,7 @@ class Email(object):
                     'password' : config['global_conf']['smtp_password']
                 }
 
-    def send(self, recipients=None):
+    def send(self, recipients=None, **kwargs):
         """
         Sends the email.
 
@@ -74,8 +82,18 @@ class Email(object):
             return
 
         log.debug('Getting mail template: %s' % self.template)
-        c.to = ', '.join(recipients)
-        message = render('/email/%s.mako' % self.template)
+
+        to = ', '.join(recipients)
+        sender = '%s <%s>' % (config['debexpo.sitename'], config['debexpo.email'])
+
+        c = FakeC(to=to, sender=sender, config=config, **kwargs)
+
+        template_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates/email/%s.mako' % self.template)
+        lookup = TemplateLookup(directories=[os.path.dirname(template_file)])
+        template = Template(filename=template_file, lookup=lookup, module_directory=config['app_conf']['cache_dir'])
+        message = template.render(_=gettext, h=h, c=c)
+
+        log.debug('Email is: %s' % message)
 
         log.debug('Starting SMTP session to %s' % self.server)
         session = smtplib.SMTP(self.server)
