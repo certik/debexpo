@@ -90,8 +90,9 @@ class Importer(object):
         """
         Removes all the files uploaded.
         """
-        for file in self.files:
-            os.remove(file)
+        if hasattr(self, 'files'):
+            for file in self.files:
+                os.remove(file)
 
         self._remove_changes()
 
