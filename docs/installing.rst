@@ -31,7 +31,7 @@ You can clone the repository contents by executing::
 Building debexpo
 ----------------
 
-Simply enter into the debexpo directory and execute ``python setup.py build``::
+Simply enter into the debexpo directory and execute ``make build``::
 
     cd debexpo
     make build
