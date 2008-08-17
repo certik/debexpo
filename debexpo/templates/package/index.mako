@@ -36,6 +36,15 @@
 
 % endif
 
+% if 'user_id' in c.session and c.session['user_id'] == c.package.user_id:
+
+  <tr>
+    <th>${ _('Delete package') }:</th>
+    <td>${ h.rails.link_to(_('Delete this package'), h.rails.url_for(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
+  </tr>
+
+% endif
+
 </table>
 
 <h1>${ _('Package versions') }</h1>

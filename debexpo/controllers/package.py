@@ -173,6 +173,23 @@ class PackageController(BaseController):
         log.debug('Rendering page')
         return render('/package/subscribe.mako')
 
+    def delete(self, packagename):
+        """
+        Delete package.
+
+        ``packagename``
+            Package name to delete.
+        """
+        # The user should have already been prompted with a nice dialog box
+        # confirming their choice, so no mercy here.
+
+        package = self._get_package(packagename)
+        if isinstance(package, Package):
+            meta.session.delete(package)
+            meta.session.commit()
+
+        return h.rails.redirect_to(controller='packages', filter='my')
+
     def comment(self, packagename):
         """
         Comment submission.

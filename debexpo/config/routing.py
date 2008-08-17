@@ -66,6 +66,7 @@ def make_map():
     map.connect('package', 'package/:packagename', controller='package', action='index')
     map.connect('comment', 'package/:packagename/comment', controller='package', action='comment')
     map.connect('subscribe', 'package/:packagename/subscribe', controller='package', action='subscribe')
+    map.connect('delete', 'package/:packagename/delete', controller='package', action='delete')
     map.connect('rfs', 'package/rfs/:packagename', controller='package', action='rfs')
     map.connect('packages/:action/:id', controller='packages', action='index', id=None)
     map.connect('packages_filter_feed', 'packages/:filter/:id/feed', controller='packages', action='feed')
