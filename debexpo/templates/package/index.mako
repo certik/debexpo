@@ -11,7 +11,7 @@
 
   <tr>
     <th>${ _('Uploader') }:</th>
-    <td><a href="${ h.rails.url_for(controller='packages', action='uploader', id=c.package.user.email, packagename=None) }">${ c.package.user.name }</a> &lt;<a href="mailto: ${ c.package.user.email }">${ c.package.user.email }</a>&gt;
+    <td><a href="${ h.rails.url_for('packages', action='uploader', id=c.package.user.email) }">${ c.package.user.name }</a> &lt;<a href="mailto: ${ c.package.user.email }">${ c.package.user.email }</a>&gt;
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
