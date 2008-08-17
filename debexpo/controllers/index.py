@@ -47,6 +47,14 @@ class IndexController(BaseController):
     def index(self):
         pkg_controller = PackagesController()
 
+
+        if 'debexpo.frontpage' in config:
+            f = open(config['debexpo.frontpage'])
+            c.frontpage = f.read()
+            f.close()
+        else:
+            c.frontpage = ''
+
         c.config = config
         c.packages = pkg_controller._get_packages()
         return render('/index/index.mako')
