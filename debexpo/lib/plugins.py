@@ -151,7 +151,7 @@ class Plugins(object):
         plugins = config.get('debexpo.plugins.' + self.type)
         result = []
 
-        if plugins is None or plugins == '':
+        if not plugins:
             return result
 
         # Look at whether the plugins need extracting.
