@@ -78,7 +78,7 @@ class Email(object):
         ``recipients``
             List of email addresses of recipients.
         """
-        if recipients is None:
+        if recipients is None or recipients is []:
             return
 
         log.debug('Getting mail template: %s' % self.template)
