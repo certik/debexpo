@@ -56,16 +56,11 @@ class ChangesListPlugin(BasePlugin):
         if not config.get('debexpo.changes_list', None):
             return
 
-        # TODO: remove this when email sending is working.
-        return
-
         email = Email('changes_list')
-        c.to = config['debexpo.changes_list']
-        c.changes = self.changes
-        c.changes_contents = self.changes_contents
-        c.dest = self.changes.get_pool_path()
-
-        email.send([c.to])
+        to = config['debexpo.changes_list']
+        email.send([to], changes=self.changes,
+                changes_contents=self.changes_contents.decode('ascii', 'ignore'),
+                dest=self.changes.get_pool_path())
 
 plugin = ChangesListPlugin
 

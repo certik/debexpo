@@ -203,12 +203,9 @@ class PackageController(BaseController):
 
         if len(subscribers) >= 0:
             user = meta.session.query(User).filter_by(id=session['user_id']).one()
-            c.package = packagename
-            c.comment = request.POST['text']
-            c.user = user
-            c.config = config
 
             email = Email('comment_posted')
-            email.send([s.user.email for s in subscribers])
+            email.send([s.user.email for s in subscribers], package=packagename,
+                comment=request.POST['text'], user=user)
 
         return h.rails.redirect_to('package', packagename=packagename)

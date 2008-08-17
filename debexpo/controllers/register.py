@@ -82,8 +82,8 @@ class RegisterController(BaseController):
         """
         log.debug('Sending activation email')
         email = Email('register_activate')
-        c.activate_url = 'http://' + request.host + h.rails.url_for(action='activate', id=key)
-        email.send([recipient])
+        url = 'http://' + request.host + h.rails.url_for(action='activate', id=key)
+        email.send([recipient], activate_url=url)
 
     @validate(schema=MaintainerForm(), form='maintainer')
     def _maintainer_submit(self):

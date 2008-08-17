@@ -118,21 +118,20 @@ class Importer(object):
 
         self._remove_files()
 
-#        from debexpo.lib.email import Email
-#        from pylons import c
-#
-#        if self.user is not None:
-#            email = Email('importer_fail_maintainer')
-#            if 'Source' in self.changes:
-#                c.package = self.changes['Source']
-#            else:
-#                c.package = ''
-#
-#            email.send([self.user.email])
-#
-#        email = Email('importer_fail_admin')
-#        c.message = reason
-#        email.send([config['debexpo.email']])
+        from debexpo.lib.base import config
+        from debexpo.lib.email import Email
+
+        if self.user is not None:
+            email = Email('importer_fail_maintainer')
+            if 'Source' in self.changes:
+                package = self.changes['Source']
+            else:
+                package = ''
+
+            email.send([self.user.email], package=package)
+
+        email = Email('importer_fail_admin')
+        email.send([config['debexpo.email']], message=reason)
 
         sys.exit(1)
 
@@ -216,6 +215,7 @@ class Importer(object):
         # Horrible imports
         from debexpo.model import meta
         from debexpo.lib.utils import parse_section, md5sum
+        from debexpo.lib.email import Email
         from debexpo.lib.plugins import Plugins
         from debexpo.lib import constants
         from pylons import c
@@ -308,16 +308,12 @@ class Importer(object):
         subscribers = meta.session.query(PackageSubscription).filter_by(package=self.changes['Source']).filter(\
             PackageSubscription.level <= constants.SUBSCRIPTION_LEVEL_UPLOADS).all()
 
-#        if len(subscribers) >= 0:
-#            c.package = self.changes['Source']
-#            c.version = self.changes['Version']
-#            c.user = self.user
-#            c.config = config
+        if len(subscribers) > 0:
+            email = Email('package_uploaded')
+            email.send([s.user.email for s in subscribers], package=self.changes['Source'],
+                version=self.changes['Version'], user=self.user)
 
-#            email = Email('package_uploaded')
-#            email.send([s.user.email for s in subscribers])
-
-#            log.debug('Sent out package subscription emails')
+            log.debug('Sent out package subscription emails')
 
     def _orig(self):
         """
