@@ -115,11 +115,12 @@ class PpaController(BaseController):
         """
         Opens a file in the repository using Paste's FileApp.
         """
+        log.debug('%s requested' % filename)
+
         if filename.startswith('dists/'):
             return self._create_dists(email, filename)
 
         file = os.path.join(config['debexpo.repository'], filename)
-        log.debug('%s requested' % filename)
 
         if os.path.isfile(file):
             fapp = paste.fileapp.FileApp(file)
