@@ -100,6 +100,7 @@ td.navigation-td {
     background: right repeat-y url(/shadow-right.png);
     background-color: #f8c078;
     padding-right: 7px;
+    white-space: nowrap;
 }
 
 /* Colored subsections of the left menu */
