@@ -5,3 +5,5 @@ debexpo.db*
 data/
 *~
 *.kpf
+build
+dist
