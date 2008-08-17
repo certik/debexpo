@@ -54,7 +54,7 @@ debexpo.upload.incoming = /tmp/debexpo/
 
 # DEBEXPO
 # Directory name to store accepted uploaded files
-debexpo.repository = /tmp/debexpo/files/
+debexpo.repository = /var/cache/debexpo/
 
 # DEBEXPO
 # Path to importer script
@@ -104,11 +104,11 @@ debexpo.plugindir = /tmp
 
 # DEBEXPO
 # Location of the nearest Debian mirror
-debexpo.debian_mirror = http://ftp.uk.debian.org/debian
+debexpo.debian_mirror = http://ftp.debian.org/debian
 
 # DEBEXPO
 # Email address to send package accepts to
-debexpo.changes_list = jonny@server
+debexpo.changes_list = 
 
 # DEBEXPO
 # Server debexpo is being run on including http:// and excluding trailing slash
