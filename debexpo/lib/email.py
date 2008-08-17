@@ -93,8 +93,6 @@ class Email(object):
         template = Template(filename=template_file, lookup=lookup, module_directory=config['app_conf']['cache_dir'])
         message = template.render(_=gettext, h=h, c=c)
 
-        log.debug('Email is: %s' % message)
-
         log.debug('Starting SMTP session to %s' % self.server)
         session = smtplib.SMTP(self.server)
 
