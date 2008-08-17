@@ -50,3 +50,7 @@ class IndexController(BaseController):
         c.config = config
         c.packages = pkg_controller._get_packages()
         return render('/index/index.mako')
+
+    def contact(self):
+        c.config = config
+        return render('/index/contact.mako')
