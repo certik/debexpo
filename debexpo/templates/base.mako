@@ -42,6 +42,10 @@
                         _('News'),
                         h.url_for('news')) }
                 </li>-->
+                <li>${ h.tags.link_to(
+                        _('Package list'),
+                        h.url_for('packages')) }
+                </li>
             </ul>
         </div>
 
