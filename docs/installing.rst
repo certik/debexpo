@@ -11,7 +11,7 @@ Install prerequisites
 
 You need to install the required packages. Using apt, you should execute::
 
-    sudo apt-get install python-setuptools python-apt python-sphinx python-pylons python-debian python-jinga python-sqlalchemy python-soappy lintian dpkg-dev python-nose python-pybabel
+    sudo apt-get install python-setuptools python-apt python-sphinx python-pylons python-debian python-sqlalchemy python-soappy lintian dpkg-dev python-nose python-pybabel
 
 `lintian` and `dpkg-dev` are optional if you do not want to run any plugins,
 and `python-nose` is optional if you don't want to run the test suite.
