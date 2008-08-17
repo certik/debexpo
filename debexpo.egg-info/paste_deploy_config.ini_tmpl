@@ -5,9 +5,20 @@
 #
 [DEFAULT]
 debug = true
-email_to = you@yourdomain.com
+#email_to = you@yourdomain.com
+#error_email_from = paste@localhost
+
+# DEBEXPO
+# The SMTP server to send emails from
 smtp_server = localhost
-error_email_from = paste@localhost
+
+# DEBEXPO
+# The username to authenticate with when making SMTP connections
+smtp_username = 
+
+# DEBEXPO
+# The password to authenticate with when making SMTP connections
+smtp_password = 
 
 [server:main]
 use = egg:Paste#http
@@ -22,6 +33,10 @@ beaker.session.key = debexpo
 beaker.session.secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
 
+# DEBEXPO
+# SQLAlchemy URL to your database
+sqlalchemy.url = sqlite:///%(here)s/debexpo.db
+
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings
 # here:
@@ -33,10 +48,79 @@ app_instance_uuid = ${app_instance_uuid}
 # execute malicious code after an exception is raised.
 set debug = false
 
+# DEBEXPO
+# Directory name to add incoming uploaded files into
+debexpo.upload.incoming = /tmp/debexpo/
+
+# DEBEXPO
+# Directory name to store accepted uploaded files
+debexpo.repository = /tmp/debexpo/files/
+
+# DEBEXPO
+# Path to importer script
+debexpo.importer = %(here)s/bin/importer.py
+
+# DEBEXPO
+# Whether to let debexpo handle the /debian/ directory
+debexpo.handle_debian = true
+
+# DEBEXPO
+# Site name
+debexpo.sitename = mentors.debian.net
+
+# DEBEXPO
+# Site tagline
+debexpo.tagline = Helps you get your packages into Debian
+
+# DEBEXPO
+# Site logo
+debexpo.logo = /debexpo-logo.gif
+
+# DEBEXPO
+# Site support email
+debexpo.email = support@mentors.debian.net
+
+# Whether to show Debian-specific options
+debexpo.debian_specific = true
+
+# DEBEXPO
+# What post-upload plugins to run, in this order
+debexpo.plugins.post_upload = getorigtarball checkfiles notuploader
+
+# What qa plugins to run, in this order
+debexpo.plugins.qa = gpgsigned lintian native maintaineremail watchfile closedbugs controlfields diffclean buildsystem debian
+
+# DEBEXPO
+# What plugins to run when the package is uploaded to Debian, in this order
+debexpo.plugins.post_upload_to_debian = removepackage
+
+# DEBEXPO
+# What plugins to run when a package is successfully uploaded, in this order
+debexpo.plugins.post_successful_upload = changeslist
+
+# DEBEXPO
+# Extra plugin directory
+debexpo.plugindir = /tmp
+
+# DEBEXPO
+# Location of the nearest Debian mirror
+debexpo.debian_mirror = http://ftp.uk.debian.org/debian
+
+# DEBEXPO
+# Email address to send package accepts to
+debexpo.changes_list = jonny@server
+
+# DEBEXPO
+# Server debexpo is being run on including http:// and excluding trailing slash
+debexpo.server = http://localhost:5000
 
 # Logging configuration
 [loggers]
-keys = root
+keys = root, debexpo
+
+# Logging configuration
+[loggers]
+keys = root, debexpo
 
 [handlers]
 keys = console
@@ -48,6 +132,11 @@ keys = generic
 level = INFO
 handlers = console
 
+[logger_debexpo]
+level = DEBUG
+handlers =
+qualname = debexpo
+
 [handler_console]
 class = StreamHandler
 args = (sys.stderr,)
@@ -55,4 +144,6 @@ level = NOTSET
 formatter = generic
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S
+
