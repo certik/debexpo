@@ -122,9 +122,10 @@ class Repository(object):
         # There are a few additions to a debian/control file to make a Packages entry, listed
         # and acted upon below:
 
-        deb['Filename'] = package_file.filename
+        # (the control dictionary cannot handle Unicode - convert it)
+        deb['Filename'] = str(package_file.filename)
         deb['Size'] = str(package_file.size)
-        deb['MD5sum'] = package_file.md5sum
+        deb['MD5sum'] = str(package_file.md5sum)
 
         return deb.dump()
 
