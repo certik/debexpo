@@ -1,8 +1,8 @@
 .. _installing:
 
-==================
-Installing debexpo
-==================
+=================================
+Installing and setting up debexpo
+=================================
 
 debexpo is easy to set up on your own. Simply follow the instructions below.
 
