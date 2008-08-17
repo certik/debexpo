@@ -105,21 +105,3 @@ def md5sum(filename):
     f.close()
 
     return sum.hexdigest()
-
-class DecodingFile(file):
-    """
-    Wrapper class to open a file and read it as a specific encoding. This
-    is a horrible hack and should be deprecated when deb822 is fixed.
-    See Debian bug #495272 for more details.
-    """
-    def __init__(self, name, mode='r', buffering=1, encoding='utf8'):
-        file.__init__(self, name, mode, buffering)
-        self._encoding = encoding
-
-    def read(self, n=-1):
-        data = file.read(self, n)
-        return data.decode(self._encoding)
-
-    def readline(self):
-        data = file.readline(self)
-        return data.decode(self._encoding)

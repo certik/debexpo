@@ -40,7 +40,6 @@ import logging
 
 from debexpo.lib import constants
 from debexpo.lib.base import *
-from debexpo.lib.utils import DecodingFile
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
@@ -66,7 +65,7 @@ class ControlFieldsPlugin(BasePlugin):
         log.debug('Checking whether additional debian/control fields are present')
 
         try:
-            dsc = deb822.Dsc(DecodingFile(self.changes.get_dsc()))
+            dsc = deb822.Dsc(file(self.changes.get_dsc()))
         except:
             log.critical('Could not open dsc file; skipping plugin')
             return

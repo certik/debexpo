@@ -40,7 +40,6 @@ from debian_bundle import deb822
 
 from debexpo.lib import constants
 from debexpo.lib.base import *
-from debexpo.lib.utils import DecodingFile
 from debexpo.plugins import BasePlugin
 
 log = logging.getLogger(__name__)
@@ -53,7 +52,7 @@ class BuildSystemPlugin(BasePlugin):
         """
         log.debug('Finding the package\'s build system')
 
-        dsc = deb822.Dsc(DecodingFile(self.changes.get_dsc()))
+        dsc = deb822.Dsc(file(self.changes.get_dsc()))
 
         if 'cdbs' in dsc['Build-Depends']:
             log.debug('Package uses CDBS')
