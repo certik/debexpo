@@ -31,6 +31,7 @@ Development documentation
 * :ref:`writing-plugins`
 * :ref:`coding-standards`
 * :ref:`contributing`
+* :ref:`api`
 
 Indices and tables
 ==================
