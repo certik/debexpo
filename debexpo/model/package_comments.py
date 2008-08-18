@@ -56,6 +56,6 @@ class PackageComment(OrmObject):
     foreign = ['package_version', 'user']
 
 orm.mapper(PackageComment, t_package_comments, properties={
-    'package_version' : orm.relation(PackageVersion, backref='package_comments', cascade='delete'),
+    'package_version' : orm.relation(PackageVersion, backref='package_comments'),
     'user' : orm.relation(User, backref='package_comments'),
 })

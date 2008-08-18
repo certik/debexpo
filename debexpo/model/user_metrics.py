@@ -52,5 +52,5 @@ class UserMetric(OrmObject):
     foreign = ['user']
 
 orm.mapper(UserMetric, t_user_metrics, properties={
-    'user' : orm.relation(User, backref='user_metrics', cascade='delete')
+    'user' : orm.relation(User, backref='user_metrics')
 })
