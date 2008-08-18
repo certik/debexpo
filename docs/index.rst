@@ -29,6 +29,7 @@ Using debexpo
 Development documentation
 -------------------------
 
+* :ref:`building`
 * :ref:`writing-plugins`
 * :ref:`coding-standards`
 * :ref:`contributing`

@@ -6,12 +6,12 @@ Installing and setting up debexpo
 
 debexpo is easy to set up on your own. Simply follow the instructions below.
 
-Install prerequisites
----------------------
+Installing on Debian Lenny:
+---------------------------
 
 You need to install the required packages. Using apt, you should execute::
 
-    sudo apt-get install python-setuptools python-apt python-sphinx python-pylons python-debian python-sqlalchemy python-soappy lintian dpkg-dev python-nose python-pybabel
+    sudo aptitude install python-setuptools python-apt python-sphinx python-pylons python-debian python-sqlalchemy python-soappy lintian dpkg-dev python-nose python-pybabel
 
 `lintian` and `dpkg-dev` are optional if you do not want to run any plugins,
 and `python-nose` is optional if you don't want to run the test suite.
@@ -24,31 +24,9 @@ You can either download a release tarball, or clone from the Git repository.
 `The debexpo website <http://debexpo.workaround.org/>`_ will contain details
 about releases.
 
-You can clone the repository contents by executing::
+Or you can clone the repository contents by executing::
 
     git clone git://debexpo.workaround.org/debexpo.git
-
-Building debexpo
-----------------
-
-Simply enter into the debexpo directory and execute ``make build``::
-
-    cd debexpo
-    make build
-
-Installing debexpo
-------------------
-
-It is easier in some situations to leave debexpo in its source directory and
-run it from there. However, if you wish to have it installed, follow these
-instructions:
-
-From the debexpo root directory, execute::
-
-    sudo make install
-
-This will install debexpo into your ``/usr/lib/pythonX.Y/site-packages/``
-directory, ready for use.
 
 Editing your configuration
 ---------------------------
@@ -99,8 +77,3 @@ Using Apache
 
   `/some/path/to/debexpo/fcgi` need not physically exist on the webserver.
 
-#. Start the server::
-
-    paster serve debexpo.ini
-
-#. Reload apache and visit http://localhost/.
