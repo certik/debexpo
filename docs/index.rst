@@ -24,6 +24,7 @@ Using debexpo
 
 * :ref:`uploading`
 * :ref:`plugins`
+* :ref:`soap`
 
 Development documentation
 -------------------------
