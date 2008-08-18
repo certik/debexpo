@@ -30,7 +30,7 @@ Development documentation
 
 * :ref:`writing-plugins`
 * :ref:`coding-standards`
-* :ref:`submitting-patches`
+* :ref:`contributing`
 
 Indices and tables
 ==================
