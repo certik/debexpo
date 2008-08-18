@@ -17,12 +17,20 @@ Setting up debexpo
 ------------------
 
 * :ref:`installing`
+* :ref:`config-file`
+
+Using debexpo
+-------------
+
+* :ref:`uploading`
+* :ref:`plugins`
 
 Development documentation
 -------------------------
 
+* :ref:`writing-plugins`
 * :ref:`coding-standards`
-* :ref:`config-file`
+* :ref:`submitting-patches`
 
 Indices and tables
 ==================
