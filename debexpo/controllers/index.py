@@ -47,7 +47,6 @@ class IndexController(BaseController):
     def index(self):
         pkg_controller = PackagesController()
 
-
         if 'debexpo.frontpage' in config:
             f = open(config['debexpo.frontpage'])
             c.frontpage = f.read()

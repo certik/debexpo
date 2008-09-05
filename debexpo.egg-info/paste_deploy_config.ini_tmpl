@@ -116,7 +116,8 @@ debexpo.server = http://localhost:5000
 
 # DEBEXPO
 # Path to file to include which contains HTML for the front page
-debexpo.frontpage = %(here)s/debexpo/public/frontpage.html
+# (this is relative to the location of this INI file)
+#debexpo.frontpage = html/frontpage.html
 
 # Logging configuration
 [loggers]
