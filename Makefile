@@ -8,12 +8,16 @@ build:
 	python setup.py build
 	(cd docs && make html)
 	python setup.py compile_catalog
-	paster make-config debexpo debexpo.ini
+	python setup.py sdist
+	#paster make-config debexpo debexpo.ini
 
 install:
 	python setup.py install
 
 test:
 	nosetests
+
+clean:
+	python setup.py clean
 
 .PHONY: help build install test

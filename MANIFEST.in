@@ -1,2 +1,3 @@
 recursive-include debexpo/public *
 recursive-include debexpo/templates *
+recursive-include debexpo/i18n *
