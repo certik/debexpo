@@ -74,6 +74,7 @@ class LoginController(BaseController):
             return self.index(True)
 
         session['user_id'] = u.id
+        session['user_type'] = u.type
         session.save()
 
         log.debug('Authentication successful; saving session')
@@ -99,3 +100,14 @@ class LoginController(BaseController):
             return self._login()
         else:
             return render('/login/index.mako')
+
+    def logout(self):
+        """Logs the current user out."""
+        if 'user_id' in session:
+            log.debug('User #%s logged out.' % session['user_id'])
+            del session['user_id']
+        if 'user_type' in session:
+            del session['user_type']
+        session.save()
+        redirect_to('index')
+
