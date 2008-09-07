@@ -54,6 +54,8 @@
 <fieldset>
   <legend>${ package_version.version }</legend>
 
+  <h2>${ _('Information')}</h2>
+
   <table>
     <tr>
       <th>${ _('Version') }:</th>
@@ -116,8 +118,24 @@
     % endif
 
 % endif
+</table>
 
-  </table>
+% if package_version.package_info:
+<h2>${ _('QA information')}</h2>
+
+<table>
+
+    ## Print result from plugins
+    % for pkginfo in package_version.package_info:
+        % if pkginfo.data:
+            <tr>
+                <th>${ h.constants.PLUGIN_SEVERITY[pkginfo.severity] }:</th>
+                <td>${ h.converters.nl2br(pkginfo.data) }</td>
+            </tr>
+        % endif
+    % endfor
+</table>
+% endif
 
 <h3>Comments</h3>
 
