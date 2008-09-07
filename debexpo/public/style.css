@@ -135,7 +135,7 @@ td.navigation-td {
     margin: 0 0 0 1em;
     list-style-type: none;
     color: #000000;
-    font-size: 110%;
+    line-height: 1em;
 }
 
 #menu li {
@@ -211,7 +211,7 @@ p,form
 	color: #606060;
 	margin: 0.3ex 0em 1ex 0;
 	padding: 0 0 0 0;
-        line-height: 1.8em;
+    line-height: 1.5em;
 }
 
 pre
@@ -240,6 +240,7 @@ li
 {
     list-style: circle;
     margin-left: 1em;
+    line-height: 1.5em;
 }
 
 td
