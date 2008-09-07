@@ -16,6 +16,7 @@ setup(
     install_requires=[
         "Pylons>=0.9.6.1",
         "SQLAlchemy==0.4.6",
+        "Webhelpers==0.6.1",
         "Babel"],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
