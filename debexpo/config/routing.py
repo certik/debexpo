@@ -59,7 +59,8 @@ def make_map():
 
     map.connect('contact', 'contact', controller='index', action='contact')
     map.connect('index', '', controller='index', action='index')
-    map.connect('intro', 'intro', controller='index', action='intro')
+    map.connect('intro-maintainers', 'intro-maintainers', controller='index', action='intro_maintainers')
+    map.connect('intro-sponsors', 'intro-sponsors', controller='index', action='intro_sponsors')
     map.connect('my', 'my/:action', controller='my', action='index')
     map.connect('login', controller='login', action='index')
     map.connect('news', 'news', controller='index', action='news')

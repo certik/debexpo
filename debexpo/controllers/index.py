@@ -62,7 +62,7 @@ class IndexController(BaseController):
         c.config = config
         return render('/index/contact.mako')
 
-    def intro(self):
+    def intro_maintainers(self):
         """Return an introduction page for package maintainers"""
         if 'debexpo.html.maintainer_intro' in config:
             f = open(config['debexpo.html.maintainer_intro'])
@@ -71,10 +71,10 @@ class IndexController(BaseController):
         else:
             c.custom_html = ''
 
-        return render('/index/intro.mako')
+        return render('/index/intro-maintainers.mako')
 
 
-    def intro(self):
+    def intro_sponsors(self):
         """Return an introduction page for sponsors"""
         if 'debexpo.html.sponsors_intro' in config:
             f = open(config['debexpo.html.sponsors_intro'])

@@ -50,7 +50,7 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
-                        h.url_for('intro', anchor='maintainers')) }
+                        h.url_for('intro-maintainers')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
@@ -72,7 +72,7 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
-                        h.url_for('intro', action='sponsors')) }
+                        h.url_for('intro-sponsors')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
