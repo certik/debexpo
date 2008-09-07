@@ -2,6 +2,7 @@ MANIFEST.in
 README.txt
 setup.cfg
 setup.py
+bin/debexpo-importer
 debexpo/__init__.py
 debexpo/websetup.py
 debexpo.egg-info/PKG-INFO
@@ -93,6 +94,8 @@ debexpo/templates/email/register_activate.mako
 debexpo/templates/email/successful_upload.mako
 debexpo/templates/index/contact.mako
 debexpo/templates/index/index.mako
+debexpo/templates/index/intro-sponsors.mako
+debexpo/templates/index/intro.mako
 debexpo/templates/login/index.mako
 debexpo/templates/my/index.mako
 debexpo/templates/package/index.mako

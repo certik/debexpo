@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 <%inherit file="/base.mako"/>
 
-${ c.frontpage }
+${ c.custom_html }
    
 <h1>Recently uploaded packages</h1>
 

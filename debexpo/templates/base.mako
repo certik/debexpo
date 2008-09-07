@@ -38,10 +38,6 @@
                         _('Start page'),
                         h.url_for('index')) }
                 </li>
-<!--                <li>${ h.tags.link_to(
-                        _('News'),
-                        h.url_for('news')) }
-                </li>-->
                 <li>${ h.tags.link_to(
                         _('Package list'),
                         h.url_for('packages')) }
@@ -76,7 +72,7 @@
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
-                        h.url_for('intro', anchor='sponsors')) }
+                        h.url_for('intro', action='sponsors')) }
                 </li>
                 <li>${ h.tags.link_to(
                         _('Sign me up'),

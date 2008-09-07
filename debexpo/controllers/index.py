@@ -47,12 +47,12 @@ class IndexController(BaseController):
     def index(self):
         pkg_controller = PackagesController()
 
-        if 'debexpo.frontpage' in config:
-            f = open(config['debexpo.frontpage'])
-            c.frontpage = f.read()
+        if 'debexpo.html.frontpage' in config:
+            f = open(config['debexpo.html.frontpage'])
+            c.custom_html = f.read()
             f.close()
         else:
-            c.frontpage = ''
+            c.custom_html = ''
 
         c.config = config
         c.packages = pkg_controller._get_packages()
@@ -61,3 +61,27 @@ class IndexController(BaseController):
     def contact(self):
         c.config = config
         return render('/index/contact.mako')
+
+    def intro(self):
+        """Return an introduction page for package maintainers"""
+        if 'debexpo.html.maintainer_intro' in config:
+            f = open(config['debexpo.html.maintainer_intro'])
+            c.custom_html = f.read()
+            f.close()
+        else:
+            c.custom_html = ''
+
+        return render('/index/intro.mako')
+
+
+    def intro(self):
+        """Return an introduction page for sponsors"""
+        if 'debexpo.html.sponsors_intro' in config:
+            f = open(config['debexpo.html.sponsors_intro'])
+            c.custom_html = f.read()
+            f.close()
+        else:
+            c.custom_html = ''
+
+        return render('/index/intro-sponsors.mako')
+
