@@ -236,6 +236,12 @@ ul
     color: #606060;
 }
 
+li
+{
+    list-style: circle;
+    margin-left: 1em;
+}
+
 td
 {
     vertical-align: top;
