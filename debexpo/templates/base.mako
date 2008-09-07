@@ -52,10 +52,17 @@
                         _('Introduction'),
                         h.url_for('intro-maintainers')) }
                 </li>
+                % if 'user_id' not in session:
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
                         h.url_for(controller='register', action='maintainer')) }
                 </li>
+                <li>${ h.tags.link_to(
+                        _('Login'),
+                        h.url_for('login')) }
+                </li>
+                % endif
+                % if session.get('user_type') in (h.constants.USER_STATUS_MAINTAINER, h.constants.USER_STATUS_NORMAL):
                 <li>${ h.tags.link_to(
                         _('My account'),
                         h.url_for('my')) }
@@ -64,6 +71,7 @@
                         _('My packages'),
                         h.url_for(controller='packages', action='my')) }
                 </li>
+                % endif
             </ul>
         </div>
 
@@ -74,14 +82,22 @@
                         _('Introduction'),
                         h.url_for('intro-sponsors')) }
                 </li>
+                % if 'user_id' not in session:
                 <li>${ h.tags.link_to(
                         _('Sign me up'),
                         h.url_for(controller='register', action='sponsor')) }
                 </li>
                 <li>${ h.tags.link_to(
+                        _('Login'),
+                        h.url_for('login')) }
+                </li>
+                % endif
+                % if session.get('user_type') == h.constants.USER_STATUS_DEVELOPER:
+                <li>${ h.tags.link_to(
                         _('My account'),
                         h.url_for('my')) }
                 </li>
+                % endif
             </ul>
         </div>
 
@@ -116,6 +132,10 @@
         Copyright © 2008 Jonny Lamb
         -
         <a href="mailto:${ c.config['debexpo.email'] }">Support contact</a>
+        % if 'user_id' in session:
+        -
+        <a href="/logout">Logout</a>
+        % endif
     </div>
   </body>
 </html>
