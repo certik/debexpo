@@ -11,7 +11,7 @@
 
   <tr>
     <th>${ _('Uploader') }:</th>
-    <td><a href="${ h.rails.url_for('packages', action='uploader', id=c.package.user.email) }">${ c.package.user.name }</a> &lt;<a href="mailto: ${ c.package.user.email }">${ c.package.user.email }</a>&gt;
+    <td><a href="${ h.url_for('packages', action='uploader', id=c.package.user.email) }">${ c.package.user.name }</a> &lt;<a href="mailto: ${ c.package.user.email }">${ c.package.user.email }</a>&gt;
 
 % if c.config['debexpo.debian_specific'] == 'true':
 
@@ -31,7 +31,7 @@
 
   <tr>
     <th>${ _('Subscribe') }:</th>
-    <td><a href="${ h.rails.url_for('subscribe', packagename=c.package.name) }">${ _('Edit your subscription') }</a></td>
+    <td><a href="${ h.url_for('subscribe', packagename=c.package.name) }">${ _('Edit your subscription') }</a></td>
   </tr>
 
 % endif
@@ -40,7 +40,7 @@
 
   <tr>
     <th>${ _('Delete package') }:</th>
-    <td>${ h.rails.link_to(_('Delete this package'), h.rails.url_for(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
+    <td>${ h.rails.link_to(_('Delete this package'), h.url_for(action="delete", packagename=c.package.name), confirm=_('Are you sure?')) }</td>
   </tr>
 
 % endif
@@ -63,7 +63,7 @@
 
 % if c.config['debexpo.debian_specific'] == 'true' and c.session.get('user_id') == c.package.user_id:
 
-  (<a href="${ h.rails.url_for('rfs', packagename=c.package.name) }">${ _('View RFS template') }</a>)
+  (<a href="${ h.url_for('rfs', packagename=c.package.name) }">${ _('View RFS template') }</a>)
 
 % endif
 
@@ -184,7 +184,7 @@
 
 % if 'user_id' in c.session:
 
-${ h.rails.form(h.rails.url_for('comment', packagename=c.package.name)) }
+${ h.rails.form(h.url_for('comment', packagename=c.package.name)) }
 ${ h.rails.hidden_field('package_version', package_version.id) }
 ${ h.rails.text_area('text', size='82x10') }
 <br/>

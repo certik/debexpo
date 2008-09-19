@@ -13,10 +13,10 @@
 
     % for package in c.packages:
       <tr>
-        <td class="lines"><a href="${ h.rails.url_for('package', packagename=package.name) }">${ package.name }</a></td>
+        <td class="lines"><a href="${ h.url_for('package', packagename=package.name) }">${ package.name }</a></td>
         <td class="lines">${ package.description.replace('\n', '<br/>') }</td>
         <td class="lines">${ package.package_versions[-1].version }</td>
-        <td class="lines"><a href="${ h.rails.url_for('packages', action='uploader', id=package.user.email) }">${ package.user.name }</a></td>
+        <td class="lines"><a href="${ h.url_for('packages', action='uploader', id=package.user.email) }">${ package.user.name }</a></td>
         <td class="lines">
     % if package.needs_sponsor:
                 ${ _('Yes') }

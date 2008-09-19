@@ -77,6 +77,8 @@ class BasePlugin(object):
         ``severity``
             Severity of the result.
         """
+        if data is None:
+            data = self.outcomes.get(outcome)['name']
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
@@ -94,6 +96,8 @@ class BasePlugin(object):
             Severity of the result.
 
         """
+        if data is None:
+            data = self.outcomes.get(outcome)['name']
         self.result.append(PluginResult(from_plugin=self.name, outcome=outcome,
             data=data, severity=severity))
 
@@ -147,3 +151,4 @@ class PluginResult(object):
         Returns whether the process should stop after the test.
         """
         return self.severity >= constants.PLUGIN_SEVERITY_CRITICAL
+

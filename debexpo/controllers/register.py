@@ -66,7 +66,7 @@ class RegisterController(BaseController):
 
         if config['debexpo.debian_specific'] != 'true':
             log.error('debexpo.debian_specific is !true; redirecting to maintainer form')
-            h.rails.redirect_to(h.rails.url_for(action='maintainer'))
+            h.rails.redirect_to(h.url_for(action='maintainer'))
 
         return render('/register/index.mako')
 
@@ -82,7 +82,7 @@ class RegisterController(BaseController):
         """
         log.debug('Sending activation email')
         email = Email('register_activate')
-        url = 'http://' + request.host + h.rails.url_for(action='activate', id=key)
+        url = 'http://' + request.host + h.url_for(action='activate', id=key)
         email.send([recipient], activate_url=url)
 
     @validate(schema=MaintainerForm(), form='maintainer')
@@ -152,7 +152,7 @@ class RegisterController(BaseController):
         """
         if config['debexpo.debian_specific'] != 'true':
             log.error('Sponsor form requested when debexpo.debian_specific option set to !true; redirecting to maintainer form')
-            h.rails.redirect_to(h.rails.url_for(action='maintainer'))
+            h.rails.redirect_to(h.url_for(action='maintainer'))
 
         # Has the form been submitted?
         if request.method == 'POST':
@@ -173,7 +173,7 @@ class RegisterController(BaseController):
 
         if id is None:
             log.error('Key is None; redirecting to main page')
-            h.rails.redirect_to(h.rails.url_for(action=None))
+            h.rails.redirect_to(h.url_for(action=None))
 
         user = meta.session.query(User).filter_by(verification=id).first()
 
@@ -183,7 +183,7 @@ class RegisterController(BaseController):
             meta.session.commit()
         else:
             log.error('Could not find user; redirecting to main page')
-            h.rails.redirect_to(h.rails.url_for(action=None, id=None))
+            h.rails.redirect_to(h.url_for(action=None, id=None))
 
         c.user = user
         return render('/register/activated.mako')

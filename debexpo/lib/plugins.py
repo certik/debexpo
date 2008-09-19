@@ -177,7 +177,8 @@ class Plugins(object):
 
             if hasattr(module, 'plugin'):
                 p = getattr(module, 'plugin')(name=plugin, changes=self.changes, \
-                    changes_file=self.changes_file, tempdir=self.tempdir)
+                    changes_file=self.changes_file, tempdir=self.tempdir, \
+                    outcomes=getattr(module, 'outcomes'))
 
                 for item in self.kw:
                     setattr(p, item, self.kw[item])

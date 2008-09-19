@@ -6,7 +6,7 @@
 <fieldset>
   <legend>${ _('Change details') }</legend>
 
-  ${ h.rails.form(h.rails.url_for()) }
+  ${ h.rails.form(h.url_for()) }
   ${ h.rails.hidden_field('form', 'details') }
 
   <table>
@@ -32,7 +32,7 @@
 <fieldset>
   <legend>${ _('Change GPG key') }</legend>
 
-  ${ h.rails.form(h.rails.url_for(), multipart=True) }
+  ${ h.rails.form(h.url_for(), multipart=True) }
   ${ h.rails.hidden_field('form', 'gpg') }
 
   <table>
@@ -73,7 +73,7 @@
 <fieldset>
   <legend>${ _('Change password') }</legend>
 
-  ${ h.rails.form(h.rails.url_for()) }
+  ${ h.rails.form(h.url_for()) }
   ${ h.rails.hidden_field('form', 'password') }
 
   <table>
@@ -104,7 +104,7 @@
 <fieldset>
   <legend>${ _('Change other details') }</legend>
 
-  ${ h.rails.form(h.rails.url_for()) }
+  ${ h.rails.form(h.url_for()) }
   ${ h.rails.hidden_field('form', 'other_details') }
 
   <table>

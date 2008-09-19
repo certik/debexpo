@@ -6,7 +6,7 @@
 <fieldset>
   <legend>${ _('Account details') }</legend>
 
-  ${ h.rails.form(h.rails.url_for(), method='post') }
+  ${ h.rails.form(h.url_for(), method='post') }
 
   <table>
     <tr>

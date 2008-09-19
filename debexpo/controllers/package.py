@@ -127,7 +127,7 @@ class PackageController(BaseController):
             log.debug('Requires authentication')
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect_to(h.rails.url_for(controller='login'))
+            return redirect_to(h.url_for(controller='login'))
 
         package = self._get_package(packagename)
         if not isinstance(package, Package):
@@ -156,7 +156,7 @@ class PackageController(BaseController):
                     meta.session.delete(subscription)
 
             meta.session.commit()
-            return redirect_to(h.rails.url_for('package', packagename=packagename))
+            return redirect_to(h.url_for('package', packagename=packagename))
 
         c.subscriptions = {
             _('No subscription') : -1,

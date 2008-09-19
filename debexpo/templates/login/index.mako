@@ -12,7 +12,7 @@
   <p><span class="error-message">${ c.message }</span></p>
 % endif
 
-  ${ h.rails.form_tag.form(h.rails.url_for(), method='post') }
+  ${ h.rails.form_tag.form(h.url_for(), method='post') }
 
   <table>
     <tr>
