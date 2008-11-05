@@ -46,7 +46,7 @@
         </div>
 
         <div class="maintainers">
-            <h2>Maintainers</h2>
+            <h2>${ _('Maintainers') }</h2>
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
@@ -76,7 +76,7 @@
         </div>
 
         <div class="sponsors">
-            <h2>Sponsors</h2>
+            <h2>${ _('Sponsors') }</h2>
             <ul>
                 <li>${ h.tags.link_to(
                         _('Introduction'),
