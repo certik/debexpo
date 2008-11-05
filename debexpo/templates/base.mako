@@ -59,7 +59,7 @@
                 </li>
                 <li>${ h.tags.link_to(
                         _('Login'),
-                        h.url_for('login')) }
+                        h.url_for('/login')) }
                 </li>
                 % endif
                 % if session.get('user_type') in (h.constants.USER_STATUS_MAINTAINER, h.constants.USER_STATUS_NORMAL):
@@ -89,7 +89,7 @@
                 </li>
                 <li>${ h.tags.link_to(
                         _('Login'),
-                        h.url_for('login')) }
+                        h.url_for('/login')) }
                 </li>
                 % endif
                 % if session.get('user_type') == h.constants.USER_STATUS_DEVELOPER:
