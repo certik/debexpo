@@ -22,7 +22,7 @@ The directory does not have a Sources.gz file (no "apt-get source") but source p
 ``debexpo.importer``
 ====================
 
-This variable specifies the path to the importer script, distributed in ``bin/importer.py``. Therefore, this option is typically ``%(here)s/bin/importer.py``.
+This variable specifies the path to the importer script, distributed in ``bin/debexpo-importer``. Therefore, this option is typically ``%(here)s/bin/debexpo-importer``.
 
 ``debexpo.handle_debian``
 =========================
