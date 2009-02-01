@@ -37,6 +37,8 @@ __license__ = 'MIT'
 
 import formencode
 
+from pylons import config
+
 from debexpo.lib.validators import NewEmailToSystem, NewDebianEmailToSystem, GpgKey, \
     CurrentPassword, CheckBox
 
@@ -68,6 +70,7 @@ class GpgForm(MyForm):
     Schema for updating the user's GPG key in the my controller.
     """
     gpg = GpgKey()
+    gpg_id = gpg.key_id()
     delete_gpg = formencode.validators.Int()
 
 class PasswordForm(MyForm):
@@ -118,4 +121,7 @@ class SponsorForm(RegisterForm):
     """
     Schema for the sponsor registration form in the register controller.
     """
-    email = NewDebianEmailToSystem(not_empty=True)
+    if config['debug']: # allow non-DD emails for debugging
+        email = NewEmailToSystem(not_empty=True)
+    else:
+        email = NewDebianEmailToSystem(not_empty=True)
